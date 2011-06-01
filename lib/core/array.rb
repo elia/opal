@@ -68,7 +68,10 @@ class Array
 
   # **FIXME** should support custom subclasses
   def self.allocate
-    []
+    `var res = [];
+    res.$m = self.$m_prototype_tbl;
+    res.$klass = self;
+    return res;`
   end
 
   def initialize(len, fill = nil)
