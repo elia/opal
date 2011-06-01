@@ -1,6 +1,4 @@
-if (typeof opal == 'undefined') {
-  opal = {};
-}
+opal = {};
 
 (function() {
 
