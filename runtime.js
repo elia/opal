@@ -1362,6 +1362,15 @@ if (typeof opal == 'undefined') {
 
     const_set(base, id, klass);
     klass.$parent = base;
+
+    // Class#inherited hook. We check that the method is already defined first
+    // just incase we are calling it during boot. We can't do this anywhere
+    // else as we have to make sure we have defined the class incase the method
+    // causes an error.
+    if (super_klass.$m.inherited) {
+      super_klass.$m.inherited(super_klass, klass);
+    }
+
     return klass;
   };
 
