@@ -58,8 +58,8 @@ module Opal
       }
     }
     } catch(err) {
-      console.log(err);
-      console.log(err.stack);
+      if (err.stack) { console.log(err.stack); }
+      throw err;
     }`
 
     nil

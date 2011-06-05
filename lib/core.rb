@@ -99,6 +99,7 @@ require 'core/regexp'
 require 'core/match_data'
 require 'core/file'
 require 'core/dir'
+require 'core/time'
 
 `var platform = opal.platform;`
 RUBY_PLATFORM = `platform.platform`
