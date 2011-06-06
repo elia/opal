@@ -1145,7 +1145,7 @@ numeric:
     }
   | FLOAT
     {
-      result = NumericNode.new val[0]
+      result = FloatNode.new val[0]
     }
   | '-@NUM' INTEGER =LOWEST
   | '-@NUM' FLOAT   =LOWEST

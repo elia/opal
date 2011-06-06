@@ -314,6 +314,20 @@ module Opal
     end
   end
 
+  class FloatNode < BaseNode
+
+    attr_accessor :value
+
+    def initialize(val)
+      @line = val[:line]
+      @value = val[:value]
+    end
+
+    def generate(opts, level)
+      "$runtime.F(#@value)"
+    end
+  end
+
   class SymbolNode < BaseNode
 
     def initialize(val)

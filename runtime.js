@@ -20,10 +20,12 @@ opal = {};
   */
   var cBasicObject,     cObject,          cModule,          cClass,
       mKernel,          cNilClass,        cTrueClass,       cFalseClass,
-      cFile,            cProc,            cNumeric,         cArray,
-      cHash,            cString,          cSymbol,          cRange,
-      cRegexp,          cMatch,           Qself,            Qnil,
-      Qfalse,           Qtrue;
+      cFile,            cProc,            cArray,           cHash,
+      cString,          cSymbol,          cRange,           cRegexp,
+      cMatch,           Qself,            Qnil,             Qfalse,
+      Qtrue,
+
+      cNumeric,         cInteger,         cFixnum,          cFloat;
 
   /**
     Exception classes. Some of these are used by runtime so they are here for
@@ -219,6 +221,16 @@ opal = {};
     res.$m = cSymbol.$m_tbl;
     res.$flags = T_OBJECT | T_JS_STR | T_SYMBOL;
     symbol_table[intern] = res;
+    return res;
+  };
+
+  /**
+    Creating floats..
+  */
+  Rt.F = function(num) {
+    var res = new Number(num);
+    res.$klass = cFloat;
+    res.$m = cFloat.$m_tbl;
     return res;
   };
 
@@ -995,8 +1007,11 @@ opal = {};
       return (this.$id || (this.$id = yield_hash()));
     };
 
-    cNumeric = bridge_class(Number.prototype,
-      T_OBJECT | T_NUMBER, 'Numeric', cObject);
+    cNumeric = define_class('Numeric', cObject);
+    cInteger = define_class('Integer', cNumeric);
+
+    cFixnum = bridge_class(Number.prototype, T_OBJECT | T_NUMBER, 'Fixnum', cInteger);
+    cFloat = define_class('Float', cNumeric);
 
     cHash = bridge_class(RHash.prototype,
       T_OBJECT | T_HASH, 'Hash', cObject);
@@ -1078,7 +1093,7 @@ opal = {};
         return module;
       }
 
-      throw id + " is not a module.";
+      throw new Error(id + " is not a module.");
     }
 
     module = define_module_id(id);
@@ -1347,7 +1362,16 @@ opal = {};
     var klass;
 
     if (const_defined(base, id)) {
-      return const_get(base, id);
+      klass = const_get(base, id);
+
+      if (!(klass.$flags & T_CLASS)) {
+        throw new Error(id + " is not a class!");
+      }
+
+      if ((klass.$super != super_klass) && (klass != cObject) && (klass != cBasicObject)) {
+        throw new Error("Wrong superclass for existing class: " + id);
+      }
+      return klass;
     }
 
     klass = define_class_id(id, super_klass);
