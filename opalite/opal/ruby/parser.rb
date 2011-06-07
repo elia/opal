@@ -659,6 +659,10 @@ module Opal
           @lex_state = :expr_fname
           return :DEF, scanner.matched
 
+        when 'undef'
+          @lex_state = :expr_fname
+          return :UNDEF, scanner.matched
+
         when 'end'
           if [:expr_dot, :expr_fname].include? @lex_state
             @lex_state = :expr_end

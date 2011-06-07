@@ -1,5 +1,10 @@
 class Integer < Numeric
 
+  class << self
+    undef new
+    undef allocate
+  end
+
   # Iterates the block `self` number of times, passing values in the range 0 to
   # `self` - 1.
   #

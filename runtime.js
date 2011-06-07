@@ -143,6 +143,25 @@ opal = {};
   };
 
   /**
+    Undefine methods.
+  */
+  Rt.um = function(kls) {
+    var args = [].slice.call(arguments, 1);
+    for (var i = 0, ii = args.length; i < ii; i++) {
+      (function(mid) {
+        kls.$m_prototype_tbl[mid] = function() {
+          raise(eNoMethodError, "undefined method `" + mid + "' for " + kls.$m.inspect(kls));
+        };
+
+        kls.$m_prototype_tbl['$' + mid] = function() {
+          throw new Error("Undefined method...");
+        };
+      })(args[i]);
+    }
+    return Qnil;
+  };
+
+  /**
     Define classes. This is the public API for defining classes, shift classes
     and modules.
 
