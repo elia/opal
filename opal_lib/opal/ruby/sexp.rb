@@ -28,6 +28,14 @@ module Opal
         @locals = []
         @parent = nil
       end
+
+      def add_local(local)
+        @locals << local
+      end
+
+      def has_local?(local)
+        @locals.include? local
+      end
     end # Scope
 
     def push_scope(type = nil)
@@ -49,6 +57,54 @@ module Opal
       res
     end
 
+    def new_args(norm_arg, opt_arg, rest_arg, block_arg)
+      res = s(:args)
+
+      if norm_arg
+        norm_arg.each do |arg|
+          @scope.add_local arg
+          res << arg
+        end
+      end
+
+      if opt_arg
+        opt_arg[1..-1].each do |opt|
+          res << opt[1]
+        end
+      end
+
+      # rest
+
+      res << opt_arg if opt_arg
+      res
+    end
+
+    def new_assign(lhs, rhs)
+      case lhs[0]
+      when :iasgn, :cdecl, :lasgn
+        lhs << rhs
+        lhs
+      else
+        raise "bad lhs for assign: #{lhs[0]}"
+      end
+    end
+
+    def new_assignable(ref)
+      case ref[0]
+      when :ivar
+        ref[0] = :iasgn
+      when :const
+        ref[0] = :cdecl
+      when :identifier
+        @scope.add_local ref[1] unless @scope.has_local? ref[1]
+        ref[0] = :lasgn
+      else
+        raise "bad assignable type: #{ref[0]}"
+      end
+
+      ref
+    end
+
     def new_block(stmt = nil)
       res = s(:block)
       res << stmt if stmt
@@ -67,6 +123,7 @@ module Opal
     end
 
     def new_body(compstmt, res, els, ens)
+      compstmt = s(:block, compstmt) unless compstmt[0] == :block
       result = compstmt
     end
 

@@ -2393,7 +2393,7 @@ racc_reduce_table = [
   1, 251, :_reduce_437,
   1, 251, :_reduce_438,
   1, 251, :_reduce_439,
-  1, 251, :_reduce_none,
+  1, 251, :_reduce_440,
   1, 223, :_reduce_441,
   3, 223, :_reduce_442,
   3, 252, :_reduce_443,
@@ -3006,6 +3006,7 @@ end
 
 def _reduce_33(val, _values, result)
       result = s(:or, val[0], val[2])
+      result.line = val[0].line
     
     result
 end
@@ -4613,84 +4614,88 @@ def _reduce_426(val, _values, result)
 end
 
 def _reduce_427(val, _values, result)
-      result = [val[0], val[2], val[4], val[5]]
+      result = new_args val[0], val[2], val[4], val[5]
     
     result
 end
 
 def _reduce_428(val, _values, result)
-      result = [val[0], val[2], nil, val[3]]
+      result = new_args val[0], val[2], nil, val[3]
     
     result
 end
 
 def _reduce_429(val, _values, result)
-      result = [val[0], nil, val[2], val[3]]
+      result = new_args val[0], nil, val[2], val[3]
     
     result
 end
 
 def _reduce_430(val, _values, result)
-      result = [val[0], nil, nil, val[1]]
+      result = new_args val[0], nil, nil, val[1]
     
     result
 end
 
 def _reduce_431(val, _values, result)
-      rsult = [nil, val[0], val[2], val[3]]
+      rsult = new_args nil, val[0], val[2], val[3]
     
     result
 end
 
 def _reduce_432(val, _values, result)
-      result = [nil, val[0], nil, val[1]]
+      result = new_args nil, val[0], nil, val[1]
     
     result
 end
 
 def _reduce_433(val, _values, result)
-      result = [nil, nil, val[0], val[1]]
+      result = new_args nil, nil, val[0], val[1]
     
     result
 end
 
 def _reduce_434(val, _values, result)
-      result = [nil, nil, nil, val[0]]
+      result = new_args nil, nil, nil, val[0]
     
     result
 end
 
 def _reduce_435(val, _values, result)
-      result = [nil, nil, nil, nil]
+      result = new_args nil, nil, nil, nil
     
     result
 end
 
 def _reduce_436(val, _values, result)
-      result = "this.yyerror('formal argument cannot be a constant');"
+      raise "formal argument cannot be a constant"
     
     result
 end
 
 def _reduce_437(val, _values, result)
-      result = "this.yyerror('formal argument cannot be an instance variable');"
+      raise "formal argument cannot be an instance variable"
     
     result
 end
 
 def _reduce_438(val, _values, result)
-      result = "this.yyerror('formal argument cannot be a class variable');"
+      raise "formal argument cannot be a class variable"
     
     result
 end
 
 def _reduce_439(val, _values, result)
-      result = "this.yyerror('formal argument cannot be a global variable');"
+      raise "formal argument cannot be a global variable"
     
     result
 end
 
-# reduce 440 omitted
+def _reduce_440(val, _values, result)
+      result = val[0].intern
+    
+    result
+end
 
 def _reduce_441(val, _values, result)
       result = [val[0]]
@@ -4707,12 +4712,13 @@ end
 
 def _reduce_443(val, _values, result)
       result = [val[0], val[2]]
+      result = new_assign new_assignable(s(:identifier, val[0].intern)), val[2]
     
     result
 end
 
 def _reduce_444(val, _values, result)
-      result = [val[0]]
+      result = s(:block, val[0])
     
     result
 end

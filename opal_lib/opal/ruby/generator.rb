@@ -112,8 +112,9 @@ module Opal
 
       def process_top(sexp)
         code = nil
+        top = s(:scope, sexp)
         scope do
-          code = process sexp, LEVEL_TOP
+          code = process top, LEVEL_TOP
         end
         code
       end
@@ -121,8 +122,14 @@ module Opal
       def process_scope(sexp, level)
         stmt = returns sexp.shift
         code = process stmt, LEVEL_TOP
+        vars = []
+        pre = ''
 
-        code
+        vars.push *@scope.temps
+
+        pre += "var #{vars.join ', '};" unless vars.empty?
+
+        pre + code
       end
 
       def process_block(sexp, level)
@@ -191,14 +198,55 @@ module Opal
 
       def process_defn(sexp, level)
         mid = sexp.shift
-        args = sexp.shift
-        stmt = nil
+        args = sexp.first
+
+        # if last args is a s(:exp) then it contains opt arg assigns etc
+        if args.last.is_a? Array
+          opt_asgns = args.pop
+        end
+
+        # also need to check if last arg is splat op so we can use it
+
+        args = process sexp.shift, LEVEL_EXPR
+        stmt = ""
         indent = @indent
         @indent += INDENT
-        stmt = process(sexp.shift, LEVEL_TOP)
+        scope do
+          stmts = sexp.shift
+          if opt_asgns
+            stmts[1].insert(1, *opt_asgns[1..-1].map { |a| s(:js_opt_asgn, a[1], a[2]) })
+          end
+          puts stmts.inspect
+          stmt += process(stmts, LEVEL_TOP)
+        end
         @indent = indent
 
-        "$def(self, '#{mid}', function() { #{stmt} #{fix_line sexp.end_line}}, 0)"
+        "$def(self, '#{mid}', function(#{args}) { #{stmt} #{fix_line sexp.end_line}}, 0)"
+      end
+
+      def process_js_opt_asgn(sexp, level)
+        id = sexp.shift
+        rhs = sexp.shift
+        "if (#{id} == undefined) { id = #{process rhs, LEVEL_TOP};}"
+      end
+
+      def process_args(sexp, level)
+        args = []
+
+        until sexp.empty?
+          arg = sexp.shift
+
+          if Symbol === arg
+            args << arg
+          end
+
+        end
+
+        args.join ', '
+      end
+
+      def process_lasgn(sexp, level)
+        "assign"
       end
 
       def process_js_return(sexp, level)

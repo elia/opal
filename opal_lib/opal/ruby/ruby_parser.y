@@ -148,6 +148,7 @@ expr:
   | expr OR expr
     {
       result = s(:or, val[0], val[2])
+      result.line = val[0].line
     }
   | NOT expr
     {
@@ -1262,59 +1263,62 @@ f_arglist:
 f_args:
     f_arg ',' f_optarg ',' f_rest_arg opt_f_block_arg
     {
-      result = [val[0], val[2], val[4], val[5]]
+      result = new_args val[0], val[2], val[4], val[5]
     }
   | f_arg ',' f_optarg opt_f_block_arg
     {
-      result = [val[0], val[2], nil, val[3]]
+      result = new_args val[0], val[2], nil, val[3]
     }
   | f_arg ',' f_rest_arg opt_f_block_arg
     {
-      result = [val[0], nil, val[2], val[3]]
+      result = new_args val[0], nil, val[2], val[3]
     }
   | f_arg opt_f_block_arg
     {
-      result = [val[0], nil, nil, val[1]]
+      result = new_args val[0], nil, nil, val[1]
     }
   | f_optarg ',' f_rest_arg opt_f_block_arg
     {
-      rsult = [nil, val[0], val[2], val[3]]
+      rsult = new_args nil, val[0], val[2], val[3]
     }
   | f_optarg opt_f_block_arg
     {
-      result = [nil, val[0], nil, val[1]]
+      result = new_args nil, val[0], nil, val[1]
     }
   | f_rest_arg opt_f_block_arg
     {
-      result = [nil, nil, val[0], val[1]]
+      result = new_args nil, nil, val[0], val[1]
     }
   | f_block_arg
     {
-      result = [nil, nil, nil, val[0]]
+      result = new_args nil, nil, nil, val[0]
     }
   |
     {
-      result = [nil, nil, nil, nil]
+      result = new_args nil, nil, nil, nil
     }
 
 f_norm_arg:
     CONSTANT
     {
-      result = "this.yyerror('formal argument cannot be a constant');"
+      raise "formal argument cannot be a constant"
     }
   | IVAR
     {
-      result = "this.yyerror('formal argument cannot be an instance variable');"
+      raise "formal argument cannot be an instance variable"
     }
   | CVAR
     {
-      result = "this.yyerror('formal argument cannot be a class variable');"
+      raise "formal argument cannot be a class variable"
     }
   | GVAR
     {
-      result = "this.yyerror('formal argument cannot be a global variable');"
+      raise "formal argument cannot be a global variable"
     }
   | IDENTIFIER
+    {
+      result = val[0].intern
+    }
 
 f_arg:
     f_norm_arg
@@ -1331,12 +1335,13 @@ f_opt:
     IDENTIFIER '=' arg_value
     {
       result = [val[0], val[2]]
+      result = new_assign new_assignable(s(:identifier, val[0].intern)), val[2]
     }
 
 f_optarg:
     f_opt
     {
-      result = [val[0]]
+      result = s(:block, val[0])
     }
   | f_optarg ',' f_opt
     {
