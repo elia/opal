@@ -1,6 +1,9 @@
 
 require 'opal/ruby/ruby_parser'
-require 'opal/ruby/nodes'
+require 'opal/ruby/sexp'
+require 'opal/ruby/generator'
+
+#require 'opal/ruby/nodes'
 
 require 'strscan'
 
@@ -18,9 +21,18 @@ module Opal
     @cmdarg = 0
     @line_number = 1
 
+    # when entering def etc it is useful to keep track of the line number
+    # of the def statement itself as when we generate it might not be easy
+    # to go back and get it (i.e. after parsing DEF fname we loose the
+    # actual line number)
+    @scope_line = 0
+
     @string_parse_stack = []
 
     @scanner = StringScanner.new source
+
+    @scopes = []
+    @scope = nil
   end
 
   def parse!
@@ -30,7 +42,7 @@ module Opal
   def next_token
     t = get_next_token
     # puts "returning token #{t.inspect}"
-    t[1] = { :value => t[1], :line => @line_number }
+    # t[1] = { :value => t[1], :line => @line_number }
     t
   end
 
@@ -639,9 +651,9 @@ module Opal
       elsif scanner.check(/[0-9]/)
         @lex_state = :expr_end
         if scanner.scan(/[\d_]+\.[\d_]+\b/)
-          return [:FLOAT, scanner.matched.gsub(/_/, '')]
+          return [:FLOAT, scanner.matched.gsub(/_/, '').to_f]
         elsif scanner.scan(/[\d_]+\b/)
-          return [:INTEGER, scanner.matched.gsub(/_/, '')]
+          return [:INTEGER, scanner.matched.gsub(/_/, '').to_i]
         elsif scanner.scan(/0(x|X)(\d|[a-f]|[A-F])+/)
           return [:INTEGER, scanner.matched]
         else
@@ -665,6 +677,7 @@ module Opal
 
         when 'def'
           @lex_state = :expr_fname
+          @scope_line = @line_number
           return :DEF, scanner.matched
 
         when 'undef'

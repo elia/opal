@@ -52,23 +52,23 @@ target:
 bodystmt:
     compstmt opt_rescue opt_else opt_ensure
     {
-      result = BodyStatementsNode.new val[0], val[1], val[2], val[3]
+      result = new_body val[0], val[1], val[2], val[3]
     }
 
 compstmt:
     stmts opt_terms
     {
-      result = val[0]
+      result = new_compstmt val[0]
     }
 
 stmts:
     none
     {
-      result = StatementsNode.new []
+      result = new_block
     }
   | stmt
     {
-      result = StatementsNode.new [val[0]]
+      result = new_block val[0]
     }
   | stmts terms stmt
     {
@@ -142,19 +142,21 @@ expr:
     command_call
   | expr AND expr
     {
-      result = AndNode.new val[1], val[0], val[2]
+      result = s(:and, val[0], val[2])
+      result.line = val[0].line
     }
   | expr OR expr
     {
-      result = OrNode.new val[1], val[0], val[2]
+      result = s(:or, val[0], val[2])
     }
   | NOT expr
     {
-      result = CallNode.new val[1], {:value => '!', :line => 0}, []
+      result = s(:not, val[1])
+      result.line = val[1].line
     }
   | '!' command_call
     {
-      result = CallNode.new val[1], val[0], []
+      result = s(:not, val[1])
     }
   | arg
 
@@ -166,7 +168,7 @@ command_call:
   | block_command
   | RETURN call_args
     {
-      result = ReturnNode.new val[0], val[1]
+      result = s(:return, val[1])
     }
   | BREAK call_args
     {
@@ -463,7 +465,8 @@ arg:
     }
   | '!' arg
     {
-      result = CallNode.new val[1], val[0], []
+      result = s(:not, val[1])
+      result.line = val[1].line
     }
   | '~' arg
     {
@@ -676,9 +679,15 @@ primary:
     {
       result = ArrayNode.new val[1], val[0], val[2]
     }
-  | '{' assoc_list '}'
+  | '{'
     {
-      result = HashNode.new val[1], val[0], val[2]
+      result = @line_number
+    }
+    assoc_list '}'
+    {
+      result = s(:hash, *val[2][1..-1])
+      result.line = val[1]
+      result.end_line = @line_number
     }
   | RETURN
     {
@@ -770,9 +779,15 @@ primary:
     {
       result = ModuleNode.new val[0], val[1], val[2], val[3]
     }
-  | DEF fname f_arglist bodystmt END
+  | DEF fname
     {
-      result = DefNode.new val[0], nil, val[1], val[2], val[3], val[4]
+      result = @scope_line
+      push_scope
+    }
+    f_arglist bodystmt END
+    {
+      result = new_defn val[2], val[1], val[3], val[4]
+      pop_scope
     }
   | DEF singleton dot_or_colon fname f_arglist bodystmt END
     {
@@ -1007,7 +1022,13 @@ opt_ensure:
 
 literal:
     numeric
+    {
+      result = s(:lit, val[0])
+    }
   | symbol
+    {
+      result = s(:lit, val[0])
+    }
   | dsym
 
 strings:
@@ -1137,7 +1158,7 @@ string_dvar:
 symbol:
     SYMBOL_BEG sym
     {
-      result = SymbolNode.new val[1]
+      result = val[1].to_sym
     }
   | SYMBOL
 
@@ -1154,13 +1175,7 @@ dsym:
 
 numeric:
     INTEGER
-    {
-      result = NumericNode.new val[0]
-    }
   | FLOAT
-    {
-      result = NumericNode.new val[0]
-    }
   | '-@NUM' INTEGER =LOWEST
   | '-@NUM' FLOAT   =LOWEST
 
@@ -1187,27 +1202,27 @@ variable:
     }
   | NIL
     {
-      result = NilNode.new val[0]
+      result = s(:nil)
     }
   | SELF
     {
-      result = SelfNode.new val[0]
+      result = s(:self)
     }
   | TRUE
     {
-      result = TrueNode.new val[0]
+      result = s(:true)
     }
   | FALSE
     {
-      result = FalseNode.new val[0]
+      result = s(:false)
     }
   | FILE
     {
-      result = FileNode.new val[0]
+      result = s(:file)
     }
   | LINE
     {
-      result = LineNode.new val[0]
+      result = s(:line)
     }
 
 var_ref:
@@ -1376,25 +1391,18 @@ singleton:
 assoc_list:
     none
     {
-      result = []
+      result = s(:array)
     }
   | assocs trailer
     {
-      result = val[0]
-    }
-  | args trailer
-    {
-      raise "unsupported assoc list type (#@line_number)"
+      result = s(:array, *val[0])
     }
 
 assocs:
     assoc
-    {
-      result = [val[0]]
-    }
   | assocs ',' assoc
     {
-      result = val[0] << val[2]
+      result = val[0].push *val[2]
     }
 
 assoc:
