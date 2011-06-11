@@ -73,9 +73,9 @@ module Opal
         end
       end
 
-      # rest
-
+      res.push rest_arg if rest_arg
       res << opt_arg if opt_arg
+
       res
     end
 
@@ -105,6 +105,36 @@ module Opal
       ref
     end
 
+    def new_gettable_from_assignable(asgn)
+      case asgn[0]
+      when :lasgn
+        s(:lvar, asgn[1])
+      when :iasgn
+        s(:ivar, asgn[1])
+      else
+        raise "Bad assignable for converting to gettable: #{asgn[0]}"
+      end
+    end
+
+    def new_var_ref(ref)
+      case ref[0]
+      when :self, :nil, :true, :false, :line, :file
+        ref
+      when :identifier
+        if @scope.has_local? ref[1]
+          s(:lvar, ref[1])
+        else
+          s(:call, nil, ref[1], s(:arglist))
+        end
+      when :const
+        ref
+      when :ivar, :gvar
+        ref
+      else
+        raise "Bad var_ref type: #{ref[0]}"
+      end
+    end
+
     def new_block(stmt = nil)
       res = s(:block)
       res << stmt if stmt
@@ -123,8 +153,9 @@ module Opal
     end
 
     def new_body(compstmt, res, els, ens)
-      compstmt = s(:block, compstmt) unless compstmt[0] == :block
-      result = compstmt
+      res = s(:block, compstmt) unless compstmt[0] == :block
+      res.line = compstmt.line
+      res
     end
 
     def new_defn(line, name, args, body)
@@ -133,6 +164,62 @@ module Opal
       res = s(:defn, name.intern, args, scope)
       res.line = line
       res.end_line = @line_number
+      res
+    end
+
+    def new_class(path, sup, body)
+      scope = s(:scope, body)
+      scope.line = body.line
+      res = s(:class, path, sup, scope)
+      res
+    end
+
+    def new_if(expr, stmt, tail)
+      line = expr.line
+      res = s(:if, expr, stmt, tail)
+      res.line = line
+      res.end_line = @line_number
+      res
+    end
+
+    def new_call(recv, meth, args = nil)
+      call = s(:call, recv, meth)
+      args = s(:arglist) unless args
+      args[0] = :arglist if args[0] == :array
+      call << args
+
+      if recv
+        call.line = recv.line
+      elsif args[1]
+        call.line = args[1].line
+      end
+
+      # fix arglist spilling over into next line if no args
+      if args.length == 1
+        args.line = call.line
+      else
+        args.line = args[1].line
+      end
+
+      call
+    end
+
+    def add_block_pass(arglist, block)
+      arglist << block if block
+      arglist
+    end
+
+    def new_op_asgn(lhs, asgn, rhs)
+      res = if asgn == :"||"
+        s(:op_asgn_or, new_gettable_from_assignable(lhs), (lhs << rhs))
+      else
+        # puts lhs.inspect, asgn.inspect, rhs.inspect
+        lhs << new_call(new_gettable_from_assignable(lhs), asgn, s(:arglist, rhs))
+        # raise "asgn is: #{asgn.inspect}"
+        lhs
+      end
+
+      res.line = lhs.line
       res
     end
   end

@@ -32,7 +32,7 @@ module Opal
     @scanner = StringScanner.new source
 
     @scopes = []
-    @scope = nil
+    @scope = push_scope
   end
 
   def parse!

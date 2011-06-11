@@ -5,8 +5,21 @@ $:.unshift opal_lib
 require 'opal'
 
 content = %[
-  def norm(a, b, c, d = 100); 100; end
-  20
+  class Adam
+    100  
+end
+
+class Assignment < WOW
+  nil
+end
+
+class A::B
+ 10
+end
+
+class ::C
+  10000
+end
 ].strip
 
 parser = Opal::RubyParser.new(content)

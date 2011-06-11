@@ -122,7 +122,8 @@ stmt:
     # }
   | primary_value '.' IDENTIFIER OP_ASGN command_call
     {
-      result = OpAsgnNode.new(val[3], CallNode.new(val[0], val[2], []), val[4])
+      raise "d"
+result = OpAsgnNode.new(val[3], CallNode.new(val[0], val[2], []), val[4])
     }
   | primary_value '.' CONSTANT OP_ASGN command_call
   | primary_value '::' IDENTIFIER OP_ASGN command_call
@@ -191,7 +192,7 @@ cmd_brace_block:
 command:
     operation command_args =LOWEST
     {
-      result = CallNode.new nil, val[0], val[1]
+      result = new_call nil, val[0].intern, val[1]
     }
   | operation command_args cmd_brace_block
   | primary_value '.' operation2 command_args =LOWEST
@@ -279,6 +280,9 @@ mlhs_node:
 
 lhs:
     variable
+    {
+      result = new_assignable val[0]
+    }
   | primary_value '[@' aref_args ']'
     {
       result = ArefNode.new val[0], val[2]
@@ -299,15 +303,15 @@ cname:
 cpath:
     '::@' cname
     {
-      result = "result = ['::', val[1]];"
+      result = s(:colon3, val[1].intern)
     }
   | cname
     {
-      result = [nil, val[0]]
+      result = val[0].intern
     }
   | primary_value '::' cname
     {
-      result = [val[0], val[2]]
+      result = s(:colon2, val[0], val[2].intern)
     }
 
 fname:
@@ -350,20 +354,21 @@ reswords:
 arg:
     lhs '=' arg
     {
-      result = AssignNode.new val[0], val[2], val[1]
+      result = new_assign val[0], val[2]
     }
   | lhs '=' arg RESCUE_MOD arg
   | var_lhs OP_ASGN arg
     {
-      result = OpAsgnNode.new val[1], val[0], val[2]
+      result = new_op_asgn val[0], val[1].intern, val[2]
     }
   | primary_value '[@' aref_args ']' OP_ASGN arg
     {
+      raise "e"
       result = OpAsgnNode.new val[4], ArefNode.new(val[0], val[2]), val[5]
     }
   | primary_value '.' IDENTIFIER OP_ASGN arg
     {
-      result = OpAsgnNode.new(val[3], CallNode.new(val[0], val[2], [[]]), val[4])
+      result = s(:op_asgn_2, val[0], "#{val[2]}=".intern, val[3].intern, val[4])
     }
   | primary_value '.' CONSTANT OP_ASGN arg
   | primary_value '::' IDENTIFIER OP_ASGN arg
@@ -372,97 +377,99 @@ arg:
   | backref OP_ASGN arg
   | arg '..' arg
     {
-      result = RangeNode.new val[1], val[0], val[2]
+      result = s(:dot2, val[0], val[2])
+      result.line = val[0].line
     }
   | arg '...' arg
     {
-      result = RangeNode.new val[1], val[0], val[2]
+      result = s(:dot3, val[0], val[2])
+      result.line = val[0].line
     }
   | arg '+' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"+", s(:arglist, val[2])
     }
   | arg '-' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"-", s(:arglist, val[2])
     }
   | arg '*' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"*", s(:arglist, val[2])
     }
   | arg '/' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"/", s(:arglist, val[2])
     }
   | arg '%' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"%", s(:arglist, val[2])
     }
   | arg '**' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"**", s(:arglist, val[2])
     }
   | '-@NUM' INTEGER '**' arg
   | '-@NUM' FLOAT '**' arg
   | '+@' arg
     {
-      result = CallNode.new val[1], val[0], []
+      result = new_call val[1], :"+@", s(:arglist)
     }
   | '-@' arg
     {
-      result = CallNode.new val[1], val[0], []
+      result = new_call val[1], :"-@", s(:arglist)
     }
   | arg '|' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"|", s(:arglist, val[2])
     }
   | arg '^' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"^", s(:arglist, val[2])
     }
   | arg '&' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"&", s(:arglist, val[2])
     }
   | arg '<=>' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"<=>", s(:arglist, val[2])
     }
   | arg '>' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :">", s(:arglist, val[2])
     }
   | arg '>=' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :">=", s(:arglist, val[2])
     }
   | arg '<' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"<", s(:arglist, val[2])
     }
   | arg '<=' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"<=", s(:arglist, val[2])
     }
   | arg '==' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"==", s(:arglist, val[2])
     }
   | arg '===' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"===", s(:arglist, val[2])
     }
   | arg '!=' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"!=", s(:arglist, val[2])
     }
   | arg '=~' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"=~", s(:arglist, val[2])
     }
   | arg '!~' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :"!~", s(:arglist, val[2])
     }
   | '!' arg
     {
@@ -471,28 +478,31 @@ arg:
     }
   | '~' arg
     {
-      result = CallNode.new val[1], val[0], []
+      result = new_call val[1], :"~", s(:arglist)
     }
   | arg '<<' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :<<, s(:arglist, val[2])
     }
   | arg '>>' arg
     {
-      result = CallNode.new val[0], val[1], [[val[2]]]
+      result = new_call val[0], :>>, s(:arglist, val[2])
     }
   | arg '&&' arg
     {
-      result = AndNode.new val[1], val[0], val[2]
+      result = s(:and, val[0], val[2])
+      result.line = val[0].line
     }
   | arg '||' arg
     {
-      result = OrNode.new val[1], val[0], val[2]
+      result = s(:or, val[0], val[2])
+      result.line = val[0].line
     }
   | DEFINED opt_nl arg
   | arg '?' arg ':' arg
     {
-      result = TernaryNode.new val[0], val[2], val[4]
+      result = s(:ternary, val[0], val[2], val[4])
+      result.line = val[0].line
     }
   | primary
 
@@ -502,95 +512,59 @@ arg_value:
 aref_args:
     none
     {
-      result = [[], nil]
+      result = nil
     }
-  | command opt_nl
   | args trailer
     {
-      result = [val[0], nil]
-    }
-  | args ',' SPLAT arg opt_nl
-    {
-      result = [val[0], val[3]]
+      result = val[0]
     }
   | assocs trailer
     {
-      result = [[HashNode.new(val[0], {}, {})], nil]
-    }
-  | SPLAT arg opt_nl
-    {
-      result = [[], val[1]]
+      result = s(:array, val[0])
+      result.line = val[0].line
     }
 
 paren_args:
-    '(' none ')'
+    '(' opt_call_args ')'
     {
       result = [[]]
     }
-  | '(' call_args opt_nl ')'
-    {
-      result = val[1]
-    }
-  | '(' block_call opt_nl ')'
-  | '(' args ',' block_call opt_nl ')'
 
 opt_paren_args:
     none
-    {
-      result = []
-    }
   | paren_args
+
+opt_call_args:
+    none
+  | call_args
 
 call_args:
     command
     {
-      result = [[val[0]], nil, nil, nil]
+      result = val[0]
     }
   | args opt_block_arg
     {
-      result = [val[0], nil, nil, val[1]]
-    }
-  | args ',' SPLAT arg_value opt_block_arg
-    {
-      result = [val[0], val[3], nil, val[4]]
+      result = val[0]
+      add_block_pass val[0], val[1]
     }
   | assocs opt_block_arg
     {
-      result = [nil, nil, val[0], val[1]]
-    }
-  | assocs ',' SPLAT arg_value opt_block_arg
-    {
-      result = [nil, val[3], val[0], val[4]]
+      result = val[0]
+      add_block_pass val[0], val[1]
     }
   | args ',' assocs opt_block_arg
     {
-      result = [val[0], nil, val[2], val[3]]
-    }
-  | args ',' assocs ',' SPLAT arg opt_block_arg
-    {
-      result = [val[0], val[5], val[2], val[6]]
-    }
-  | SPLAT arg_value opt_block_arg
-    {
-      result = [nil, val[1], nil, val[2]]
+      result = val[0]
     }
   | block_arg
     {
-      result = [nil, nil, nil, val[0]]
+      result = s(:arglist)
+      add_block_pass result, val[0]
     }
 
 call_args2:
     arg_value ',' args opt_block_arg
-  | arg_value ',' block_arg
-  | arg_value ',' SPLAT arg_value opt_block_arg
-  | arg_value ',' args ',' SPLAT arg_value opt_block_arg
-  | assocs opt_block_arg
-  | assocs ',' SPLAT arg_value opt_block_arg
-  | arg_value ',' assocs opt_block_arg
-  | arg_value ',' args ',' assocs opt_block_arg
-  | arg_value ',' assocs ',' SPLAT arg_value opt_block_arg
-  | arg_value ',' args ',' assocs ',' SPLAT arg_value opt_block_arg
-  | SPLAT arg_value opt_block_arg
   | block_arg
 
 command_args:
@@ -607,7 +581,7 @@ open_args:
     call_args
   | tLPAREN_ARG ')'
     {
-      result = [[]]
+      result = nil
     }
   | tLPAREN_ARG call_args2 ')'
     {
@@ -633,11 +607,19 @@ opt_block_arg:
 args:
     arg_value
     {
-      result = [val[0]]
+      result = s(:array, val[0])
+    }
+  | SPLAT arg_value
+    {
+      result = s(:array, s(:splat, val[1]))
     }
   | args ',' arg_value
     {
       result = val[0] << val[2]
+    }
+  | args ',' SPLAT arg_value
+    {
+      result = val[0] << s(:splat, val[3])
     }
 
 mrhs:
@@ -666,19 +648,22 @@ primary:
     }
   | primary_value '::' CONSTANT
     {
-      result = Colon2Node.new val[0], val[2]
+      result = s(:colon2, val[0], val[2].to_sym)
+      result.line = val[0].line
     }
   | '::@' CONSTANT
     {
-      result = Colon3Node.new val[1]
+      result = s(:colon3, val[1].to_sym)
     }
   | primary_value '[@' aref_args ']'
     {
-      result = CallNode.new val[0], { :line => val[0].line, :value => '[]' }, val[2]
+      arglist = val[2] || s(:arglist)
+      arglist[0] = :arglist if arglist[0] == :array
+      result = new_call val[0], :"[]", arglist
     }
   | '[' aref_args ']'
     {
-      result = ArrayNode.new val[1], val[0], val[2]
+      result = val[1] || s(:array)
     }
   | '{'
     {
@@ -720,7 +705,7 @@ primary:
     }
   | IF expr_value then compstmt if_tail END
     {
-      result = IfNode.new val[0], val[1], val[3], val[4], val[5]
+      result = new_if val[1], val[3], val[4]
     }
   | UNLESS expr_value then compstmt opt_else END
     {
@@ -768,11 +753,25 @@ primary:
       result = "this.cond_pop();"
     }
     compstmt END
-  | CLASS cpath superclass bodystmt END
+  | CLASS
     {
-      result = ClassNode.new val[0], val[1], val[2], val[3], val[4]
+      result = @line_number
     }
-  | CLASS '<<' expr term bodystmt END
+    cpath superclass
+    {
+      # ...
+    }
+    bodystmt END
+    {
+      result = new_class val[2], val[3], val[5]
+      result.line = val[1]
+      result.end_line = @line_number
+    }
+  | CLASS '<<'
+    {
+      result = @line_number
+    }
+    expr term bodystmt END
     {
       result = ClassShiftNode.new val[0], val[2], val[4], val[5]
     }
@@ -827,19 +826,21 @@ if_tail:
     {
       result = val[0]
     }
-  | ELSIF expr_value then compstmt if_tail
+  | ELSIF
     {
-      result = [[val[0], val[1], val[3]]].concat val[4]
+      result = @line_number
+    }
+    expr_value then compstmt if_tail
+    {
+      result = s(:if, val[2], val[4], val[5])
+      result.line = val[1]
     }
 
 opt_else:
     none
-    {
-      result = []
-    }
   | ELSE compstmt
     {
-      result = [[val[0], val[1]]]
+      result = val[1]
     }
 
 block_var:
@@ -943,7 +944,7 @@ method_call:
     }
   | primary_value '.' operation2 opt_paren_args
     {
-      result = CallNode.new val[0], val[2], val[3]
+      result = new_call val[0], val[2].intern, val[3]
     }
   | primary_value '::' operation2 paren_args
   | primary_value '::' operation3
@@ -967,24 +968,10 @@ brace_block:
     }
 
 case_body:
-    WHEN when_args then compstmt cases
+    WHEN args then compstmt cases
     {
       # result = "result = [['when', val[1], val[3]]].concat(val[4]);"
       result = [[val[0], val[1], val[3]]] + val[4]
-    }
-
-when_args:
-    args
-    {
-      result = val[0]
-    }
-  | args ',' SPLAT arg_value
-    {
-      result = val[0]
-    }
-  | SPLAT arg_value
-    {
-      result = []
     }
 
 cases:
@@ -1183,24 +1170,21 @@ numeric:
 variable:
     IDENTIFIER
     {
-      result = IdentifierNode.new val[0]
+      result = s(:identifier, val[0].intern)
     }
   | IVAR
     {
-      result = IvarNode.new val[0]
+      result = s(:ivar, val[0].intern)
     }
   | GVAR
     {
-      result = GvarNode.new val[0];
+      result = s(:gvar, val[0].intern)
     }
   | CONSTANT
     {
-      result = ConstantNode.new val[0]
+      result = s(:const, val[0].intern)
     }
   | CVAR
-    {
-      result = "result = ['cvar', val[0]];"
-    }
   | NIL
     {
       result = s(:nil)
@@ -1228,9 +1212,15 @@ variable:
 
 var_ref:
     variable
+    {
+      result = new_var_ref val[0]
+    }
 
 var_lhs:
     variable
+    {
+      result = new_assignable val[0]
+    }
 
 backref:
     NTH_REF
@@ -1356,7 +1346,7 @@ restarg_mark:
 f_rest_arg:
     restarg_mark IDENTIFIER
     {
-      result = val[1]
+      result = "*#{val[1]}".intern
     }
   | restarg_mark
     {
@@ -1459,6 +1449,9 @@ terms:
   | terms ';'
 
 none:
+    {
+      result = nil
+    }
 
 none_block_pass:
 
