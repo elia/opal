@@ -22,14 +22,6 @@ class Module
 end
 
 module Kernel
-  # Try to load the library or file named `path`. An error is thrown if the
-  # path cannot be resolved.
-  #
-  # @param [String] path The path to load
-  # @return [true, false]
-  def require(path)
-    `return $runtime.require(path) ? Qtrue : Qfalse;`
-  end
 
   # Prints the message to `STDOUT`.
   #

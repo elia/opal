@@ -13,7 +13,7 @@ module Opal
 
     STDLIB_PATH = File.join OPAL_PATH, 'lib'
 
-    RUNTIME_PATH = File.join OPAL_PATH, 'runtime.js'
+    RUNTIME_PATH = File.join OPAL_PATH, 'runtime'
 
     # Builds core opal runtime + core libs, and returns as a string.
     # This can then just be used directly by any compiled code. The
@@ -21,9 +21,20 @@ module Opal
     def build_core
       code = ''
 
-      code += File.read(RUNTIME_PATH)
-      code += build_stdlib('core.rb', 'core/*.rb')
-      code += "opal.require('core');"
+      files = Dir.chdir(RUNTIME_PATH) { Dir.glob '*.js' }
+      files -= ['pre.js', 'post.js']
+
+      files.unshift 'pre.js'
+      files.push 'post.js'
+
+      files.each do |file|
+        code += File.read(File.join(RUNTIME_PATH, file))
+      end
+
+      puts files.inspect
+      # code += File.read(RUNTIME_PATH)
+      # code += build_stdlib('core.rb', 'core/*.rb')
+      # code += "opal.require('core');"
 
       code
     end

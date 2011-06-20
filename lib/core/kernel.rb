@@ -3,33 +3,6 @@
 # {BasicObject}.
 module Kernel
 
-
-  def instance_variable_defined?(name)
-    `name = #{name.to_s};
-    return self[name] == undefined ? Qfalse : Qtrue;`
-  end
-
-  def instance_variable_get(name)
-    `name = #{name.to_s};
-    return self[name] == undefined ? nil : self[name];`
-  end
-
-  def instance_variable_set(name, value)
-    `name = #{name.to_s};
-    return self[name] = value;`
-  end
-
-  # Returns `true` if a block was given to the current method, `false`
-  # otherwise.
-  #
-  # @NOTE: In opal, this is actually a fake method. block_given? is inlined
-  # for efficiency and implementation details.
-  #
-  # @return [true, false]
-  def block_given?
-    false
-  end
-
   def to_a
     [self]
   end
@@ -38,28 +11,6 @@ module Kernel
     raise LocalJumpError, "no block given" unless block_given?
     yield self
     self
-  end
-
-  def kind_of?(klass)
-    `var search = self.$klass;
-
-    while (search) {
-      if (search == klass) {
-        return Qtrue;
-      }
-
-      search = search.$super;
-    }
-
-    return Qfalse;`
-  end
-
-  def is_a?(klass)
-    kind_of? klass
-  end
-
-  def nil?
-    false
   end
 
   # Returns `true` if the method with the given id exists on the receiver,
@@ -86,10 +37,6 @@ module Kernel
     return Qfalse;`
   end
 
-  def ===(other)
-    self == other
-  end
-
   def send(method_id, *args, &block)
     `
     var method = self['m$' + #{method_id.to_s}];
@@ -99,10 +46,6 @@ module Kernel
     }
     return method.apply(self, args);
     `
-  end
-
-  def class
-    `return $runtime.class_real(self.$klass);`
   end
 
   # Returns a random number. If max is `nil`, then the result is 0. Otherwise
@@ -122,27 +65,6 @@ module Kernel
         return Math.floor(Math.random() * max);
     else
       return Math.random();`
-  end
-
-  def __id__
-    `return self.$hash();`
-  end
-
-  def object_id
-    `return self.$hash();`
-  end
-
-  # Returns a simple string representation of the receiver object. The id shown in the string
-  # is not just the object_id, but it is mangled to resemble the format output by ruby, which
-  # is basically a hex number.
-  #
-  # FIXME: proper hex output needed
-  def to_s
-    "#<#{`$runtime.class_real(self.$klass)`}:0x#{`(self.$hash() * 400487).toString(16)`}>"
-  end
-
-  def inspect
-    to_s
   end
 
   def const_set(name, value)
