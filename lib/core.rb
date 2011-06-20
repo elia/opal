@@ -59,13 +59,13 @@ end
 
 class Symbol
   def to_s
-    `return self.$value;`
+    `return self.toString();`
   end
 end
 
 class String
   def to_s
-    `return self;`
+    `return self.toString();`
   end
 end
 

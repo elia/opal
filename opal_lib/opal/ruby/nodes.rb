@@ -348,14 +348,14 @@ module Opal
     end
 
     def mid_to_jsid(id)
-      return "['#{id}']" if /[\!\=\?\+\-\*\/\^\&\%\@\|\[\]\<\>\~]/ =~ id
+      return ".$m['#{id}']" if /[\!\=\?\+\-\*\/\^\&\%\@\|\[\]\<\>\~]/ =~ id
 
       # FIXME: if our id is a reserved word in js, we need to also wrap it in
       # brackets.
-      # return ".$m['#{id}']" if js_reserved_words.include? id
+      return ".$m['#{id}']" if js_reserved_words.include? id
 
       # default we just do .method_name
-      '.' + id
+      '.$m.' + id
     end
 
     # Reserved js words - we cannot just generate properties with these names
@@ -381,6 +381,7 @@ module Opal
       arg_res = []
       recv = nil
       mid = nil
+      tmp_recv = opts[:scope].temp_local
 
       # we need a temp var for the receiver, which we add to the front of
       # the args to send.
@@ -396,14 +397,26 @@ module Opal
       elsif @recv
         recv = @recv.process opts, LEVEL_EXPR
       else
-        recv = "self"
+        @recv = SelfNode.new
+        recv = @recv.generate opts, LEVEL_EXPR
       end
 
       if @recv.is_a? NumericNode
         recv = "(#{recv})"
       end
 
-      mid = mid_to_jsid('m$' + @mid)
+      if @recv.is_a? SelfNode
+        recv_code = recv
+        recv_arg = recv
+      elsif @recv.is_a?(IdentifierNode) and @recv.local_variable?(opts)
+        recv_code = recv
+        recv_arg = recv
+      else
+        recv_code = "(#{tmp_recv} = #{recv})"
+        recv_arg = "#{tmp_recv}"
+      end
+
+      mid = mid_to_jsid(@mid)
 
       args = @args
       # normal args
@@ -447,7 +460,7 @@ module Opal
       else
         # splat args
         if args[1]
-      tmp_recv = opts[:scope].temp_local
+          tmp_recv = opts[:scope].temp_local
           splat = args[1].generate(opts, LEVEL_EXPR)
           splat_args = arg_res.empty? ? splat : "[#{arg_res.join ', '}].concat(#{splat})"
           # when using splat, our this val for apply may need a tmp var
@@ -458,9 +471,10 @@ module Opal
           opts[:scope].queue_temp tmp_recv
           result
         else
+          arg_res.unshift recv_arg
 
-          result = "#{recv}#{mid}(#{arg_res.join(', ')})"
-
+          result = "#{recv_code}#{mid}(#{arg_res.join(', ')})"
+          opts[:scope].queue_temp tmp_recv
           result
         end
       end
@@ -690,7 +704,7 @@ module Opal
       if args[2]
         param_variable args[2][:value]
         method_args << args[2][:value]
-        pre_code += "#{args[2][:value]} = [].slice.call(arguments, #{method_args.length - 1});"
+        pre_code += "#{args[2][:value]} = [].slice.call(arguments, #{method_args.length});"
       end
 
       # block arg
@@ -702,7 +716,9 @@ module Opal
       @body.returns
       stmt = @body.generate scope, LEVEL_TOP
 
-      code += "function(#{method_args.join ', '}) { var self = this;"
+      method_args.unshift 'self'
+
+      code += "function(#{method_args.join ', '}) {"
 
       # local vars... only if we used any..
       unless @scope_vars.empty?
