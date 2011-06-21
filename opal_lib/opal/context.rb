@@ -15,10 +15,9 @@ require 'opal/context/file_system'
 module Opal
   class Context < V8::Context
 
-    RUNTIME_PATH = File.expand_path File.join('..', '..', '..', 'runtime.js'), __FILE__
-
     def initialize(opts = {})
       super opts
+      @builder = Opal::Builder.new
       setup_context
     end
 
@@ -27,15 +26,13 @@ module Opal
     # default "browser" loader cannot access files from disk.
     def setup_context
       self['console'] = Console.new
-      load RUNTIME_PATH
+      eval @builder.build_core
 
       opal = self['opal']
       opal['loader'] = Loader.new opal, self
       opal['fs'] = FileSystem.new opal, self
       opal['platform']['engine'] = 'opal-gem'
 
-      # eval "opal.require('core');", "(opal)"
-      require_file 'core'
     end
 
     # Require the given id as if it was required in the context. This simply

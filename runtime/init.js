@@ -14,9 +14,8 @@ Op.platform = {
 */
 var cBasicObject,     cObject,          cModule,          cClass,
     mKernel,          cNilClass,        cTrueClass,       cFalseClass,
-    cNumeric,         cArray,
-    cHash,            cRange,
-    cRegexp,          cMatch,           Qself,            Qnil,
+    cArray,
+    cRegexp,          cMatch,           top_self,            Qnil,
     Qfalse,           Qtrue,
 
     cDir;
@@ -107,45 +106,6 @@ Rt.dc = function(base, super_class, id, body, flag) {
   var res = body(klass);
   return res;
 };
-
-/**
-  Returns a new Hash instance constructed from the given arguments of
-  alternate key, value pairs.
-*/
-Rt.H = function() {
-  var hash = new cHash.allocator(), k, v, args = [].slice.call(arguments);
-  hash.$keys = [];
-  hash.$assocs = {};
-  hash.$default = Qnil;
-
-  for (var i = 0, len = args.length; i < len; i++) {
-    k = args[i];
-    v = args[i + 1];
-    i++;
-    hash.$keys.push(k);
-    hash.$assocs[k.$hash()] = v;
-  }
-
-  return hash;
-};
-
-
-/**
-  Returns a new ruby range. 'G' for range... yeah.
-
-  @param {RubyObject} beg The start item for the range
-  @param {RubyObject} end The finish item for the range
-  @param {true, false} exclude_end Whether or not the range excludes the last item
-  @return {RRange} Returns the new range instance
-*/
-Rt.G = function(beg, end, exclude_end) {
-  var range = new cRange.allocator();
-  range.$beg = beg;
-  range.$end = end;
-  range.$exc = exclude_end;
-  return range;
-};
-
 
 /**
   Regexp object. This holds the results of last regexp match.
@@ -554,7 +514,7 @@ function raise(exc, str) {
   }
   // var exception = exc.$m['new'](exc, str);
   var exception = exc.$m['new'](str);
-  vm_raise(exception);
+  raise_exc(exception);
 };
 
 Rt.raise = raise;
@@ -562,11 +522,11 @@ Rt.raise = raise;
 /**
   Raise an exception instance (DO NOT pass strings to this)
 */
-function vm_raise(exc) {
+function raise_exc(exc) {
   throw exc;
 };
 
-Rt.raise_exc = vm_raise;
+Rt.raise_exc = raise_exc;
 
 /**
   Call a super method.
@@ -654,25 +614,6 @@ Rt.gs = function(id, value) {
   return gvar_set(id, value);
 };
 
-/**
-*/
-function regexp_match_getter(id) {
-  var matched = Rt.X;
-
-  if (matched) {
-    if (matched.$md) {
-      return matched.$md;
-    } else {
-      var res = new cMatch.allocator();
-      res.$data = matched;
-      matched.$md = res;
-      return res;
-    }
-  } else {
-    return Qnil;
-  }
-};
-
 
 /**
   Main init method. This is called once this file has fully loaded. It setups
@@ -680,54 +621,21 @@ function regexp_match_getter(id) {
 */
 function init() {
   init_object();
-
+  init_enumerable();
 
   define_singleton_method(cClass, "new", class_s_new);
 
-  Qself = obj_alloc(cObject);
-  Rt.top = Qself;
-
-  cTrueClass = define_class('TrueClass', cObject);
-  cTrueClass.$flags = cTrueClass.$flags;
-  Rt.Qtrue = Qtrue = obj_alloc(cTrueClass);
-  cTrueClass.__attached__ = Qtrue;
-
-  cFalseClass = define_class('FalseClass', cObject);
-  Rt.Qfalse = Qfalse = obj_alloc(cFalseClass);
-  Qfalse.$r = false;
-  cFalseClass.$flags = cFalseClass.$flags;
-  cFalseClass.__attached__ = Qfalse;
-
-  cArray = bridge_class(Array.prototype,
-    T_OBJECT | T_ARRAY, 'Array', cObject);
-
-  // make all subclasses of array also have standard array js methods
-  Array.prototype.$hash = function() {
-    return (this.$id || (this.$id = yield_hash()));
-  };
-
-  cNumeric = bridge_class(Number.prototype,
-    T_OBJECT | T_NUMBER, 'Numeric', cObject);
-
-  cHash = define_class('Hash', cObject);
-  // cHash.allocator.prototype.$flags = T_OBJECT | T_HASH;
-
+  init_array();
+  init_numeric();
+  init_hash();
   init_string();
-
   init_proc();
-
-  cRange = define_class('Range', cObject);
-  // cRange.allocator.prototype.$flags = T_OBJECT | T_RANGE;
-  cRegexp = bridge_class(RegExp.prototype, T_OBJECT,
-    'Regexp', cObject);
-
-  cMatch = define_class('MatchData', cObject);
-
-  define_hooked_variable('$~', regexp_match_getter, gvar_readonly_setter);
-
+  init_range();
+  init_re();
   init_error();
   init_io();
   init_file();
+  init_dir();
   init_load();
 };
 
