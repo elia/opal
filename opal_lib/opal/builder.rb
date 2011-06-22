@@ -31,11 +31,6 @@ module Opal
         code += File.read(File.join(RUNTIME_PATH, file))
       end
 
-      puts files.inspect
-      # code += File.read(RUNTIME_PATH)
-      # code += build_stdlib('core.rb', 'core/*.rb')
-      # code += "opal.require('core');"
-
       code
     end
 
