@@ -179,7 +179,7 @@ function mod_name(mod) {
 }
 
 function mod_attr_reader(mod, attrs) {
-  attrs = [].slice.call(attrs, 1);
+  attrs = [].slice.call(arguments, 1);
 
   for (var i = 0, ii = attrs.length; i < ii; i++) {
     (function(mid) {
@@ -196,7 +196,7 @@ function mod_attr_reader(mod, attrs) {
 }
 
 function mod_attr_writer(mod, attrs) {
-  attrs = [].slice.call(attrs, 1);
+  attrs = [].slice.call(arguments, 1);
 
   for (var i = 0, ii = attrs.length; i < ii; i++) {
     (function(mid) {
@@ -278,7 +278,7 @@ function mod_class_eval(mod, str) {
 }
 
 function mod_extend(cls, mod) {
-  extend_module(mod, mod);
+  extend_module(cls, mod);
   return Qnil;
 }
 
@@ -384,6 +384,24 @@ function obj_lambda(proc) {
   return proc;
 }
 
+function mod_include(cls) {
+  var mods = [].slice.call(arguments, 1), i = mods.length - 1, mod;
+
+  while (i >= 0) {
+    mod = mods[i];
+    mod.$m.append_features(mod, cls);
+    mod.$m.included(mod, cls);
+    i--;
+  }
+
+  return cls;
+}
+
+function mod_append_features(cls, mod) {
+  include_module(mod, cls);
+  return cls;
+}
+
 function init_object() {
 
   var metaclass;
@@ -472,6 +490,10 @@ function init_object() {
   define_method(cModule, 'module_eval', mod_class_eval);
   define_method(cModule, 'extend', mod_extend);
 
+  define_method(cModule, 'include', mod_include);
+  define_method(cModule, 'append_features', mod_append_features);
+  define_method(cModule, 'included', obj_dummy);
+
   define_method(cClass, 'allocate', obj_alloc);
   define_method(cClass, 'new', class_new_instance);
   define_method(cClass, 'initialize', class_initialize);
@@ -513,6 +535,7 @@ function init_object() {
   define_method(cFalseClass, '^', false_xor);
 
   Rt.Qfalse = Qfalse = obj_alloc(cFalseClass);
+  Qfalse.$r = false;
   const_set(cObject, 'FALSE', Qfalse);
 }
 

@@ -28,6 +28,22 @@ function stdio_setter(id, value) {
   }
 };
 
+function stdout_puts(stdout) {
+  var strs = [].slice.call(arguments, 1);
+
+  for (var i = 0, ii = strs.length; i < ii; i++) {
+    console.log(strs[i].$m.to_s(strs[i]).toString());
+  }
+
+  return Qnil;
+}
+
+function obj_puts(obj) {
+  var strs = [].slice.call(arguments, 1);
+  stdout.$m.puts.apply(stdout, [stdout].concat(strs));
+  return Qnil;
+}
+
 function init_io() {
 
   cIO = define_class('IO', cObject);
@@ -42,5 +58,8 @@ function init_io() {
   define_hooked_variable('$stdin', stdio_getter, stdio_setter);
   define_hooked_variable('$stdout', stdio_getter, stdio_setter);
   define_hooked_variable('$stderr', stdio_getter, stdio_setter);
+
+  define_singleton_method(stdout, 'puts', stdout_puts);
+  define_method(mKernel, 'puts', obj_puts);
 }
 

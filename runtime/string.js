@@ -138,8 +138,12 @@ function str_inspect(str) {
     }) + '"';
   }
   else {
-    return '"' + self + '"';
+    return '"' + str + '"';
   }
+}
+
+function str_to_s(str) {
+  return str.toString();
 }
 
 /**
@@ -388,6 +392,7 @@ function init_string() {
   define_method(cString, 'capitalize', str_capitalize);
   define_method(cString, 'downcase', str_downcase);
   define_method(cString, 'inspect', str_inspect);
+  define_method(cString, 'to_s', str_to_s);
   define_method(cString, 'length', str_length);
   define_method(cString, 'size', str_length);
   define_method(cString, 'to_i', str_to_i);

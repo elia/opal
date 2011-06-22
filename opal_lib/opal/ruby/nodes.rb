@@ -432,11 +432,12 @@ module Opal
       end
 
       if @block
-      tmp_recv = opts[:scope].temp_local
+        # tmp_recv = opts[:scope].temp_local
         block = @block.generate opts, LEVEL_TOP
+        arg_res.unshift recv_arg
+
         code = "(($B.p = #{block}).$proc = [self], $B.f = "
-        arg_res.unshift tmp_recv
-        code += "(#{tmp_recv} = #{recv})" + mid + ').call(' + arg_res.join(', ') + ')'
+        code += "#{recv_code}" + mid + ')(' + arg_res.join(', ') + ')'
 
         opts[:scope].queue_temp tmp_recv
         code
@@ -446,11 +447,10 @@ module Opal
       #
       # FIXME need to actually call to_proc.
       elsif args[3]
-      tmp_recv = opts[:scope].temp_local
+        arg_res.unshift recv_arg
 
         code = "($B.p = #{args[3].process opts, LEVEL_LIST}, "
-        arg_res.unshift tmp_recv
-        code += "$B.f = (#{tmp_recv} = #{recv})#{mid}).call(#{arg_res.join ', '})"
+        code += "$B.f = (#{recv_code})#{mid})(#{arg_res.join ', '})"
 
         opts[:scope].queue_temp tmp_recv
 
@@ -1333,11 +1333,12 @@ module Opal
 
       @stmt.returns
       stmt = @stmt.process scope, LEVEL_TOP
+      method_args.unshift 'self'
 
       block_var = opts[:scope].temp_local
       # code += "(#{block_var} = "
 
-      code += "function(#{method_args.join ', '}) { var self = this;"
+      code += "function(#{method_args.join ', '}) {"
 
       unless @scope_vars.empty?
         code += " var #{@scope_vars.join ', '};"

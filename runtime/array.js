@@ -717,7 +717,7 @@ function ary_drop(ary, n) {
 
   @return [Array] returns a new array
 */
-function drop_while(ary) {
+function ary_drop_while(ary) {
   var block_func = block.f, proc = block.p, yself;
 
   if (block_func != arguments.callee) {

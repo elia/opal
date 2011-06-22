@@ -265,13 +265,13 @@ Lp.ruby_lib_contents = function(path) {
   @param {String} path
 */
 function load_file(loader, path) {
-  var ext = load_extensions[PATH_RE.exec(filename)[3] || '.js'];
+  var ext = load_extensions[PATH_RE.exec(path)[3] || '.js'];
 
   if (!ext) {
     throw new Error("load_run_file - Bad extension for resolved path");
   }
 
-  extension(loader, path);
+  ext(loader, path);
 }
 
 /**
@@ -286,18 +286,18 @@ function load_file(loader, path) {
   @param {String} path
 */
 function load_execute_file(loader, content, path) {
-  var args = [Rt, Qself, filename];
+  var args = [Rt, top_self, path];
 
   if (typeof content === 'function') {
     return content.apply(Op, args);
 
   } else if (typeof content === 'string') {
-    var func = loader.wrap(content, filename);
+    var func = loader.wrap(content, path);
     return func.apply(Op, args);
 
   } else {
     throw new Error(
-      "Loader.execute - bad content sent for '" + filename + "'");
+      "Loader.execute - bad content sent for '" + path + "'");
   }
 }
 

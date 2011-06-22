@@ -147,10 +147,11 @@ Rt.mm = function(method_ids) {
     var mid = method_ids[i];
 
     var imp = (function(mid, method_id) {
-      return function() {
-        var args = [].slice.call(arguments, 0);
+      return function(self) {
+        var args = [].slice.call(arguments, 1);
         args.unshift(Rt.Y(method_id));
-        return this.m$method_missing.apply(this, args);
+        args.unshift(self);
+        return self.$m.method_missing.apply(this, args);
       };
     })(mid, method_ids[i]);
 
@@ -179,9 +180,9 @@ Rt.ac = function(expected, actual) {
   @return {Object} returns the set value
 */
 function const_set(klass, id, val) {
-  // klass.$c_prototype[id] = val;
-  // klass.$const_table[id] = val;
-  klass.$c[id] = val;
+  klass.$c_prototype[id] = val;
+  klass.$const_table[id] = val;
+  // klass.$c[id] = val;
   return val;
 }
 
@@ -200,6 +201,7 @@ function const_get(klass, id) {
   var parent = klass.$parent;
 
   while (parent && parent != cObject) {
+  // while (parent) {
     if (parent.$c[id] !== undefined) {
       return parent.$c[id];
     }
@@ -455,7 +457,7 @@ function define_method(klass, name, body) {
 
 Rt.define_method = define_method;
 
-Rt.alias_method = function(klass, new_name, old_name) {
+var alias_method = Rt.alias_method = function(klass, new_name, old_name) {
   var body = klass.$m_prototype_tbl[old_name];
 
   if (!body) {
@@ -512,8 +514,8 @@ function raise(exc, str) {
     str = exc;
     exc = eException;
   }
-  // var exception = exc.$m['new'](exc, str);
-  var exception = exc.$m['new'](str);
+
+  var exception = exc.$m['new'](exc, str);
   raise_exc(exception);
 };
 
@@ -637,6 +639,9 @@ function init() {
   init_file();
   init_dir();
   init_load();
+
+  // const_set(cObject, 'RUBY_ENGINE', Op.platform.engine);
+  const_set(cObject, 'RUBY_ENGINE', 'opal-gem');
 };
 
 /**
@@ -737,9 +742,6 @@ function extend_module(klass, module) {
   module.$extended_in.push(klass);
 
   var meta = klass.$klass;
-
-  // console.log("meta is: ");
-  // console.log(meta);
 
   for (var method in module.$method_table) {
     if (module.$method_table.hasOwnProperty(method)) {
@@ -851,7 +853,7 @@ function make_singleton_class(obj) {
 
   klass.$klass = class_real(orig_class).$klass;
   klass.$m = klass.$klass.$m_tbl;
-  klass.__classid__ = "#<Class:#<Object:" + klass.$id + ">>";
+  klass.__classid__ = "#<Class:#<" + orig_class.__classid__ + ":" + klass.$id + ">>";
 
   return klass;
 };
@@ -1010,7 +1012,7 @@ function singleton_class(obj) {
 */
 var symbol_table = { };
 
-function class_s_new(sup) {
+function class_s_new(cls, sup) {
   // console.log("need to make singleton subclass of: " + sup.__classid__);
   // console.log("description: " + sup['m$description=']);
   var klass = define_class_id("AnonClass", sup || cObject);

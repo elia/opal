@@ -36,13 +36,6 @@ module Spec
           specs.each do |spec|
             require spec
           end
-          # require specs[0]
-          # idx = 49
-          # puts idx
-          # `console.log(specs[idx]);`
-          # puts specs[idx]
-          # puts specs[idx]
-          # require specs[idx]
         end
 
         Spec::Runner.run
@@ -53,7 +46,6 @@ module Spec
     
     # Autorun gem/node context
     def self.autorun
-      puts "in here"
       puts ARGV.inspect
       if ARGV.length == 0
         specs = Dir["spec/**/*.{rb,js}"]

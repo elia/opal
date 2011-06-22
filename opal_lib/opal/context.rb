@@ -26,7 +26,7 @@ module Opal
     # default "browser" loader cannot access files from disk.
     def setup_context
       self['console'] = Console.new
-      eval @builder.build_core
+      eval @builder.build_core, "core"
 
       opal = self['opal']
       opal['loader'] = Loader.new opal, self
