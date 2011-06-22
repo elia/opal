@@ -1,9 +1,9 @@
-function reg_s_escape(reg) {
-  return reg;
+function reg_s_escape(reg, str) {
+  return str;
 }
 
-function reg_s_new(str) {
-  return new RegExp(str);
+function reg_s_new(reg, str) {
+  return new RegExp(str.toString());
 }
 
 function reg_inspect(reg) {

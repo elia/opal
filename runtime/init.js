@@ -547,7 +547,7 @@ Rt.S = function(callee, self, args) {
   }
 
   // var args_to_send = [self].concat(args);
-  var args_to_send = args;
+  var args_to_send = [self].concat(args);
   return func.apply(self, args_to_send);
 };
 
@@ -555,7 +555,6 @@ Rt.S = function(callee, self, args) {
   Actually find super impl to call.  Returns null if cannot find it.
 */
 function super_find(klass, callee, mid) {
-  mid = 'm$' + mid;
   var cur_method;
 
   while (klass) {

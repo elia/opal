@@ -38,7 +38,7 @@ file "extras" do
 end
 
 task :clean do
-  rm_rf "extras"
+  rm_rf Dir['extras/*.js']
 end
 
 file "extras/opal-#{VERSION}.js" => "extras" do

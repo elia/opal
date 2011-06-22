@@ -116,11 +116,11 @@ function load_register_gem(name, info) {
   var lib_dir = './lib';
 
   // add lib dir to paths
-  paths.unshift(file_expand_path(file_join(root_dir, lib_dir)));
+  paths.unshift(file_expand_path(fs_join(root_dir, lib_dir)));
 
   for (var file in files) {
     if (files.hasOwnProperty(file)) {
-      var file_path = file_expand_path(file_join(root_dir, file));
+      var file_path = file_expand_path(fs_join(root_dir, file));
       factories[file_path] = files[file];
     }
   }
@@ -209,7 +209,7 @@ Lp.find_lib = function(id, paths) {
 
   for (var i = 0, ii = extensions.length; i < ii; i++) {
     for (var j = 0, jj = paths.length; j < jj; j++) {
-      candidate = file_join(paths[j], id + extensions[i]);
+      candidate = fs_join(paths[j], id + extensions[i]);
 
       if (factories[candidate]) {
         return candidate;
@@ -232,7 +232,7 @@ Lp.find_lib = function(id, paths) {
 
   // try each path with no extension (if id already has extension)
   for (var i = 0; i < paths.length; i++) {
-    candidate = file_join(paths[j], id);
+    candidate = fs_join(paths[j], id);
 
     if (factories[candidate]) {
       return candidate;
@@ -250,11 +250,11 @@ Lp.valid_extensions = ['.js', '.rb'];
 /**
   Get lib contents for js files
 */
-Lp.lib_contents = function(path) {
+Lp.file_contents = function(path) {
   return this.factories[path];
 };
 
-Lp.ruby_lib_contents = function(path) {
+Lp.ruby_file_contents = function(path) {
   return this.factories[path];
 };
 
