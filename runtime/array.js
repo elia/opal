@@ -435,7 +435,7 @@ function ary_select(ary) {
   @return [Array] new array
 */
 function ary_collect(ary) {
-  var result, block_func = block.f, proc = block.p, yself;
+  var result = [], block_func = block.f, proc = block.p, yself;
 
   if (block_func != arguments.callee) {
     raise(eRuntimeError, "Array#collect no block given");
