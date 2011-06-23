@@ -36,10 +36,13 @@ module Opal
       bundle << %[});]
 
       result = bundle.join ''
-      out = options[:out] || "#{gem.name}-#{gem.version}.js"
-      FileUtils.mkdir_p File.dirname(out)
 
-      File.open(out, 'w+') { |o| o.write result }
+      if options[:out]
+        FileUtils.mkdir_p File.dirname(options[:out])
+        File.open(options[:out], 'w+') { |o| o.write result }
+      else
+        result
+      end
     end
   end
 end

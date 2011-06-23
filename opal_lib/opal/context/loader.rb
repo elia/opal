@@ -126,7 +126,7 @@ module Opal
     # require etc, and returns the function ready for calling. If an
     # error occures (likely a parse error) it is just thrown as normal
     def wrap(content, filename)
-      code = "(function($runtime, self, __FILE__) { #{content} });"
+      code = "(function($rb, self, __FILE__) { #{content} });"
       # puts code
       @ctx.eval code, filename
     end

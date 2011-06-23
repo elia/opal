@@ -218,13 +218,13 @@ module Opal
       end
 
       post += "\nfunction $$init() {"
-      post += 'nil = $runtime.Qnil, $ac = $runtime.ac, $super = $runtime.S, $break = $runtime.B, '
-      post += '$class = $runtime.dc, $def = $runtime.dm, $symbol = $runtime.Y, $range = $runtime.G, '
-      post += '$hash = $runtime.H, $B = $runtime.P, Qtrue = $runtime.Qtrue, Qfalse = $runtime.Qfalse, '
-      post += '$cg = $runtime.cg;'
+      post += 'nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, '
+      post += '$class = $rb.dc, $def = $rb.dm, $symbol = $rb.Y, $range = $rb.G, '
+      post += '$hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, '
+      post += '$cg = $rb.cg;'
 
       if @mm_ids.length > 0
-        post += "$runtime.mm(['#{ @mm_ids.join "', '" }']);"
+        post += "$rb.mm(['#{ @mm_ids.join "', '" }']);"
       end
 
       # ivars
@@ -1068,7 +1068,7 @@ module Opal
         return "#{SelfNode.new.generate(opts, level)}['#{@lhs.value}'] = #{@rhs.generate(opts, LEVEL_EXPR)}"
 
       elsif @lhs.is_a? GvarNode
-        return "$runtime.gs('#{@lhs.value}', #{@rhs.generate(opts, LEVEL_EXPR)})"
+        return "$rb.gs('#{@lhs.value}', #{@rhs.generate(opts, LEVEL_EXPR)})"
 
       elsif @lhs.is_a? IdentifierNode
         opts[:scope].ensure_variable @lhs.value
@@ -1078,7 +1078,7 @@ module Opal
         return AsetNode.new(@lhs.recv, @lhs.arefs, @rhs).process(opts, level)
 
       elsif @lhs.is_a? ConstantNode
-        return "$runtime.cs(self, '#{@lhs.value}', #{@rhs.generate(opts, LEVEL_EXPR)})"
+        return "$rb.cs(self, '#{@lhs.value}', #{@rhs.generate(opts, LEVEL_EXPR)})"
 
       elsif @lhs.is_a? CallNode
         return CallNode.new(@lhs.recv, { :value => @lhs.mid + '=', :line => @line }, [[@rhs]]).generate(opts, level);
@@ -1112,7 +1112,7 @@ module Opal
       rhs_code = rhs.generate @generator_opts, LEVEL_EXPR
 
       parts << "#{tmp_recv} = #{rhs_code}"
-      parts << "(#{tmp_recv}.$flags & $runtime.T_ARRAY) || (#{tmp_recv} = [#{tmp_recv}])"
+      parts << "(#{tmp_recv}.$flags & $rb.T_ARRAY) || (#{tmp_recv} = [#{tmp_recv}])"
       parts << "#{tmp_len} = #{tmp_recv}.length"
 
       if arr[0]
@@ -1775,7 +1775,7 @@ module Opal
     end
 
     def generate(opts, level)
-      "$runtime.gg('#{@value}')"
+      "$rb.gg('#{@value}')"
     end
   end
 
@@ -1877,7 +1877,7 @@ module Opal
         end
       end
       parts.unshift 'self'
-      "$runtime.um(#{parts.join ', '})"
+      "$rb.um(#{parts.join ', '})"
     end
   end
 end

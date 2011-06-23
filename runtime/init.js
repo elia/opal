@@ -212,6 +212,8 @@ function const_get(klass, id) {
   raise(eNameError, 'uninitialized constant ' + id);
 };
 
+Rt.const_get = const_get;
+
 /**
   Returns true or false depending whether a constant named `id` is defined
   on the receiver `klass`.
@@ -962,6 +964,8 @@ function define_class_under(base, id, super_klass) {
 
   return klass;
 };
+
+Rt.define_class_under = define_class_under;
 
 /**
   Actually create class

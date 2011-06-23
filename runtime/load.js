@@ -116,11 +116,11 @@ function load_register_gem(name, info) {
   var lib_dir = './lib';
 
   // add lib dir to paths
-  paths.unshift(file_expand_path(fs_join(root_dir, lib_dir)));
+  paths.unshift(fs_expand_path(fs_join(root_dir, lib_dir)));
 
   for (var file in files) {
     if (files.hasOwnProperty(file)) {
-      var file_path = file_expand_path(fs_join(root_dir, file));
+      var file_path = fs_expand_path(fs_join(root_dir, file));
       factories[file_path] = files[file];
     }
   }
@@ -278,7 +278,7 @@ function load_file(loader, path) {
   Run content which must now be javascript. Arguments we pass to func
   are:
 
-    $runtime
+    $rb
     top_self
     filename
 
