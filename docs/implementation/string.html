@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <title>Opal documentation: String implementation</title>
+
+  <link rel="stylesheet" href="css/styles.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="css/syntax.css" type="text/css" media="screen" charset="utf-8">
+</head>
+<body>
+  <div class="content">
+    <header>
+      <nav>
+        <ul>
+          <li><a href="index.html">Overview</a></li>
+          <li><a href="docs.html">Documentation</a></li>
+          <li><a href="repl.html">Try Opal</a></li>
+        </ul>
+      </nav>
+    </header>
+    <h1>String Implementation</h1>
+
+<p>Strings in Opal are immutable which means that their contents cannot
+change once created. This means that various string methods like
+<code>strip!</code> will not work, and an error will be thrown when called. Their
+immutable counterpart methods are still available which typically return
+a new string.</p>
+
+<h2>Implementation details</h2>
+
+<p>Ruby strings are toll-free bridged to native javascript strings, meaning
+that anywhere that a ruby stirng is required, a normal javascript string
+may be passed. This dramatically improces the performance of opal due to
+a lower overhead in the allocation of strings.</p>
+
+<p>The immutability of javascript strings is directly the reason why
+strings in opal are immutable.</p>
+
+<h2>Ruby compatibility</h2>
+
+  </div>
+</body>
+</html>
+

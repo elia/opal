@@ -5,5 +5,6217 @@
  * Copyright 2011, Adam Beynon
  * Released under the MIT license
  */
-opal={},function(){function ct(a){if(typeof a!="string")throw new Error("file_glob_to_regexp: glob must be a string");a=cr(a);var b=a.split(""),c=b.length,d="",e=0;for(var f=0;f<c;f++){var g=b[f];switch(g){case"*":b[f+1]=="*"?(d+=".*",f++):d+="[^/]*";break;case".":d+="\\",d+=g;break;case",":e?d+="|":d+=",";break;case"{":d+="(",e++;break;case"}":e?(d+=")",e--):d+="}";break;default:d+=g}}return new RegExp("^"+d+"$")}function cr(a,b){b||(a.charAt(0)!=="/"?b=co.cwd:b=""),a=cq(b,a);var c=a.split("/"),d=[],e;c[0]===""&&d.push("");for(var f=0,g=c.length;f<g;f++)e=c[f],e==".."?d.pop():e!="."&&e!=""&&d.push(e);return d.join("/")}function cq(a){a=[].slice.call(arguments,0);return a.join("/")}function cn(a,c){return b.require(c)?q:p}function cm(a){return loaded_features}function cl(a){return opal.loader.paths}function ck(c,d,e){var f=[b,n,e];if(typeof d=="function")return d.apply(a,f);if(typeof d=="string"){var g=c.wrap(d,e);return g.apply(a,f)}throw new Error("Loader.execute - bad content sent for '"+e+"'")}function cj(a,b){var c=cd[cp.exec(b)[3]||".js"];if(!c)throw new Error("load_run_file - Bad extension for resolved path");c(a,b)}function ch(a){this.opal=a,this.paths=["","/lib"],this.factories={};return this}function cg(b,c){var d="/"+b;a.loader.factories[d]=c}function cf(b,c){var d=a.loader.factories,e=a.loader.paths,f=c.files||{},g="/"+b,h="./lib";e.unshift(cr(cq(g,h)));for(var i in f)if(f.hasOwnProperty(i)){var j=cr(cq(g,i));d[j]=f[i]}}function cc(a){var b=b$("AnonClass",a||d);return b}function ca(a){var b;a.$flags&u&&(a.$flags&y||a.$flags&A)&&$(bn,"can't define singleton");if(a.$klass.$flags&E&&J(a.$klass,"__attached__")==a)b=a.$klass;else{var c=a.$klass.__classid__;b=bR(a,a.$klass)}return b}function b_(a){return bO(a)}function b$(a,b){var c;b||(b=d),c=b_(b),bQ(c,a),bR(c,b.$klass);return c}function bZ(a,b,c){var e;if(H(a,b)){e=G(a,b);if(!(e.$flags&s))throw new Error(b+" is not a class!");if(e.$super!=c&&c!=d)throw new Error("Wrong superclass given for "+b);return e}e=b$(b,c),a==d?bQ(e,b):bQ(e,a.__classid__+"::"+b),F(a,b,e),e.$parent=a,c.m$inherited&&c.m$inherited(e);return e}function bY(a,b){return bZ(d,a,b)}function bX(a,b,e,f){var g=bY(e,f);bW.push(a),g.$bridge_prototype=a;for(var h in c.$method_table)a[h]=c.$method_table[h];for(var h in d.$method_table)a[h]=d.$method_table[h];a.$klass=g,a.$flags=b,a.$r=!0,a.$hash=function(){return b+"_"+this};return g}function bV(a,b){a.$klass.$klass=b}function bU(a){var b,c;a.$klass==a?(b=bO(null),b.$klass=b):(b=bO(null),b.$klass=a.$klass.$klass==a.$klass?bU(a.$klass):a.$klass.$klass),b.$flags|=E,bT(b,a),a.$klass=b,metaclsss.$m=b.$m_tbl,c=a.$super,b.$super=J(c.$klass,"__attached__")==c?c.$klass:bU(c);return b}function bT(a,b){a.$flags&E&&I(a,"__attached__",b)}function bS(a){var b=a.$klass,c=bO(b);c.$flags|=E,a.$klass=c,c.$bridge_prototype=a,bT(c,a),c.$klass=bP(b).$klass,c.__classid__="#<Class:#<"+b.__classid__+":"+c.$id+">>";return c}function bR(a,b){if(a.$flags&s){if(a.$flags&s&&a.$flags&E)return bU(a);var c=bO(b);c.allocator.prototype=a.constructor.prototype,c.$c=c.$klass.$c_prototype,c.$flags|=E,c.__classid__="#<Class:"+a.__classid__+">",a.$klass=c,c.$c=a.$c,bT(c,a);return c}return bS(a)}function bQ(a,b){a.__classid__=b}function bP(a){while(a.$flags&E)a=a.$super;return a}function bO(a){var b=function(){this.$id=R()},c=function(){};c.prototype=a.allocator.prototype,b.prototype=new c;var d=b.prototype;d.constructor=b,d.$flags=u;var e=function(){this.$id=R()},f=function(){};f.prototype=a.constructor.prototype,e.prototype=new f,d=e.prototype,d.allocator=b,d.$flags=s,d.$method_table={},d.$methods=[],d.constructor=e,d.$super=a,d.$c=new a.$constants_alloc,d.$constants_alloc=function(){},d.$constants_alloc.prototype=d.$c;var g=new e;b.prototype.$klass=g;return g}function bN(a,b){a.$klass=b}function bM(a,b,c){var d=function(){this.$id=R()},e=function(){};e.prototype=c.prototype,d.prototype=new e;var f=d.prototype;f.$included_in=[],f.$method_table={},f.$methods=[],f.allocator=b,f.constructor=d,f.__classid__=a,f.$super=c,f.$flags=s,c.prototype.$constants_alloc?(f.$c=new c.prototype.$constants_alloc,f.$constants_alloc=function(){},f.$constants_alloc.prototype=f.$c):(f.$constants_alloc=function(){},f.$c=f.$constants_alloc.prototype);var g=new d;b.prototype.$klass=g;return g}function bL(a,b){var c=function(){this.$id=R()};if(b){var d=function(){};d.prototype=b.prototype,c.prototype=new d}else c.prototype=new T;c.prototype.constructor=c,c.prototype.$flags=u,c.prototype.$hash=function(){return this.$id},c.prototype.$r=!0;return c}function bK(a,b){a.$extended_modules||(a.$extended_modules=[]);if(a.$extended_modules.indexOf(b)==-1){a.$extended_modules.push(b),b.$extended_in||(b.$extended_in=[]),b.$extended_in.push(a);var c=a.$klass;for(var d in b.$method_table)b.$method_table.hasOwnProperty(d)&&W(c,d,b.$method_table[d])}}function bJ(a,b){a.$included_modules||(a.$included_modules=[]);if(a.$included_modules.indexOf(b)==-1){a.$included_modules.push(b),b.$included_in||(b.$included_in=[]),b.$included_in.push(a);for(var c in b.$method_table)b.$method_table.hasOwnProperty(c)&&W(a,c,b.$method_table[c]);for(var d in b.$c)b.$c.hasOwnProperty(d)&&F(a,d,b.$c[d])}}function bI(){return bO(e)}function bH(a){var b=b_(e);bR(b,e),b.$flags=t,b.$included_in=[];return b}function bG(a,b){var c;if(H(a,b)){c=G(a,b);if(c.$flags&t)return c;throw new Error(b+" is not a module.")}c=bH(b),a==d?bQ(c,b):bQ(c,a.__classid__+"::"+b),F(a,b,c),c.$parent=a;return c}function bF(a){return bG(d,a)}function bE(){var r;boot_BasicObject=bL("BasicObject"),boot_Object=bL("Object",boot_BasicObject),boot_Module=bL("Module",boot_Object),boot_Class=bL("Class",boot_Module),b.BasicObject=c=bM("BasicObject",boot_BasicObject,boot_Class),b.Object=d=bM("Object",boot_Object,c.constructor),b.Module=e=bM("Module",boot_Module,d.constructor),b.Class=f=bM("Class",boot_Class,e.constructor),bN(c,f),bN(d,f),bN(e,f),bN(f,f),c.$super=null,d.$super=c,e.$super=d,f.$super=e,F(d,"BasicObject",c),F(d,"Object",d),F(d,"Module",e),F(d,"Class",f),g=b.Kernel=bF("Kernel"),n=Z(d),b.top=n,h=bY("NilClass",d),b.Qnil=o=Z(h),o.$r=!1,i=bY("TrueClass",d),b.Qtrue=q=Z(i),j=bY("FalseClass",d),b.Qfalse=p=Z(j),p.$r=!1,k=bX(Array.prototype,u|x,"Array",d);var s=k.allocator.prototype,t=Array.prototype;s.push=t.push,s.pop=t.pop,s.slice=t.slice,s.splice=t.slice,s.concat=t.concat,s.shift=t.shift,s.unshift=t.unshift,Array.prototype.$hash=function(){return this.$id||(this.$id=R())},cNumeric=bX(Number.prototype,u|y,"Numeric",d),S=bY("Hash",d),ba=bX(String.prototype,u|w,"String",d),bb=bY("Symbol",d),bB=bX(Function.prototype,u|z,"Proc",d),Function.prototype.$hash=function(){return this.$id||(this.$id=R())},bD=bY("Range",d),l=bX(RegExp.prototype,u,"Regexp",d),m=bY("MatchData",d),M("$~",bu,N),be=bX(Error.prototype,u,"Exception",d),bf=bY("StandardError",be),bm=bY("RuntimeError",be),bg=bY("LocalJumpError",bf),b.TypeError=bn=bY("TypeError",bf),bh=bY("NameError",bf),bi=bY("NoMethodError",bh),bj=bY("ArgumentError",bf),bk=bY("ScriptError",be),bl=bY("LoadError",bk),bo=bY("IndexError",bf),bp=bY("KeyError",bo),bq=bY("RangeError",bf),bs=new Error("unexpected break"),bs.$klass=bg,bs.$keyword=2,bC.b=bs,br=new Error("unexpected return"),br.$klass=bg,br.$keyword=1,bt=new Error("unexpected next"),bt.$klass=bg,bt.$keyword=3,X(f,"new",cc),bv=bY("IO",d),bw=Z(bv),bx=Z(bv),by=Z(bv),F(d,"STDIN",bw),F(d,"STDOUT",bx),F(d,"STDERR",by),M("$stdin",bz,bA),M("$stdout",bz,bA),M("$stderr",bz,bA),M("$:",cl,N),M("$LOAD_PATH",cl,N),U(g,"require",cn),a.loader=new ch(a),a.cache={},F(d,"RUBY_ENGINE","opal-gem")}function bA(a,b){$(be,"stdio_setter cannot currently set stdio variables");switch(a){case"$stdout":return bx=b;case"$stdin":return bw=b;case"$stderr":return by=b;default:$(bm,"stdout_setter being used for bad variable: "+a)}}function bz(a){switch(a){case"$stdout":return bx;case"$stdin":return bw;case"$stderr":return by;default:$(bm,"stdout_setter being used for bad variable")}}function bu(a){var c=b.X;if(c){if(c.$md)return c.$md;var d=new m.allocator;d.$data=c,c.$md=d;return d}return o}function bd(a,b,c){var d;while(a){if(a.$method_table[c]&&a.$method_table[c]==b)break;a=a.$super}if(!a)return null;a=a.$super;while(a){if(a.$method_table[c])return a.$method_table[c];a=a.$super}return null}function _(a){throw a}function $(a,b){b===undefined&&(b=a,a=be);var c=a.m$new(b);_(c)}function Z(a){var b=new a.allocator;return b}function Y(a,b,c){U(a,b,a.$m_tbl[c]);return o}function X(a,b,c){U(ca(a),b,c)}function W(a,b,e){a.allocator.prototype[b]=e,a.$method_table[b]=e;var f=a.$included_in,g;if(f)for(var h=0,i=f.length;h<i;h++)g=f[h],W(g,b,e);a.$bridge_prototype&&(a.$bridge_prototype[b]=e);if(a==d||a==c){var j=bW;for(var h=0,i=j.length;h<i;h++)if(!j[h][b]||j[h][b].$rbMM)j[h][b]=e}}function U(a,b,c){c.$rbName||(c.$rbName=b),a.$methods.push(bc(b)),W(a,"m$"+b,c);return o}function R(){return Q++}function P(a,b){var c=L[a];if(c)return c.setter(a,b);M(a,function(a){return L[a].value},function(a,b){return L[a].value=b});return P(a,b)}function O(a){var b=L[a];if(!b)return o;return b.getter(a)}function N(a,b){$(bh,a+" is a read-only variable")}function M(a,b,c){var d={name:a,value:o,getter:b,setter:c};L[a]=d}function K(a,b){return a.hasOwnProperty(b)?!0:!1}function J(a,b){return a.hasOwnProperty(b)?a[b]:o}function I(a,b,c){a[b]=c;return c}function H(a,b){if(a.$c[b])return!0;return!1}function G(a,b){if(a.$c[b])return a.$c[b];var c=a.$parent;while(c&&c!=d){if(c.$c[b]!==undefined)return c.$c[b];c=c.$parent}$(bh,"uninitialized constant "+b)}function F(a,b,c){a.$c[b]=c;return c}var a=opal;a.runtime={};var b=a.runtime;b.opal=a,a.platform={platform:"opal",engine:"opal-browser",version:"1.9.2",argv:[]};var c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s=b.T_CLASS=1,t=b.T_MODULE=2,u=b.T_OBJECT=4,v=b.T_BOOLEAN=8,w=b.T_STRING=16,x=b.T_ARRAY=32,y=b.T_NUMBER=64,z=b.T_PROC=128,A=b.T_SYMBOL=256,B=b.T_HASH=512,C=b.T_RANGE=1024,D=b.T_ICLASS=2056,E=b.FL_SINGLETON=4112;b.dm=function(a,b,c,d){d?X(a,b,c):(a.$flags&u&&(a=a.$klass),U(a,b,c));return o},b.dc=function(a,b,c,e,f){var g;switch(f){case 0:a.$flags&u&&(a=bP(a.$klass)),b==o&&(b=d),g=bZ(a,c,b);break;case 1:g=ca(a);break;case 2:a.$flags&u&&(a=bP(a.$klass)),g=bG(a,c);break;default:$(be,"define_class got a unknown flag "+f)}var h=e(g);return h},b.X=null,b.um=function(a){var b=[].slice.call(arguments,1);for(var c=0,d=b.length;c<d;c++)(function(b){var c=function(){$(bi,"undefined method `"+b+"' for "+this.m$inspect())};a.allocator.prototype["m$"+b]=c,a.$bridge_prototype&&(a.$bridge_prototype["m$"+b]=c)})(b[c].m$to_s());return o},b.mm=function(a){var c=T.prototype;for(var d=0,e=a.length;d<e;d++){var f="m$"+a[d];if(!c[f]){var g=function(a,c){return function(){var a=[].slice.call(arguments,0);a.unshift(b.Y(c));return this.m$method_missing.apply(this,a)}}(f,a[d]);g.$rbMM=!0,c[f]=g}}},b.ac=function(a,b){throw new Error("ArgumentError - wrong number of arguments("+b+" for "+a+")")},b.const_get=G;var L={},Q=0,S;b.H=function(){var a=new S.allocator,b,c,d=[].slice.call(arguments);a.$keys=[],a.$assocs={},a.$default=o;for(var e=0,f=d.length;e<f;e++)b=d[e],c=d[e+1],e++,a.$keys.push(b),a.$assocs[b.$hash()]=c;return a};var T=function(){};T.$hash=function(){return this.$id},T.prototype.$r=!0,b.define_method=U;var V=b.alias_method=function(a,b,c){var d=a.allocator.prototype["m$"+c];if(!d)throw new Error("NameError: undefined method `"+c+"' for class `"+a.__classid__+"'");W(a,"m$"+b,d);return o};b.raise=$,b.raise_exc=_;var ba,bb,bc=b.Y=function(a){if(cb.hasOwnProperty(a))return cb[a];var b=new bb.allocator;b.$value=a,cb[a]=b;return b};b.S=function(a,b,c){var d="m$"+a.$rbName,e=bd(b.$klass,a,d);e||$(bi,"super: no super class method `"+d+"`"+" for "+b.m$inspect());var f=[].concat(c);return e.apply(b,f)};var be,bf,bg,bh,bi,bj,bk,bl,bm,bn,bo,bp,bq,br,bs,bt;b.B=function(a){bs.$value=a;throw bs},b.R=function(a,b){br.$value=a,br.$func=b;throw br},b.cg=function(a,b){a.$flags&u&&(a=bP(a.$klass));return G(a,b)},b.cs=function(a,b,c){a.$flags&u&&(a=bP(a.$klass));return F(a,b,c)},b.gg=function(a){return O(a)},b.gs=function(a,b){return P(a,b)};var bv,bw,bx,by,bB,bC=b.P={f:null,p:null,y:function(){throw new Error("LocalJumpError - no block given")}};bC.y.$proc=[bC.y],b.lambda=function(a){if(a.$lambda)return a;var b=function(){var b=Array.prototype.slice.call(arguments,0);return a.apply(null,b)};b.$lambda=!0,b.$proc=a.$proc;return b};var bD;b.G=function(a,b,c){var d=new RObject(bD,u);d.$beg=a,d.$end=b,d.$exc=c;return d},b.include_module=bJ,b.extend_module=bK,b.class_real=bP;var bW=[];b.define_class_under=bZ,b.singleton_class=ca;var cb={},cd={};cd[".js"]=function(a,b){var c=a.file_contents(b);return ck(a,c,b)},cd[".rb"]=function(a,b){var c=a.ruby_file_contents(b);return ck(a,c,b)};var ce=a.require=b.require=function(b){var c=a.loader.resolve_lib(b),d=a.cache[c];if(d)return!1;a.cache[c]=!0,cj(a.loader,c);return!0};a.primary=function(a){co.cwd="/"+a},a.run=function(a){if(typeof a!="function")throw new Error("Expected body to be a function");a(b,b.top,"(opal)");return o},a.register=function(a,b){if(typeof a!="string")throw new Error("Cannot register a lib without a proper name");if(typeof b=="string"||typeof b=="function")cg(a,b);else if(typeof b=="object")cf(a,b);else throw new Error("Invalid gem/lib data for '"+a+"'")};var ci=ch.prototype;ci.paths=null,ci.factories={},ci.resolve_lib=function(a){var b=this.find_lib(a,this.paths);if(!b)throw new Error("LoadError: no such file to load -- "+a);return b},ci.find_lib=function(a,b){var c=this.valid_extensions,d=this.factories,e;for(var f=0,g=c.length;f<g;f++)for(var h=0,i=b.length;h<i;h++){e=cq(b[h],a+c[f]);if(d[e])return e}if(d[a])return a;for(var f=0;f<c.length;f++){e=a+c[f];if(d[e])return e}for(var f=0;f<b.length;f++){e=cq(b[h],a);if(d[e])return e}return null},ci.valid_extensions=[".js",".rb"],ci.file_contents=function(a){return this.factories[a]},ci.ruby_file_contents=function(a){return this.factories[a]};var co=a.fs={},cp=/^(.+\/(?!$)|\/)?((?:.+?)?(\.[^.]*)?)$/;co.cwd="/";var cs=co.dirname=function(a){var b=cp.exec(a)[1];return b?b==="/"?b:b.substring(0,b.length-1):"."};co.extname=function(a){var b=cp.exec(a)[3];return!b||b==="."?"":b},co.exist_p=function(a){return opal.loader.factories[file_expand_path(a)]?!0:!1},co.glob=function(){var a=[].slice.call(arguments),b=[],c=opal.loader.factories;for(var d=0,e=a.length;d<e;d++){var f=a[d],g=ct(f);for(var h in c)g.exec(h)&&b.push(h)}return b},bE()}(),typeof require!="undefined"&&typeof module!="undefined"&&(module.exports=opal),opal.register("core.rb",function(a,b,c){function r(){e=a.Qnil,f=a.ac,g=a.S,h=a.B,i=a.dc,j=a.dm,k=a.Y,l=a.G,m=a.H,n=a.P,o=a.Qtrue,p=a.Qfalse,q=a.cg,a.mm(["append_features","included","puts","to_s","include","require"])}r(),i(b,e,"Module",function(b){j(b,"include",function(a){var b=this;a=[].slice.call(arguments,0);var c=a.length-1,d;while(c>=0)d=a[c],d.m$append_features(b),d.m$included(b),c--;return b},0),j(b,"append_features",function(b){var c=this;a.include_module(b,c);return c},0);return j(b,"included",function(a){var b=this;return e},0)},0),i(b,e,"Kernel",function(b){j(b,"require",function(b){var c=this;a.require(b)?o:p;return o},0);return j(b,"puts",function(b){var c=this,d;b=[].slice.call(arguments,0),(d=a.gg("$stdout")).m$puts.apply(d,b);return e},0)},2),i(a.gg("$stdout"),e,e,function(a){return j(a,"puts",function(a){var b=this;a=[].slice.call(arguments,0);for(var c=0,d=a.length;c<d;c++)console.log(a[c].m$to_s().toString());return e},0)},1),i(b,e,"Object",function(a){return a.m$include(q(a,"Kernel"))},0),i(b,e,"Symbol",function(a){return j(a,"to_s",function(){var a=this;return a.$value},0)},0),i(b,e,"String",function(a){return j(a,"to_s",function(){var a=this;return a.toString()},0)},0),b.m$require("core/basic_object"),b.m$require("core/object"),b.m$require("core/module"),b.m$require("core/class"),b.m$require("core/kernel"),b.m$require("core/top_self"),b.m$require("core/nil_class"),b.m$require("core/true_class"),b.m$require("core/false_class"),b.m$require("core/enumerable"),b.m$require("core/array"),b.m$require("core/numeric"),b.m$require("core/hash"),b.m$require("core/error"),b.m$require("core/string"),b.m$require("core/symbol"),b.m$require("core/proc"),b.m$require("core/range"),b.m$require("core/regexp"),b.m$require("core/match_data"),b.m$require("core/file"),b.m$require("core/dir");var d=opal.platform;a.cs(b,"RUBY_PLATFORM",d.platform),a.cs(b,"RUBY_ENGINE",d.engine),a.cs(b,"RUBY_VERSION",d.version);return a.cs(b,"ARGV",d.argv);var e,f,g,h,i,j,k,l,m,n,o,p,q}),opal.register("core/array.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg,a.mm(["allocate","inspect","to_s","alias_method","raise","==","flatten","join"])}q();return h(b,d,"Array",function(a){i(a,"[]",function(a){var b=this;a=[].slice.call(arguments,0);var c=b.m$allocate();c.splice.apply(c,[0,0].concat(a));return c},1),i(a,"allocate",function(){var a=this,b=new a.allocator;b.length=0;return b},1),i(a,"initialize",function(a,b){var c=this;b==undefined&&(b=d);for(var e=0;e<a;e++)c[e]=b;c.length=a;return c},0),i(a,"inspect",function(){var a=this,b=[];for(var c=0,d=a.length;c<d;c++)b.push(a[c].m$inspect());return"["+b.join(", ")+"]"},0),i(a,"to_s",function(){var a=this,b=[];for(var c=0,d=a.length;c<d;c++)b.push(a[c].m$to_s());return b.join("")},0),i(a,"<<",function(a){var b=this;b.push(a);return b},0),i(a,"length",function(){var a=this;return a.length},0),a.m$alias_method(j("size"),j("length")),i(a,"each",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h;(c==b.y?o:n).$r||a.m$raise("Array#each no block given");for(var i=0,j=a.length;i<j;i++)(h=c.call(e,a[i]))==f?g():h;return a},0),i(a,"each_with_index",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h;(c==b.y?o:n).$r||a.m$raise("Array#each_with_index no block given");for(var i=0,j=a.length;i<j;i++)(h=c.call(e,a[i],i))==f?g():h;return a},0),i(a,"each_index",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0],(c==b.y?o:n).$r||a.m$raise("Array#each_index no block given");for(var g=0,h=a.length;g<h;g++)if(c.call(e,g)==f)return f.$value;return a},0),i(a,"push",function(a){var b=this;a=[].slice.call(arguments,0),b.splice.apply(b,[b.length,0].concat(a));return b},0),i(a,"index",function(a){var b=this;for(var c=0,e=b.length;c<e;c++)if(b[c]["m$=="](a).$r)return c;return d},0),i(a,"+",function(a){var b=this;return b.slice(0).concat(a.slice())},0),i(a,"-",function(a){var b=this;return b.m$raise("Array#- not yet implemented")},0),i(a,"==",function(a){var b=this;if(b.$hash()==a.$hash())return n;if(b.length!=a.length)return o;for(var c=0;c<b.length;c++)if(!b[c]["m$=="](a[c]).$r)return o;return n},0),i(a,"assoc",function(a){var b=this,c;for(var e=0;e<b.length;e++){c=b[e];if(c.length&&c[0]["m$=="](a).$r)return c}return d},0),i(a,"at",function(a){var b=this;a<0&&(a+=b.length);if(a<0||a>=b.length)return d;return b[a]},0),i(a,"clear",function(){var a=this;a.splice(0);return a},0),i(a,"select",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h,i=[],j;for(var k=0,l=a.length;k<l;k++)j=a[k],((h=c.call(e,j))==f?g():h).$r&&i.push(j);return i},0),i(a,"collect",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h;(c==b.y?o:n).$r||a.m$raise("Array#collect no block given");var i=[];for(var j=0,k=a.length;j<k;j++)i.push((h=c.call(e,a[j]))==f?g():h);return i},0),a.m$alias_method(j("map"),j("collect")),i(a,"collect!",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h;for(var i=0,j=a.length;i<j;i++)a[i]=(h=c.call(e,a[i]))==f?g():h;return a},0),i(a,"dup",function(){var a=this;return a.slice(0)},0),i(a,"compact",function(){var a=this,b=[],c=a.length;for(var e=0;e<c;e++)a[e]!=d&&b.push(a[e]);return b},0),i(a,"compact!",function(){var a=this,b=a.length;for(var c=0;c<b;c++)a[c]==d&&(a.splice(c,1),c--);return b==a.length?d:a},0),i(a,"concat",function(a){var b=this,c=a.length;for(var d=0;d<c;d++)b.push(a[d]);return b},0),i(a,"count",function(a){var b=this;if(a!=undefined){var c=0;for(var d=0;d<b.length;d++)b[d]["m$=="](a).$r&&c++;return c}return b.length},0),i(a,"delete",function(a){var b=this,c=b.length;for(var e=0;e<b.length;e++)b[e]["m$=="](a).$r&&(b.splice(e,1),e--);return c==b.length?d:a},0),i(a,"delete_at",function(a){var b=this;a<0&&(a+=b.length);if(a<0||a>=b.length)return d;var c=b[a];b.splice(a,1);return b},0),i(a,"delete_if",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h;for(var i=0,j=a.length;i<j;i++)((h=c.call(e,a[i]))==f?g():h).$r&&(a.splice(i,1),i--,j=a.length);return a},0),i(a,"drop",function(a){var b=this;if(a>b.length)return[];return b.slice(a)},0),i(a,"drop_while",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h;for(var i=0;i<a.length;i++)if(!((h=c.call(e,a[i]))==f?g():h).$r)return a.slice(i);return[]},0),i(a,"empty?",function(){var a=this;return a.length==0?n:o},0),i(a,"fetch",function(a,b){var c=this,e=m,f,h,i=e.b;e.f==arguments.callee?f=e.p:f=e.y,e.f=d,h=f.$proc[0];var j,k=a;a<0&&(a+=c.length);if(a<0||a>=c.length)return b==undefined?rb_raise("Index Error: Array#fetch"):__block__?(j=f.call(h,k))==i?g():j:b;return c[a]},0),i(a,"first",function(a){var b=this;a==undefined&&(a=d);if(a==d){if(b.length==0)return d;return b[0]}return b.slice(0,a)},0),i(a,"flatten",function(a){var b=this;a==undefined&&(a=d);var c=[],e;for(var f=0;f<b.length;f++)e=b[f],e.hasOwnProperty("length")?a==d?c=c.concat(e.m$flatten()):a==0?c.push(e):c=c.concat(e.m$flatten(a-1)):c.push(e);return c},0),i(a,"flatten!",function(a){var b=this;a==undefined&&(a=d);var c=b.length,e=b.m$flatten(a);b.splice(0);for(var f=0;f<e.length;f++)b.push(e[f]);if(b.length==c)return d;return b},0),i(a,"include?",function(a){var b=this;for(var c=0;c<b.length;c++)if(b[c]["m$=="](a).$r)return n;return o},0),i(a,"replace",function(a){var b=this;b.splice(0);for(var c=0;c<a.length;c++)b.push(a[c]);return b},0),i(a,"insert",function(a,b){var c=this;b=[].slice.call(arguments,1),a<0&&(a+=c.length),(a<0||a>=c.length)&&rb_raise("IndexError: out of range"),c.splice.apply(c,[a,0].concat(b));return c},0),i(a,"join",function(a){var b=this;a==undefined&&(a="");var c=[];for(var d=0;d<b.length;d++)c.push(b[d].m$to_s());return c.join(a)},0),i(a,"keep_if",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h;for(var i=0;i<a.length;i++)((h=c.call(e,a[i]))==f?g():h).$r||(a.splice(i,1),i--);return a},0),i(a,"last",function(a){var b=this;a==undefined&&(a=d);if(a==d){if(b.length==0)return d;return b[b.length-1]}a>b.length&&(a=b.length);return b.slice(b.length-a,b.length)},0),i(a,"pop",function(a){var b=this;a==undefined&&(a=d);if(a==d){if(b.length)return b.pop();return d}b.splice(b.length-a,b.length)},0),i(a,"rassoc",function(a){var b=this,c;for(var e=0;e<b.length;e++){c=b[e];if(c.hasOwnProperty("length")&&c[1]!=undefined&&c[1]["m$=="](a).$r)return c}return d},0),i(a,"reject",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h,i=[];for(var j=0;j<a.length;j++)((h=c.call(e,a[j]))==f?g():h).$r||i.push(a[j]);return i},0),i(a,"reject!",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h,i=a.length;for(var j=0;j<a.length;j++)((h=c.call(e,a[j]))==f?g():h).$r&&(a.splice(j,1),j--);return a.length==i?d:a},0),i(a,"reverse",function(){var a=this,b=[];for(var c=a.length-1;c>=0;c--)b.push(a[c]);return b},0),i(a,"reverse!",function(){var a=this,b=a.length/2,c;for(var d=0;d<b;d++)c=a[d],a[d]=a[a.length-(d+1)],a[a.length-(d+1)]=c;return a},0),i(a,"reverse_each",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h;for(var i=a.length-1;i>=0;i--)(h=c.call(e,a[i]))==f?g():h;return a},0),i(a,"rindex",function(a){var b=this;a==undefined&&(a=undefined);if(a!=undefined){for(var c=b.length-1;c>=0;c--)if(b[c]["m$=="](a).$r)return c}else{rb_raise("array#rindex needs to do block action")}return d},0),i(a,"select!",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h,i=a.length;for(var j=0;j<a.length;j++)((h=c.call(e,a[j]))==f?g():h).$r||(a.splice(j,1),j--);return a.length==i?d:a},0),i(a,"shift",function(a){var b=this;a==undefined&&(a=d);if(a!=d)return b.splice(0,a);if(b.length)return b.shift();return d},0),i(a,"slice!",function(a,b){var c=this;b==undefined&&(b=d);var e=c.length;a<0&&(a+=e);if(a>=e||a<0)return d;if(b!=d){if(b<=0||b>c.length)return d;return c.splice(a,a+b)}return c.splice(a,1)[0]},0),i(a,"take",function(a){var b=this;return b.slice(0,a)},0),i(a,"take_while",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h,i=[],j;for(var k=0,l=a.length;k<l;k++){j=a[k];if(((h=c.call(e,j))==f?g():h).$r)i.push(a[k]);else break}return i},0),i(a,"to_a",function(){var a=this;return a},0),i(a,"uniq",function(){var a=this,b=[],c=[];for(var d=0;d<a.length;d++){var e=a[d],f=e.$hash();c.indexOf(f)==-1&&(c.push(f),b.push(e))}return b},0),i(a,"uniq!",function(){var a=this,b=[],c=a.length;for(var e=0;e<a.length;e++){var f=a[e],g=f.$hash();b.indexOf(g)==-1?b.push(g):(a.splice(e,1),e--)}return a.length==c?d:a},0),i(a,"unshift",function(a){var b=this;a=[].slice.call(arguments,0);for(var c=a.length-1;c>=0;c--)b.unshift(a[c]);return b},0),i(a,"&",function(a){var b=this,c=[],d=[];for(var e=0;e<b.length;e++){var f=b[e],g=f.$hash();if(d.indexOf(g)==-1)for(var h=0;h<a.length;h++){var i=a[h],j=i.$hash();g==j&&d.indexOf(g)==-1&&(d.push(g),c.push(f))}}return c},0),i(a,"*",function(a){var b=this;if(typeof a=="string")return b.m$join(a);var c=[];for(var d=0;d<parseInt(a);d++)c=c.concat(b);return c},0),i(a,"[]",function(a,b){var c=this;b==undefined&&(b=undefined);var e=c.length;a<0&&(a+=e);if(a>=e||a<0)return d;if(b!=undefined){if(b<=0)return[];return c.slice(a,a+b)}return c[a]},0);return i(a,"[]=",function(a,b){var c=this;a<0&&(a+=c.length);return c[a]=b},0)},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/basic_object.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg,a.mm(["==","to_s","raise","inspect"])}q();return h(b,d,"BasicObject",function(a){i(a,"initialize",function(a){var b=this;a=[].slice.call(arguments,0);return d},0),i(a,"==",function(a){var b=this;if(b==a)return n;return o},0),i(a,"equal?",function(a){var b=this;return b["m$=="](a)},0),i(a,"!",function(){var a=this;return a.$r?o:n},0),i(a,"!=",function(a){var b=this;return b["m$=="](a).$r?o:n},0),i(a,"__send__",function(a,b){var c=this,e=m,f,g,h=e.b;e.f==arguments.callee?f=e.p:f=e.y,e.f=d,g=f.$proc[0],b=[].slice.call(arguments,1),block=f;var i=c["m$"+a.m$to_s()];m.f==arguments.callee&&(m.f=i);return i.apply(c,b)},0),i(a,"instance_eval",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0],block=c,(c==b.y?o:n).$r||a.m$raise(p(a,"ArgumentError"),"block not supplied"),block.call(a);return a},0);return i(a,"method_missing",function(a,b){var c=this;b=[].slice.call(arguments,1);return c.m$raise(p(c,"NoMethodError"),"undefined method `"+a.m$to_s()+"` for "+c.m$inspect().m$to_s())},0)},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/class.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg,a.mm(["allocate","initialize"])}q();return h(b,p(b,"Module"),"Class",function(b){i(b,"allocate",function(){var a=this;return new a.allocator},0),i(b,"new",function(a){var b=this,c,d;a=[].slice.call(arguments,0),c=b.m$allocate(),m.f==arguments.callee&&(m.f=c.m$initialize),(d=c).m$initialize.apply(d,a);return c},0),i(b,"inherited",function(a){var b=this;return d},0);return i(b,"superclass",function(){var b=this,c=b.$super;if(!c){if(b==a.BasicObject)return d;throw new Error("RuntimeError: uninitialized class")}return c},0)},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/dir.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg}q();return h(b,d,"Dir",function(b){var c=a.opal.fs;i(b,"getwd",function(){var a=this;return c.cwd},1),i(b,"pwd",function(){var a=this;return c.cwd},1);return i(b,"[]",function(a){var b=this;a=[].slice.call(arguments,0);return c.glob.apply(c,a)},1)},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/enumerable.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg,a.mm(["each","alias_method","raise","call"])}q();return h(b,d,"Enumerable",function(a){i(a,"to_a",function(){var a=this,b,c,e;b=[],((m.p=function(a){var c=this;a===undefined&&(a=d),b.push(a)}).$proc=[a],m.f=(c=a).m$each).call(c);return b},0),a.m$alias_method(j("entries"),j("to_a")),i(a,"collect",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var g,h;block=c,(c==b.y?o:n).$r||a.m$raise("Enumerable#collect no block given");var i=[];((m.p=function(a){var b=this,c;a=[].slice.call($A,1),i.push((c=block).m$call.apply(c,a))}).$proc=[a],m.f=(g=a).m$each).call(g);return i},0);return a.m$alias_method(j("map"),j("collect"))},2);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/error.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg}q(),h(b,d,"Exception",function(a){i(a,"allocate",function(){var a=this,b=new Error;b.$klass=a;return b},1),i(a,"initialize",function(a){var b=this;a==undefined&&(a=""),b["@message"]=a;return b.message=b.$klass.__classid__+": "+a},0),i(a,"message",function(){var a=this,b;a["@message"]==undefined&&(a["@message"]=d);return(b=a["@message"]).$r?b:a.message},0),i(a,"inspect",function(){var a=this;a["@message"]==undefined&&(a["@message"]=d);return"#<"+a.$klass.__classid__+": '"+a["@message"]+"'>"},0);return i(a,"to_s",function(){var a=this;a["@message"]==undefined&&(a["@message"]=d);return a["@message"]},0)},0),h(b,p(b,"Exception"),"StandardError",function(a){return d},0),h(b,p(b,"Exception"),"RuntimeError",function(a){return d},0),h(b,p(b,"StandardError"),"LocalJumpError",function(a){return d},0),h(b,p(b,"StandardError"),"TypeError",function(a){return d},0),h(b,p(b,"StandardError"),"NameError",function(a){return d},0),h(b,p(b,"NameError"),"NoMethodError",function(a){return d},0),h(b,p(b,"StandardError"),"ArgumentError",function(a){return d},0),h(b,p(b,"Exception"),"ScriptError",function(a){return d},0),h(b,p(b,"ScriptError"),"LoadError",function(a){return d},0),h(b,p(b,"StandardError"),"IndexError",function(a){return d},0),h(b,p(b,"IndexError"),"KeyError",function(a){return d},0);return h(b,p(b,"StandardError"),"RangeError",function(a){return d},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/false_class.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg}q(),h(b,d,"FalseClass",function(a){i(a,"to_s",function(){var a=this;return"false"},0),i(a,"&",function(a){var b=this;return o},0),i(a,"|",function(a){var b=this;return a.$r?n:o},0);return i(a,"^",function(a){var b=this;return a.$r?n:o},0)},0);return a.cs(b,"FALSE",o);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/file.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg}q();return h(b,d,"File",function(b){var c=a.opal.fs;i(b,"expand_path",function(a,b){var e=this;b==undefined&&(b=d);return b.$r?c.expand_path(a,b):c.expand_path(a)},1),i(b,"join",function(a){var b=this;a=[].slice.call(arguments,0);return c.join.apply(c,a)},1),i(b,"dirname",function(a){var b=this;return c.dirname(a)},1),i(b,"extname",function(a){var b=this;return c.extname(a)},1),i(b,"basename",function(a,b){var d=this;return c.basename(a,b)},1);return i(b,"exist?",function(a){var b=this;return c.exist_p(a)?n:o},1)},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/hash.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg,a.mm(["inspect","==","flatten"])}q();return h(b,d,"Hash",function(b){i(b,"[]",function(b){var c=this;b=[].slice.call(arguments,0);return a.H.apply(null,b)},1),i(b,"allocate",function(){var b=this;return a.H()},1),i(b,"values",function(){var a=this,b=[],c=a.$keys.length;for(var d=0;d<c;d++)b.push(a.$assocs[a.$keys[d].$hash()]);return b},0),i(b,"inspect",function(){var a=this,b=[],c,d;for(var e=0;e<a.$keys.length;e++)c=a.$keys[e],d=a.$assocs[c.$hash()],b.push(c.m$inspect()+"=>"+d.m$inspect());return"{"+b.join(", ")+"}"},0),i(b,"to_s",function(){var a=this,b=[],c,d;for(var e=0;e<a.$keys
-.length;e++)c=a.$keys[e],d=a.$assocs[c.$hash()],b.push(c.m$inspect()+d.m$inspect());return b.join("")},0),i(b,"each",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h,i=a.$keys,j=a.$assocs,k=i.length,l;for(var n=0;n<k;n++)try{l=i[n],(h=c.call(e,l,j[l.$hash()]))==f?g():h}catch(o){switch(o.$keyword){case 2:return o["@exit_value"];default:throw o}}return a},0),i(b,"assoc",function(a){var b=this,c,e=b.$keys,f=e.length;for(var g=0;g<f;g++){c=e[g];if(c["m$=="](a).$r)return[c,b.$assocs[c.$hash()]]}return d},0),i(b,"==",function(a){var b=this;if(b===a)return n;if(!a.$keys||!a.$assocs)return o;if(b.$keys.length!=a.$keys.length)return o;for(var c=0;c<b.$keys.length;c++){var d=b.$keys[c],e=d.$hash();if(!a.$assocs.hasOwnProperty(e))return o;var f=a.$assocs[e];if(!b.$assocs[e]["m$=="](f).$r)return o}return n},0),i(b,"[]",function(a){var b=this,c=a.$hash();if(b.$assocs.hasOwnProperty(c))return b.$assocs[c];return b.$default},0),i(b,"[]=",function(a,b){var c=this,d=a.$hash();c.$assocs.hasOwnProperty(d)||c.$keys.push(a);return c.$assocs[d]=b},0),i(b,"clear",function(){var a=this;a.$keys=[],a.$assocs={};return a},0),i(b,"default",function(){var a=this;return a.$default},0),i(b,"default=",function(a){var b=this;return b.$default=a},0),i(b,"delete",function(a){var b=this,c=a.$hash();if(b.$assocs.hasOwnProperty(c)){var d=b.$assocs[c];delete b.$assocs[c],b.$keys.splice(b.$keys.indexOf(a),1);return d}return b.$default},0),i(b,"delete_if",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h,i,j;for(var k=0;k<a.$keys.length;k++)try{i=a.$keys[k],j=a.$assocs[i.$hash()],((h=c.call(e,i,j))==f?g():h).$r&&(delete a.$assocs[i.$hash()],a.$keys.splice(k,1),k--)}catch(l){switch(l.$keyword){case 2:return l["@exit_value"];default:throw l}}return a},0),i(b,"each_key",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h,i;for(var j=0;j<a.$keys.length;j++)try{i=a.$keys[j],(h=c.call(e,i))==f?g():h}catch(k){switch(k.$keyword){case 2:return k["@exit_value"];default:throw k}}return a},0),i(b,"each_value",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h,i;for(var j=0;j<a.$keys.length;j++)try{i=a.$assocs[a.$keys[j].$hash()],(h=c.call(e,i))==f?g():h}catch(k){switch(k.$keyword){case 2:return k["@exit_value"];default:throw k}}return a},0),i(b,"empty?",function(){var a=this;return a.$keys.length==0?n:o},0),i(b,"fetch",function(a,b){var c=this;b==undefined&&(b=undefined);var d=c.$assocs[a.$hash()];if(d!=undefined)return d;if(b==undefined)rb_raise("KeyError: key not found");else return b},0),i(b,"flatten",function(a){var b=this;a==undefined&&(a=1);var c=[],d,e;for(var f=0;f<b.$keys.length;f++){d=b.$keys[f],e=b.$assocs[d.$hash()],c.push(d);if(e instanceof Array)if(a==1)c.push(e);else{var g=e.m$flatten(a-1);c=c.concat(g)}else c.push(e)}return c},0),i(b,"has_key?",function(a){var b=this;if(b.$assocs.hasOwnProperty(a.$hash()))return n;return o},0),i(b,"has_value?",function(a){var b=this,c,a;for(var d=0;d<b.$keys.length;d++){c=b.$keys[d],val=b.$assocs[c.$hash()];if(a["m$=="](val).$r)return n}return o},0),i(b,"replace",function(a){var b=this;b.$keys=[],b.$assocs={};for(var c=0;c<a.$keys.length;c++){var d=a.$keys[c],e=a.$assocs[d.$hash()];b.$keys.push(d),b.$assocs[d.$hash()]=e}return b},0),i(b,"invert",function(){var a=this;return d},0),i(b,"key",function(a){var b=this,c,e;for(var f=0;f<b.$keys.length;f++){c=b.$keys[f],e=b.$assocs[c.$hash()];if(a["m$=="](e).$r)return c}return d},0),i(b,"keys",function(){var a=this;return a.$keys.slice(0)},0),i(b,"length",function(){var a=this;return a.$keys.length},0),i(b,"merge",function(a){var b=this,c=$opal.H(),d,e;for(var f=0;f<b.$keys.length;f++)d=b.$keys[f],e=b.$assocs[d.$hash()],c.$keys.push(d),c.$assocs[d.$hash()]=e;for(var f=0;f<a.$keys.length;f++)d=a.$keys[f],e=a.$assocs[d.$hash()],c.$assocs.hasOwnProperty(d.$hash())||c.$keys.push(d),c.$assocs[d.$hash()]=e;return c},0),i(b,"merge!",function(a){var b=this,c,d;for(var e=0;e<a.$keys.length;e++)c=a.$keys[e],d=a.$assocs[c.$hash()],b.$assocs.hasOwnProperty(c.$hash())||b.$keys.push(c),b.$assocs[c.$hash()]=d;return b},0),i(b,"rassoc",function(a){var b=this,c,e;for(var f=0;f<b.$keys.length;f++){c=b.$keys[f],e=b.$assocs[c.$hash()];if(e["m$=="](a).$r)return[c,e]}return d},0),i(b,"shift",function(){var a=this,b,c;if(a.$keys.length>0){b=a.$keys[0],c=a.$assocs[b.$hash()],a.$keys.shift(),delete a.$assocs[b.$hash()];return[b,c]}return a.$default},0),i(b,"to_a",function(){var a=this,b=[],c,d;for(var e=0;e<a.$keys.length;e++)c=a.$keys[e],d=a.$assocs[c.$hash()],b.push([c,d]);return b},0);return i(b,"to_hash",function(){var a=this;return a},0)},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/kernel.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg,a.mm(["to_s","raise","kind_of?","==","new","alias_method"])}q();return h(b,d,"Kernel",function(b){i(b,"instance_variable_defined?",function(a){var b=this;a=a.m$to_s();return b[a]==undefined?o:n},0),i(b,"instance_variable_get",function(a){var b=this;a=a.m$to_s();return b[a]==undefined?d:b[a]},0),i(b,"instance_variable_set",function(a,b){var c=this;a=a.m$to_s();return c[a]=b},0),i(b,"block_given?",function(){var a=this;return o},0),i(b,"to_a",function(){var a=this;return[a]},0),i(b,"tap",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0],(c==b.y?o:n).$r||a.m$raise(p(a,"LocalJumpError"),"no block given");if(c.call(e,a)==f)return f.$value;return a},0),i(b,"kind_of?",function(a){var b=this,c=b.$klass;while(c){if(c==a)return n;c=c.$super}return o},0),i(b,"is_a?",function(a){var b=this;return b["m$kind_of?"](a)},0),i(b,"nil?",function(){var a=this;return o},0),i(b,"respond_to?",function(a){var b=this,c=b["m$"+a.m$to_s()];if(c&&!c.$rbMM)return n;return o},0),i(b,"===",function(a){var b=this;return b["m$=="](a)},0),i(b,"send",function(a,b){var c=this,e=m,f,g,h=e.b;e.f==arguments.callee?f=e.p:f=e.y,e.f=d,g=f.$proc[0],b=[].slice.call(arguments,1),block=f;var i=c["m$"+a.m$to_s()];$block.f==arguments.callee&&($block.f=i);return i.apply(c,b)},0),i(b,"class",function(){var b=this;return a.class_real(b.$klass)},0),i(b,"singleton_class",function(){var b=this;return a.singleton_class(b)},0),i(b,"methods",function(){var a=this;return a.$klass.$methods},0),i(b,"rand",function(a){var b=this;a==undefined&&(a=undefined);return a!=undefined?Math.floor(Math.random()*a):Math.random()},0),i(b,"__id__",function(){var a=this;return a.$hash()},0),i(b,"object_id",function(){var a=this;return a.$hash()},0),i(b,"to_s",function(){var b=this;return"#<"+a.class_real(b.$klass).m$to_s()+":0x"+(b.$hash()*400487).toString(16).m$to_s()+">"},0),i(b,"inspect",function(){var a=this;return a.m$to_s()},0),i(b,"const_set",function(b,c){var d=this;return rb_const_set(a.class_real(d.$klass),b,c)},0),i(b,"const_defined?",function(a){var b=this;return o},0),i(b,"=~",function(a){var b=this;return d},0),i(b,"extend",function(b){var c=this;a.extend_module(c,b);return d},0),i(b,"raise",function(b,c){var e=this;c==undefined&&(c=d);var f=d,g;typeof b=="string"?(f=b,g=p(e,"RuntimeError").m$new(f)):b["m$kind_of?"](p(e,"Exception")).$r?g=b:(c!=d&&(f=c),g=b.m$new(f)),a.raise_exc(g)},0),b.m$alias_method(j("fail"),j("raise")),i(b,"loop",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h;for(;;)(h=c.call(e))==f?g():h;return a},0),i(b,"proc",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0],block=c,(c==b.y?o:n).$r||a.m$raise(p(a,"ArgumentError"),"tried to create Proc object without a block");return block},0);return i(b,"lambda",function(){var b=this,c=m,e,f,g=c.b;c.f==arguments.callee?e=c.p:e=c.y,c.f=d,f=e.$proc[0],block=e,(e==c.y?o:n).$r||b.m$raise(p(b,"ArgumentError"),"tried to create Proc object without a block");return a.lambda(block)},0)},2);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/match_data.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg,a.mm(["to_s","inspect"])}q();return h(b,d,"MatchData",function(a){i(a,"inspect",function(){var a=this;return"#<MatchData "+a.$data[0].m$inspect().m$to_s()+">"},0),i(a,"to_s",function(){var a=this;return a.$data[0]},0),i(a,"length",function(){var a=this;return a.$data.length},0),i(a,"size",function(){var a=this;return a.$data.length},0),i(a,"to_a",function(){var a=this;return[].slice.call(a.$data,0)},0);return i(a,"[]",function(a){var b=this,c=b.$data.length;a<0&&(a+=c);if(a>=c||a<0)return d;return b.$data[a]},0)},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/module.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg,a.mm(["kind_of?","raise","to_s","attr_reader","attr_writer","each","class_eval"])}q();return h(b,d,"Module",function(b){i(b,"name",function(){var a=this;return a.__classid__},0),i(b,"===",function(a){var b=this;return a["m$kind_of?"](b)},0),i(b,"define_method",function(b){var c=this,e=m,f,g,h=e.b;e.f==arguments.callee?f=e.p:f=e.y,e.f=d,g=f.$proc[0],block=f,(f==e.y?o:n).$r||c.m$raise(p(c,"LocalJumpError"),"no block given"),a.define_method(c,b.m$to_s(),block);return d},0),i(b,"attr_accessor",function(a){var b=this,c;a=[].slice.call(arguments,0),(c=b).m$attr_reader.apply(c,a);return(c=b).m$attr_writer.apply(c,a)},0),i(b,"attr_reader",function(b){var c=this,e,f;b=[].slice.call(arguments,0),((m.p=function(b){var c=this,e;b===undefined&&(b=d),e=b.m$to_s(),a.define_method(c,e,function(){var a=this["@"+e];return a==undefined?d:a})}).$proc=[c],m.f=(e=b).m$each).call(e);return d},0),i(b,"attr_writer",function(b){var c=this,e,f;b=[].slice.call(arguments,0),((m.p=function(b){var c=this,e;b===undefined&&(b=d),e=b.m$to_s(),a.define_method(c,e+"=",function(a){return this["@"+e]=a})}).$proc=[c],m.f=(e=b).m$each).call(e);return d},0),i(b,"alias_method",function(b,c){var d=this;a.alias_method(d,b.m$to_s(),c.m$to_s());return d},0),i(b,"instance_methods",function(){var a=this;return a.$methods},0),i(b,"ancestors",function(){var b=this,c=[],d=b;while(d)d.$flags&a.FL_SINGLETON||c.push(d),d=d.$super;return c},0),i(b,"to_s",function(){var a=this;return a.__classid__},0),i(b,"const_set",function(b,c){var d=this;return a.cs(d,b.m$to_s(),c)},0),i(b,"class_eval",function(a){var b=this,c=m,e,f,g=c.b;c.f==arguments.callee?e=c.p:e=c.y,c.f=d,f=e.$proc[0],a==undefined&&(a=d),block=e;if((e==c.y?o:n).$r)block.call(b);else return b.m$raise("need to compile str")},0),i(b,"module_eval",function(a){var b=this,c=m,e,f,g=c.b;c.f==arguments.callee?e=c.p:e=c.y,c.f=d,f=e.$proc[0];var h;a==undefined&&(a=d),block=e;return(m.p=block,m.f=(h=b).m$class_eval).call(h,a)},0);return i(b,"extend",function(b){var c=this;a.extend_module(c,b);return d},0)},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/nil_class.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg}q(),h(b,d,"NilClass",function(a){i(a,"to_i",function(){var a=this;return 0},0),i(a,"to_f",function(){var a=this;return 0},0),i(a,"to_s",function(){var a=this;return""},0),i(a,"to_a",function(){var a=this;return[]},0),i(a,"inspect",function(){var a=this;return"nil"},0),i(a,"nil?",function(){var a=this;return n},0),i(a,"&",function(a){var b=this;return o},0),i(a,"|",function(a){var b=this;return a.$r?n:o},0);return i(a,"^",function(a){var b=this;return a.$r?n:o},0)},0);return a.cs(b,"NIL",d);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/numeric.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg,a.mm(["raise"])}q();return h(b,d,"Numeric",function(a){i(a,"+@",function(){var a=this;return a},0),i(a,"-@",function(){var a=this;return-a},0),i(a,"%",function(a){var b=this;return b%a},0),i(a,"modulo",function(a){var b=this;return b%a},0),i(a,"&",function(a){var b=this;return b&a},0),i(a,"*",function(a){var b=this;return b*a},0),i(a,"**",function(a){var b=this;return Math.pow(b,a)},0),i(a,"+",function(a){var b=this;return b+a},0),i(a,"-",function(a){var b=this;return b-a},0),i(a,"/",function(a){var b=this;return b/a},0),i(a,"<",function(a){var b=this;return b<a?n:o},0),i(a,"<=",function(a){var b=this;return b<=a?n:o},0),i(a,">",function(a){var b=this;return b>a?n:o},0),i(a,">=",function(a){var b=this;return b>=a?n:o},0),i(a,"<<",function(a){var b=this;return b<<a},0),i(a,">>",function(a){var b=this;return b>>a},0),i(a,"<=>",function(a){var b=this;if(typeof a!="number")return d;if(b<a)return-1;if(b>a)return 1;return 0},0),i(a,"==",function(a){var b=this;return b.valueOf()===a.valueOf()?n:o},0),i(a,"^",function(a){var b=this;return b^a},0),i(a,"abs",function(){var a=this;return Math.abs(a)},0),i(a,"magnitude",function(){var a=this;return Math.abs(a)},0),i(a,"even?",function(){var a=this;return a%2==0?n:o},0),i(a,"odd?",function(){var a=this;return a%2==0?o:n},0),i(a,"succ",function(){var a=this;return a+1},0),i(a,"next",function(){var a=this;return a+1},0),i(a,"pred",function(){var a=this;return a-1},0),i(a,"upto",function(a){var b=this,c=m,e,f,h=c.b;c.f==arguments.callee?e=c.p:e=c.y,c.f=d,f=e.$proc[0];var i;for(var j=b;j<=a;j++)(i=e.call(f,j))==h?g():i;return b},0),i(a,"downto",function(a){var b=this,c=m,e,f,h=c.b;c.f==arguments.callee?e=c.p:e=c.y,c.f=d,f=e.$proc[0];var i;for(var j=b;j>=a;j--)(i=e.call(f,j))==h?g():i;return b},0),i(a,"times",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0];var h;(c==b.y?o:n).$r||a.m$raise("no block given");for(var i=0;i<a;i++)(h=c.call(e,i))==f?g():h;return a},0),i(a,"|",function(a){var b=this;return b|a},0),i(a,"zero?",function(){var a=this;return a==0?n:o},0),i(a,"nonzero?",function(){var a=this;return a==0?d:a},0),i(a,"~",function(){var a=this;return~a},0),i(a,"ceil",function(){var a=this;return Math.ceil(a)},0),i(a,"floor",function(){var a=this;return Math.floor(a)},0),i(a,"integer?",function(){var a=this;return a%1==0?n:o},0),i(a,"inspect",function(){var a=this;return a.toString()},0),i(a,"to_s",function(){var a=this;return a.toString()},0);return i(a,"to_i",function(){var a=this;return parseInt(a)},0)},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/object.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg}q();return h(b,p(b,"BasicObject"),"Object",function(a){return d},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/proc.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg,a.mm(["raise"])}q();return h(b,d,"Proc",function(a){i(a,"new",function(){var a=this,b=m,c,e,f=b.b;b.f==arguments.callee?c=b.p:c=b.y,b.f=d,e=c.$proc[0],block=c,(c==b.y?o:n).$r||a.m$raise(p(a,"ArgumentError"),"tried to create Proc object without a block");return block},1),i(a,"to_proc",function(){var a=this;return a},0),i(a,"call",function(a){var b=this;a=[].slice.call(arguments,0);return b.apply(b.$proc[0],a)},0),i(a,"to_s",function(){var a=this;return"#<Proc:0x"+(a.$hash()*400487).toString(16)+(a.$lambda?" (lambda)":"")+">"},0);return i(a,"lambda?",function(){var a=this;return a.$lambda?n:o},0)},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/range.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg,a.mm(["alias_method","to_s","inspect"])}q();return h(b,d,"Range",function(a){i(a,"begin",function(){var a=this;return a.$beg},0),a.m$alias_method(j("first"),j("begin")),i(a,"end",function(){var a=this;return a.$end},0),i(a,"to_s",function(){var a=this,b=a.$beg.m$to_s(),c=a.$end.m$to_s(),d=a.$exc?"...":"..";return b+d+c},0);return i(a,"inspect",function(){var a=this,b=a.$beg.m$inspect(),c=a.$end.m$inspect(),d=a.$exc?"...":"..";return b+d+c},0)},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/regexp.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg,a.mm(["==","=~"])}q();return h(b,d,"Regexp",function(b){i(b,"escape",function(a){var b=this;return a},1),i(b,"new",function(a){var b=this;return new RegExp(a)},1),i(b,"inspect",function(){var a=this;return a.toString()},0),i(b,"to_s",function(){var a=this;return a.source},0),i(b,"==",function(a){var b=this;return b.toString()===a.toString()?n:o},0),i(b,"eql?",function(a){var b=this;return b["m$=="](a)},0),i(b,"=~",function(b){var c=this,e=c.exec(b);a.X=e;return e?e.index:d},0);return i(b,"match",function(b){var c=this;c["m$=~"](b);return a.gg("$~")},0)},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/string.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg,a.mm(["=~"])}q();return h(b,d,"String",function(b){i(b,"new",function(a){var b=this;a==undefined&&(a="");var c=new String(a);c.$klass=b,c.$m=b.$m_tbl;return c},1),i(b,"*",function(a){var b=this,c=[];for(var d=0;d<a;d++)c.push(b);return c.join("")},0),i(b,"+",function(a){var b=this;return b+a},0),i(b,"capitalize",function(){var a=this;return a.charAt(0).toUpperCase()+a.substr(1).toLowerCase()},0),i(b,"downcase",function(){var a=this;return a.toLowerCase()},0),i(b,"inspect",function(){var a=this,b=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,c=/[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,d={"\b":"\\b","\t":"\\t","\n":"\\n","\f":"\\f","\r":"\\r",'"':'\\"',"\\":"\\\\"};c.lastIndex=0;return c.test(a)?'"'+a.replace(c,function(a){var b=d[a];return typeof b=="string"?b:"\\u"+("0000"+a.charCodeAt(0).toString(16)).slice(-4)})+'"':'"'+a+'"'},0),i(b,"length",function(){var a=this;return a.length},0),i(b,"to_i",function(){var a=this;return parseInt(a)},0),i(b,"to_sym",function(){var b=this;return a.Y(b)},0),i(b,"intern",function(){var b=this;return a.Y(b)},0),i(b,"reverse",function(){var a=this;return a.split("").reverse().join("")},0),i(b,"succ",function(){var a=this;return String.fromCharCode(a.charCodeAt(0))},0),i(b,"[]",function(a){var b=this;return b.substr(a,a+1)},0),i(b,"sub",function(a){var b=this,c=m,e,f,h=c.b;c.f==arguments.callee?e=c.p:e=c.y,c.f=d,f=e.$proc[0];var i;return b.replace(a,function(a){return(i=e.call(f,a))==h?g():i})},0),i(b,"gsub",function(a,b){var c=this,d=a.toString();d=d.substr(1,d.lastIndexOf("/")-1),d=new RegExp(d,"g");return c.replace(a,function(a){return b})},0),i(b,"slice",function(a,b){var c=this;b==undefined&&(b=d);return c.substr(a,b)},0),i(b,"split",function(a,b){var c=this;b==undefined&&(b=d);return c.split(a)},0),i(b,"<=>",function(a){var b=this;if(typeof a!="string")return d;if(b>a)return 1;if(b<a)return-1;return 0},0),i(b,"==",function(a){var b=this;return b.valueOf()===a.valueOf()?n:o},0),i(b,"=~",function(b){var c=this;b.$flags&a.T_STRING&&a.raise(VM.TypeError,"type mismatch: String given");return b["m$=~"](c)},0),i(b,"casecmp",function(a){var b=this;if(typeof a!="string")return d;var c=b.toLowerCase(),e=a.toLowerCase();if(c>e)return 1;if(c<e)return-1;return 0},0),i(b,"empty?",function(){var a=this;return a.length==0?n:o},0),i(b,"end_with?",function(a){var b=this;if(b.lastIndexOf(a)==b.length-a.length)return n;return o},0),i(b,"eql?",function(a){var b=this;return b==a?n:o},0),i(b,"include?",function(a){var b=this;return b.indexOf(a)==-1?o:n},0),i(b,"index",function(a){var b=this,c=b.indexOf(a);return c==-1?d:c},0);return i(b,"lstrip",function(){var a=this;return a.replace(/^\s*/,"")},0)},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/symbol.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg}q();return h(b,d,"Symbol",function(a){i(a,"inspect",function(){var a=this;return":"+a.$value.toString()},0),i(a,"to_sym",function(){var a=this;return a},0);return i(a,"intern",function(){var a=this;return a},0)},0);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/top_self.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg,a.mm(["include"])}q(),i(b,"to_s",function(){var a=this;return"main"},1);return i(b,"include",function(a){var b=this;return p(b,"Object").m$include(a)},1);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.register("core/true_class.rb",function(a,b,c){function q(){d=a.Qnil,e=a.ac,f=a.S,g=a.B,h=a.dc,i=a.dm,j=a.Y,k=a.G,l=a.H,m=a.P,n=a.Qtrue,o=a.Qfalse,p=a.cg}q(),h(b,d,"TrueClass",function(a){i(a,"to_s",function(){var a=this;return"true"},0),i(a,"&",function(a){var b=this;return a.$r?n:o},0),i(a,"|",function(a){var b=this;return n},0);return i(a,"^",function(a){var b=this;return a.$r?o:n},0)},0);return a.cs(b,"TRUE",n);var d,e,f,g,h,i,j,k,l,m,n,o,p}),opal.require("core")
+opal = {};
+
+(function() {
+
+// So we can minimize
+var Op = opal;
+
+/**
+  All methods and properties available to ruby/js sources at runtime. These
+  are kept in their own namespace to keep the opal namespace clean.
+*/
+Op.runtime = {};
+
+// for minimizng
+var Rt = Op.runtime;
+Rt.opal = Op;
+
+/**
+  Opal platform - this is overriden in gem context and nodejs context. These
+  are the default values used in the browser, `opal-browser'.
+*/
+Op.platform = {
+  platform: "opal",
+  engine: "opal-browser",
+  version: "1.9.2",
+  argv: []
+};
+
+/**
+  Core runtime classes, objects and literals.
+*/
+var cBasicObject,     cObject,          cModule,          cClass,
+    mKernel,          cNilClass,        cTrueClass,       cFalseClass,
+    cArray,
+    cRegexp,          cMatch,           top_self,            Qnil,
+    Qfalse,           Qtrue,
+
+    cDir;
+
+/**
+  Core object type flags. Added as local variables, and onto runtime.
+*/
+var T_CLASS       = Rt.T_CLASS       = 1,
+    T_MODULE      = Rt.T_MODULE      = 2,
+    T_OBJECT      = Rt.T_OBJECT      = 4,
+    T_BOOLEAN     = Rt.T_BOOLEAN     = 8,
+    T_STRING      = Rt.T_STRING      = 16,
+    T_ARRAY       = Rt.T_ARRAY       = 32,
+    T_NUMBER      = Rt.T_NUMBER      = 64,
+    T_PROC        = Rt.T_PROC        = 128,
+    T_SYMBOL      = Rt.T_SYMBOL      = 256,
+    T_HASH        = Rt.T_HASH        = 512,
+    T_RANGE       = Rt.T_RANGE       = 1024,
+    T_ICLASS      = Rt.T_ICLASS      = 2056,
+    FL_SINGLETON  = Rt.FL_SINGLETON  = 4112;
+
+/**
+  Method visibility modes
+ */
+var FL_PUBLIC  = 0,
+    FL_PRIVATE = 1;
+
+/**
+  Define classes. This is the public API for defining classes, shift classes
+  and modules.
+
+  @param {RubyObject} base
+  @param {RClass} super_class
+  @param {String} id
+  @param {Function} body
+  @param {Number} flag
+*/
+Rt.dc = function(base, super_class, id, body, flag) {
+  var klass;
+
+  switch (flag) {
+    case 0:
+      if (base.$flags & T_OBJECT) {
+        base = class_real(base.$klass);
+      }
+
+      if (super_class == Qnil) {
+        super_class = cObject;
+      }
+
+      klass = define_class_under(base, id, super_class);
+      break;
+
+    case 1:
+      klass = singleton_class(base);
+      break;
+
+    case 2:
+      if (base.$flags & T_OBJECT) {
+        base = class_real(base.$klass);
+      }
+      klass = define_module_under(base, id);
+      break;
+
+    default:
+      raise(eException, "define_class got a unknown flag " + flag);
+  }
+
+  // when reopening a class always set it back to public
+  klass.$mode = FL_PUBLIC;
+
+  var res = body(klass);
+
+  return res;
+};
+
+/**
+  Regexp object. This holds the results of last regexp match.
+  X for regeXp.
+*/
+Rt.X = null;
+
+/**
+  Undefine methods
+*/
+Rt.um = function(kls) {
+  var args = [].slice.call(arguments, 1);
+
+  for (var i = 0, ii = args.length; i < ii; i++) {
+    (function(mid) {
+      var func = function() {
+        raise(eNoMethodError, "undefined method `" + mid + "' for " + this.m$inspect());
+      };
+
+      kls.allocator.prototype['m$' + mid] = func;
+
+      if (kls.$bridge_prototype) {
+        kls.$bridge_prototype['m$' + mid] = func;
+      }
+    })(args[i].m$to_s());
+  }
+
+  return Qnil;
+};
+
+/**
+  Method missing support - used in debug mode (opt in).
+*/
+Rt.mm = function(method_ids) {
+  var prototype = cBasicObject.$m_tbl;
+
+  for (var i = 0, ii = method_ids.length; i < ii; i++) {
+    var mid = method_ids[i];
+
+    if (!prototype[mid]) {
+      var imp = (function(mid, method_id) {
+        return function(self) {
+          var args = [].slice.call(arguments, 0);
+          args.unshift(intern(method_id));
+          args.unshift(self);
+          return self.$m.method_missing.apply(null, args);
+        };
+      })(mid, method_ids[i]);
+
+      imp.$rbMM = true;
+
+      prototype[mid] = prototype['$' + mid] = imp;
+    }
+  }
+};
+
+/**
+  Define methods. Public method for defining a method on the given base.
+
+  @param {Object} klass The base to define method on
+  @param {String} name Ruby mid
+  @param {Function} public_body The method implementation
+  @param {Number} arity Method arity
+  @return {Qnil}
+*/
+Rt.dm = function(klass, name, public_body, arity) {
+  if (klass.$flags & T_OBJECT) {
+    klass = klass.$klass;
+  }
+
+  var mode = klass.$mode;
+  var private_body = public_body;
+
+  if (mode == FL_PRIVATE) {
+    public_body = function() {
+      raise(eNoMethodError, "private method `" + name +
+        "' called for " + this.$m$inspect());
+    };
+    public_body.$arity = -1;
+  }
+
+  if (!private_body.$rbName) {
+    private_body.$rbName = name;
+    private_body.$rbArity = arity;
+  }
+
+  // FIXME: add to private/public methods
+  // klass.$methods.push(intern(name));
+  define_raw_method(klass, name, private_body, public_body);
+
+  return Qnil;
+};
+
+/**
+  Define singleton method.
+
+  @param {Object} base The base to define method on
+  @param {String} method_id Method id
+  @param {Function} body Method implementation
+  @param {Number} arity Method arity
+  @return {Qnil}
+*/
+Rt.ds = function(base, method_id, body, arity) {
+  return Rt.dm(singleton_class(base), method_id, body);
+};
+
+/**
+  Call a super method.
+
+  callee is the function that actually called super(). We use this to find
+  the right place in the tree to find the method that actually called super.
+  This is actually done in super_find.
+*/
+Rt.S = function(callee, self, args) {
+  var mid = callee.$rbName;
+  var func = super_find(self.$klass, callee, mid);
+
+  if (!func) {
+    raise(eNoMethodError, "super: no super class method `" + mid + "`" +
+      " for " + self.m$inspect());
+  }
+
+  var args_to_send = [self].concat(args);
+  return func.apply(self, args_to_send);
+};
+
+/**
+  Actually find super impl to call.  Returns null if cannot find it.
+*/
+function super_find(klass, callee, mid) {
+  var cur_method;
+
+  while (klass) {
+    if (klass.$m_tbl[mid]) {
+      if (klass.$m_tbl[mid] == callee) {
+        cur_method = klass.$m_tbl[mid];
+        break;
+      }
+    }
+    klass = klass.$super;
+  }
+
+  if (!(klass && cur_method)) { return null; }
+
+  klass = klass.$super;
+
+  while (klass) {
+    if (klass.$m_tbl[mid]) {
+      return klass.$m_tbl[mid];
+    }
+
+    klass = klass.$super;
+  }
+
+  return null;
+};
+
+/**
+  Exception classes. Some of these are used by runtime so they are here for
+  convenience.
+*/
+var eException,       eStandardError,   eLocalJumpError,  eNameError,
+    eNoMethodError,   eArgError,        eScriptError,     eLoadError,
+    eRuntimeError,    eTypeError,       eIndexError,      eKeyError,
+    eRangeError;
+
+var eExceptionInstance;
+
+/**
+  Standard jump exceptions to save re-creating them everytime they are needed
+*/
+var eReturnInstance,
+    eBreakInstance,
+    eNextInstance;
+
+/**
+  Ruby break statement with the given value. When no break value is needed, nil
+  should be passed here. An undefined/null value is not valid and will cause an
+  internal error.
+
+  @param {RubyObject} value The break value.
+*/
+Rt.B = function(value) {
+  eBreakInstance.$value = value;
+  raise_exc(eBreakInstance);
+};
+
+/**
+  Ruby return, with the given value. The func is the reference function which
+  represents the method that this statement must return from.
+*/
+Rt.R = function(value, func) {
+  eReturnInstance.$value = value;
+  eReturnInstance.$func = func;
+  throw eReturnInstance;
+};
+
+/**
+  Get the given constant name from the given base
+*/
+Rt.cg = function(base, id) {
+  if (base.$flags & T_OBJECT) {
+    base = class_real(base.$klass);
+  }
+  return const_get(base, id);
+};
+
+/**
+  Set constant from runtime
+*/
+Rt.cs = function(base, id, val) {
+  if (base.$flags & T_OBJECT) {
+    base = class_real(base.$klass);
+  }
+  return const_set(base, id, val);
+};
+
+/**
+  Get global by id
+*/
+Rt.gg = function(id) {
+  return gvar_get(id);
+};
+
+/**
+  Set global by id
+*/
+Rt.gs = function(id, value) {
+  return gvar_set(id, value);
+};
+
+function regexp_match_getter(id) {
+  var matched = Rt.X;
+
+  if (matched) {
+    if (matched.$md) {
+      return matched.$md;
+    } else {
+      var res = new cMatch.allocator();
+      res.$data = matched;
+      matched.$md = res;
+      return res;
+    }
+  } else {
+    return Qnil;
+  }
+}
+
+
+/**
+  Sets the constant value `val` on the given `klass` as `id`.
+
+  @param {RClass} klass
+  @param {String} id
+  @param {Object} val
+  @return {Object} returns the set value
+*/
+function const_set(klass, id, val) {
+  klass.$c_prototype[id] = val;
+  klass.$const_table[id] = val;
+  return val;
+}
+
+/**
+  Lookup a constant named `id` on the `klass`. This will throw an error if
+  the constant cannot be found.
+
+  @param {RClass} klass
+  @param {String} id
+*/
+function const_get(klass, id) {
+  if (klass.$c[id]) {
+    return (klass.$c[id]);
+  }
+
+  var parent = klass.$parent;
+
+  while (parent && parent != cObject) {
+  // while (parent) {
+    if (parent.$c[id] !== undefined) {
+      return parent.$c[id];
+    }
+
+    parent = parent.$parent;
+  }
+
+  raise(eNameError, 'uninitialized constant ' + id);
+};
+
+Rt.const_get = const_get;
+
+/**
+  Returns true or false depending whether a constant named `id` is defined
+  on the receiver `klass`.
+
+  @param {RClass} klass
+  @param {String} id
+  @return {true, false}
+*/
+function const_defined(klass, id) {
+  if (klass.$c[id]) {
+    return true;
+  }
+
+  return false;
+};
+
+/**
+  This table holds all the global variables accessible from ruby.
+
+  Entries are mapped by their global id => an object that contains the
+  given keys:
+
+    - name
+    - value
+    - getter
+    - setter
+*/
+var global_tbl = {};
+
+/**
+  Defines a hooked/global variable.
+
+  @param {String} name The global name (e.g. '$:')
+  @param {Function} getter The getter function to return the variable
+  @param {Function} setter The setter function used for setting the var
+  @return {null}
+*/
+function define_hooked_variable(name, getter, setter) {
+  var entry = {
+    "name": name,
+    "value": Qnil,
+    "getter": getter,
+    "setter": setter
+  };
+
+  global_tbl[name] = entry;
+};
+
+/**
+  A default read only getter for a global variable. This will simply throw a
+  name error with the given id. This can be used for variables that should
+  not be altered.
+*/
+function gvar_readonly_setter(id, value) {
+  raise(eNameError, id + " is a read-only variable");
+};
+
+/**
+  Retrieve a global variable. This will use the assigned getter.
+*/
+function gvar_get(id) {
+  var entry = global_tbl[id];
+  if (!entry) { return Qnil; }
+  return entry.getter(id);
+};
+
+/**
+  Set a global. If not already set, then we assign basic getters and setters.
+*/
+function gvar_set(id, value) {
+  var entry = global_tbl[id];
+  if (entry)  { return entry.setter(id, value); }
+
+  define_hooked_variable(id,
+
+    function(id) {
+      return global_tbl[id].value;
+    },
+
+    function(id, value) {
+      return (global_tbl[id].value = value);
+    }
+  );
+
+  return gvar_set(id, value);
+};
+
+/**
+  Every object has a unique id. This count is used as the next id for the
+  next created object. Therefore, first ruby object has id 0, next has 1 etc.
+*/
+var hash_yield = 0;
+
+/**
+  Yield the next object id, updating the count, and returning it.
+*/
+function yield_hash() {
+  return hash_yield++;
+};
+
+var cHash;
+
+/**
+  Returns a new hash with values passed from the runtime.
+*/
+Rt.H = function() {
+  var hash = new RObject(cHash), k, v, args = [].slice.call(arguments);
+  hash.$keys = [];
+  hash.$assocs = {};
+  hash.$default = Qnil;
+
+  for (var i = 0, ii = args.length; i < ii; i++) {
+    k = args[i];
+    v = args[i + 1];
+    i++;
+    hash.$keys.push(k);
+    hash.$assocs[k.$hash()] = v;
+  }
+
+  return hash;
+};
+
+var alias_method = Rt.alias_method = function(klass, new_name, old_name) {
+  var body = klass.$m_tbl[old_name];
+
+  if (!body) {
+    throw new Error("NameError: undefined method `" + old_name + "' for class `" + klass.__classid__ + "'");
+  }
+
+  define_raw_method(klass, new_name, body, body);
+  return Qnil;
+};
+
+/**
+  This does the main work, but does not call runtime methods like
+  singleton_method_added etc. define_method does that.
+
+*/
+function define_raw_method(klass, private_name, private_body, public_body) {
+  var public_name = '$' + private_name;
+
+  klass.$m_tbl[private_name] = private_body;
+  klass.$m_tbl[public_name] = public_body;
+
+  klass.$method_table[private_name] = private_body;
+
+  var included_in = klass.$included_in, includee;
+
+  if (included_in) {
+    for (var i = 0, ii = included_in.length; i < ii; i++) {
+      includee = included_in[i];
+
+      define_raw_method(includee, private_name, private_body, public_body);
+    }
+  }
+};
+
+Rt.private_methods = function(klass, args) {
+  return;
+
+  if (args.length) {
+    var proto = klass.allocator.prototype;
+
+    for (var i = 0, ii = args.length; i < ii; i++) {
+      var arg = args[i].$m$to_s(), mid = 'm$' + arg;
+
+      // If method doesn't exist throw an error. Also check that if it
+      // does exist that it isnt just a method missing implementation.
+      if (!proto[mid] || proto[mid].$rbMM) {
+        raise(eNameError, "undefined method `" + arg +
+              "' for class `" + klass.__classid__ + "'");
+      }
+
+      // Set the public implementation to a function that just throws
+      // and error when called
+      klass.allocator.prototype[mid] = function() {
+        raise(eNoMethodError, "private method `" + arg + "' called for " +
+              this.$m$inspect());
+      }
+
+      // If this method is in the method_table then we must also set that.
+      // If not then we inherited this method from further up the chain,
+      // so we do not set it in our method table.
+      if (klass.$method_table[mid]) {
+        // set
+      }
+    }
+  }
+  else {
+    // no args - set klass mode to private
+    klass.$mode = FL_PRIVATE;
+  }
+};
+
+function define_alias(base, new_name, old_name) {
+  define_method(base, new_name, base.$m_tbl[old_name]);
+  return Qnil;
+};
+
+function obj_alloc(klass) {
+  var result = new RObject(klass);
+  return result;
+};
+
+/**
+  Raise the exception class with the given string message.
+*/
+function raise(exc, str) {
+  if (str === undefined) {
+    str = exc;
+    exc = eException;
+  }
+
+  var exception = exc.$m['new'](exc, str);
+  raise_exc(exception);
+};
+
+Rt.raise = raise;
+
+/**
+  Raise an exception instance (DO NOT pass strings to this)
+*/
+function raise_exc(exc) {
+  throw exc;
+};
+
+Rt.raise_exc = raise_exc;
+
+var cString, cSymbol;
+
+/**
+  Returns a new ruby symbol with the given intern value. Symbols are made
+  using the new String() constructor, and just have its klass and method
+  table reassigned. This makes dealing with strings/symbols internally
+  easier as both can be used as a string within opal.
+
+  @param {String} intern Symbol value
+  @return {RSymbol} symbol
+*/
+var intern = Rt.Y = function(intern) {
+  if (symbol_table.hasOwnProperty(intern)) {
+    return symbol_table[intern];
+  }
+
+  var res = new String(intern);
+  res.$klass = cSymbol;
+  res.$m = cSymbol.$m_tbl;
+  res.$flags = T_OBJECT | T_SYMBOL;
+  symbol_table[intern] = res;
+  return res;
+};
+
+
+var cIO, stdin, stdout, stderr;
+
+function stdio_getter(id) {
+  switch (id) {
+    case "$stdout":
+      return stdout;
+    case "$stdin":
+      return stdin;
+    case "$stderr":
+      return stderr;
+    default:
+      raise(eRuntimeError, "stdout_setter being used for bad variable");
+  }
+};
+
+function stdio_setter(id, value) {
+  raise(eException, "stdio_setter cannot currently set stdio variables");
+
+  switch (id) {
+    case "$stdout":
+      return stdout = value;
+    case "$stdin":
+      return stdin = value;
+    case "$stderr":
+      return stderr = value;
+    default:
+      raise(eRuntimeError, "stdout_setter being used for bad variable: " + id);
+  }
+};
+
+Rt.re = function(re) {
+  var regexp = new cRegexp.allocator();
+  regexp.$re = re;
+  return regexp;
+};
+
+var cProc;
+
+/**
+  Block passing - holds current block for runtime
+
+  f: function
+  p: proc
+  y: yield error
+*/
+var block = Rt.P = {
+  f: null,
+  p: null,
+  y: function() {
+    throw new Error("LocalJumpError - no block given");
+  }
+};
+
+block.y.$proc = [block.y];
+
+/**
+  Turns the given proc/function into a lambda. This is useful for the
+  Proc#lambda method, but also for blocks that are turned into
+  methods, in Module#define_method, for example. Lambdas and methods
+  from blocks are the same thing. Lambdas basically wrap the passed
+  block function and perform stricter arg checking to make sure the
+  right number of args are passed. Procs are liberal in their arg
+  checking, and simply turned ommited args into nil. Lambdas and
+  methods MUST check args and throw an error if the wrong number are
+  given. Also, lambdas/methods must catch return statements as lambdas
+  capture returns.
+
+  FIXME: wrap must detect if we are the receiver of a block, and fix
+  the block to send it to the proc.
+
+  FIXME: need to be strict on checking proc arity
+
+  FIXME: need to catch return statements which may be thrown.
+
+  @param {Function} proc The proc/function to lambdafy.
+  @return {Function} Wrapped lambda function.
+*/
+Rt.lambda = function(proc) {
+  if (proc.$lambda) return proc;
+
+  var wrap = function() {
+    var args = Array.prototype.slice.call(arguments, 0);
+    return proc.apply(null, args);
+  };
+
+  wrap.$lambda = true;
+  wrap.$proc = proc.$proc;
+
+  return Rt.proc(wrap);
+};
+
+var cRange;
+
+/**
+  Returns a new ruby range. G for ranGe.
+*/
+Rt.G = function(beg, end, exc) {
+  var range = new RObject(cRange, T_OBJECT);
+  range.$beg = beg;
+  range.$end = end;
+  range.$exc = exc;
+  return range;
+};
+
+Rt.A = function(objs) {
+  var arr = new cArray.allocator();
+  arr.splice.apply(arr, [0, 0].concat(objs));
+  return arr;
+};
+
+var puts = function(str) {
+  console.log(str);
+};
+
+/**
+  Main init method. This is called once this file has fully loaded. It setups
+  all the core objects and classes and required runtime features.
+*/
+function init() {
+  if (typeof OPAL_DEBUG != "undefined" && OPAL_DEBUG) {
+    init_debug();
+  }
+
+  var metaclass;
+
+  Rt.BasicObject = cBasicObject = boot_defrootclass('BasicObject');
+  Rt.Object = cObject = boot_defclass('Object', cBasicObject);
+  Rt.Module = cModule = boot_defclass('Module', cObject);
+  Rt.Class = cClass = boot_defclass('Class', cModule);
+
+  const_set(cObject, 'BasicObject', cBasicObject);
+
+  metaclass = make_metaclass(cBasicObject, cClass);
+  metaclass = make_metaclass(cObject, metaclass);
+  metaclass = make_metaclass(cModule, metaclass);
+  metaclass = make_metaclass(cClass, metaclass);
+
+  boot_defmetametaclass(cModule, metaclass);
+  boot_defmetametaclass(cObject, metaclass);
+  boot_defmetametaclass(cBasicObject, metaclass);
+
+  mKernel = Rt.Kernel = define_module('Kernel');
+
+  top_self = obj_alloc(cObject);
+  Rt.top = top_self;
+
+  cNilClass = define_class('NilClass', cObject);
+  Rt.Qnil = Qnil = obj_alloc(cNilClass);
+  Qnil.$r = false;
+
+  cTrueClass = define_class('TrueClass', cObject);
+  Rt.Qtrue = Qtrue = obj_alloc(cTrueClass);
+
+  cFalseClass = define_class('FalseClass', cObject);
+  Rt.Qfalse = Qfalse = obj_alloc(cFalseClass);
+  Qfalse.$r = false;
+
+  cArray = bridge_class(Array.prototype,
+    T_OBJECT | T_ARRAY, 'Array', cObject);
+
+  Function.prototype.$hash = function() {
+    return this.$id || (this.$id = yield_hash());
+  };
+
+  cHash = define_class('Hash', cObject);
+
+  cNumeric = bridge_class(Number.prototype,
+    T_OBJECT | T_NUMBER, 'Numeric', cObject);
+
+  cString = bridge_class(String.prototype,
+    T_OBJECT | T_STRING, 'String', cObject);
+
+  cSymbol = define_class('Symbol', cObject);
+
+  cProc = bridge_class(Function.prototype,
+    T_OBJECT | T_PROC, 'Proc', cObject);
+
+  Function.prototype.$hash = function() {
+    return this.$id || (this.$id = yield_hash());
+  };
+
+  cRange = define_class('Range', cObject);
+
+  cRegexp = bridge_class(RegExp.prototype,
+    T_OBJECT, 'Regexp', cObject);
+
+  cMatch = define_class('MatchData', cObject);
+  define_hooked_variable('$~', regexp_match_getter, gvar_readonly_setter);
+
+  eException = bridge_class(Error.prototype, T_OBJECT, 'Exception', cObject);
+
+  eStandardError = define_class("StandardError", eException);
+  eRuntimeError = define_class("RuntimeError", eException);
+  eLocalJumpError = define_class("LocalJumpError", eStandardError);
+  Rt.TypeError = eTypeError = define_class("TypeError", eStandardError);
+
+  eNameError = define_class("NameError", eStandardError);
+  eNoMethodError = define_class('NoMethodError', eNameError);
+  eArgError = define_class('ArgumentError', eStandardError);
+
+  eScriptError = define_class('ScriptError', eException);
+  eLoadError = define_class('LoadError', eScriptError);
+
+  eIndexError = define_class("IndexError", eStandardError);
+  eKeyError = define_class("KeyError", eIndexError);
+  eRangeError = define_class("RangeError", eStandardError);
+
+  eBreakInstance = new Error();
+  eBreakInstance['@message'] = "unexpected break";
+  block.b = eBreakInstance;
+  // dont need this anymore???
+  eBreakInstance.$keyword = 2;
+
+  eReturnInstance = new Error();
+  eReturnInstance.$klass = eLocalJumpError;
+  eReturnInstance.$keyword = 1;
+
+  eNextInstance = new Error();
+  eNextInstance.$klass = eLocalJumpError;
+  eNextInstance.$keyword = 3;
+
+  // need to do this after we make symbol
+  Rt.ds(cClass, 'new', class_s_new);
+
+  cIO = define_class('IO', cObject);
+  stdin = obj_alloc(cIO);
+  stdout = obj_alloc(cIO);
+  stderr = obj_alloc(cIO);
+
+  const_set(cObject, 'STDIN', stdin);
+  const_set(cObject, 'STDOUT', stdout);
+  const_set(cObject, 'STDERR', stderr);
+
+  define_hooked_variable('$stdin', stdio_getter, stdio_setter);
+  define_hooked_variable('$stdout', stdio_getter, stdio_setter);
+  define_hooked_variable('$stderr', stdio_getter, stdio_setter);
+
+  define_hooked_variable('$:', load_path_getter, gvar_readonly_setter);
+  define_hooked_variable('$LOAD_PATH', load_path_getter, gvar_readonly_setter);
+
+  Op.loader = new Loader(Op);
+  Op.cache = {};
+
+  // const_set(cObject, 'RUBY_ENGINE', Op.platform.engine);
+  const_set(cObject, 'RUBY_ENGINE', 'opal-gem');
+
+  puts = function(str) {
+    top_self.$m.puts(top_self, str);
+  };
+
+};
+
+/**
+  Symbol table. All symbols are stored here.
+*/
+var symbol_table = { };
+
+function class_s_new(cls, sup) {
+  var klass = define_class_id("AnonClass", sup || cObject);
+  return klass;
+};
+
+/**
+  Every class in opal is an instance of RClass
+
+  @param {RClass} klass
+  @param {RClass} superklass
+*/
+var RClass = Rt.RClass = function(klass, superklass) {
+  this.$id = yield_hash();
+  this.$super = superklass;
+
+  if (superklass) {
+    var mtor = function() {};
+    mtor.prototype = new superklass.$m_tor();
+    this.$m_tbl = mtor.prototype;
+    this.$m_tor = mtor;
+
+    var cctor = function() {};
+    cctor.prototype = superklass.$c_prototype;
+
+    var c_tor = function(){};
+    c_tor.prototype = new cctor();
+
+    this.$c = new c_tor();
+    this.$c_prototype = c_tor.prototype;
+  }
+  else {
+    var mtor = function() {};
+    this.$m_tbl = mtor.prototype;
+    this.$m_tor = mtor;
+
+    var ctor = function() {};
+    this.$c = new ctor();
+    this.$c_prototype = ctor.prototype;
+  }
+
+  this.$method_table = {};
+  this.$const_table = {};
+
+  return this;
+};
+
+// RClass prototype for minimizing
+var Rp = RClass.prototype;
+
+/**
+  Every RClass instance is just a T_CLASS.
+*/
+Rp.$flags = T_CLASS;
+
+/**
+  RClass truthiness
+*/
+Rp.$r = true;
+
+/**
+  Every object in opal (except toll free objects) are instances of RObject
+
+  @param {RClass} klass
+*/
+var RObject = Rt.RObject = function(klass) {
+  this.$id = yield_hash();
+  this.$klass = klass;
+  this.$m = klass.$m_tbl;
+  return this;
+};
+
+// For minimizing
+var Bp = RObject.prototype;
+
+/**
+  Every RObject is a T_OBJECT
+*/
+Bp.$flags = T_OBJECT;
+
+/**
+  RObject truthiness
+*/
+Bp.$r = true;
+
+/**
+  The hash of all objects and classes is sinple its id
+*/
+Bp.$hash = Rp.$hash = function() {
+  return this.$id;
+};
+
+/**
+  Like boot_defclass but for root object only (i.e. BasicObject)
+*/
+function boot_defrootclass(id) {
+  var cls = new RClass(null, null);
+  cls.$flags = T_CLASS;
+  name_class(cls, id);
+  const_set((cObject || cls), id, cls);
+  return cls;
+}
+
+/**
+  Boots core classes - Object, Module and Class
+*/
+function boot_defclass(id, superklass) {
+  var cls = class_boot(superklass);
+  name_class(cls, id);
+  const_set((cObject || cls), id, cls);
+  return cls;
+}
+
+function class_boot(superklass) {
+  if (superklass) {
+    var ctor = function() {};
+    ctor.prototype = superklass.constructor.prototype;
+
+    var result = function() {
+      RClass.call(this, null, superklass);
+      return this;
+    };
+    result.prototype = new ctor();
+
+    var klass = new result();
+    klass.$klass = cClass;
+    return klass;
+  }
+  else {
+    var result = new RClass(null, null);
+    return result;
+  }
+}
+
+function class_real(klass) {
+  while (klass.$flags & FL_SINGLETON) { klass = klass.$super; }
+  return klass;
+};
+
+Rt.class_real = class_real;
+
+/**
+  Name the class with the given id.
+*/
+function name_class(klass, id) {
+  klass.__classid__ = id;
+};
+
+/**
+  Make metaclass for the given class
+*/
+function make_metaclass(klass, super_class) {
+  if (klass.$flags & T_CLASS) {
+    if ((klass.$flags & T_CLASS) && (klass.$flags & FL_SINGLETON)) {
+      return make_metametaclass(klass);
+    }
+    else {
+      // FIXME this needs fixinfg to remove hacked stuff now in make_singleton_class
+      var meta = class_boot(super_class);
+      // remove this??!
+      meta.$m = meta.$klass.$m_tbl;
+      meta.$c = meta.$klass.$c_prototype;
+      meta.$flags |= FL_SINGLETON;
+      meta.__classid__ = "#<Class:" + klass.__classid__ + ">";
+      klass.$klass = meta;
+      klass.$m = meta.$m_tbl;
+      meta.$c = klass.$c;
+      singleton_class_attached(meta, klass);
+      // console.log("meta id: " + klass.__classid__);
+      return meta;
+    }
+  } else {
+    // if we want metaclass of an object, do this
+    return make_singleton_class(klass);
+  }
+};
+
+function make_singleton_class(obj) {
+  var orig_class = obj.$klass;
+  var klass = class_boot(orig_class);
+
+  klass.$flags |= FL_SINGLETON;
+
+  obj.$klass = klass;
+  obj.$m = klass.$m_tbl;
+
+  // make methods we define here actually point to instance
+  // FIXME: we could just take advantage of $bridge_prototype like we
+  // use for bridged classes?? means we can make more instances...
+  klass.$bridge_prototype = obj;
+
+  singleton_class_attached(klass, obj);
+
+  klass.$klass = class_real(orig_class).$klass;
+  klass.$m = klass.$klass.$m_tbl;
+  klass.__classid__ = "#<Class:#<" + orig_class.__classid__ + ":" + klass.$id + ">>";
+
+  return klass;
+};
+
+function singleton_class_attached(klass, obj) {
+  if (klass.$flags & FL_SINGLETON) {
+    klass.__attached__ = obj;
+  }
+};
+
+function make_metametaclass(metaclass) {
+  var metametaclass, super_of_metaclass;
+
+  if (metaclass.$klass == metaclass) {
+    metametaclass = class_boot(null);
+    metametaclass.$klass = metametaclass;
+  }
+  else {
+    metametaclass = class_boot(null);
+    metametaclass.$klass = metaclass.$klass.$klass == metaclass.$klass
+      ? make_metametaclass(metaclass.$klass)
+      : metaclass.$klass.$klass;
+  }
+
+  metametaclass.$flags |= FL_SINGLETON;
+
+  singleton_class_attached(metametaclass, metaclass);
+  metaclass.$klass = metametaclass;
+  metaclsss.$m = metametaclass.$m_tbl;
+  super_of_metaclass = metaclass.$super;
+
+  metametaclass.$super = super_of_metaclass.$klass.__attached__
+    == super_of_metaclass
+    ? super_of_metaclass.$klass
+    : make_metametaclass(super_of_metaclass);
+
+  return metametaclass;
+};
+
+function boot_defmetametaclass(klass, metametaclass) {
+  klass.$klass.$klass = metametaclass;
+};
+
+// Holds an array of all prototypes that are bridged. Any method defined on
+// Object in ruby will also be added to the bridge classes.
+var bridged_classes = [];
+
+/**
+  Define toll free bridged class
+*/
+function bridge_class(prototype, flags, id, super_class) {
+  var klass = define_class(id, super_class);
+
+  prototype.$klass = klass;
+  prototype.$m = klass.$m_tbl;
+  prototype.$flags = flags;
+  prototype.$r = true;
+
+  prototype.$hash = function() { return flags + '_' + this; };
+
+  return klass;
+};
+
+Rt.native_prototype = function(cls, proto) {
+  proto.$klass = cls;
+  proto.$m = cls.$m_tbl;
+  proto.$flags = T_OBJECT;
+  proto.$r = true;
+
+  proto.$hash = function() {
+    return this.$id || (this.$id = yield_hash());
+  };
+
+  return cls;
+};
+
+/**
+  Define a new class (normal way), with the given id and superclass. Will be
+  top level.
+*/
+function define_class(id, super_klass) {
+  return define_class_under(cObject, id, super_klass);
+};
+
+function define_class_under(base, id, super_klass) {
+  var klass;
+
+  if (const_defined(base, id)) {
+    klass = const_get(base, id);
+
+    if (!(klass.$flags & T_CLASS)) {
+      throw new Error(id + " is not a class!");
+    }
+
+    if (klass.$super != super_klass && super_klass != cObject) {
+      throw new Error("Wrong superclass given for " + id);
+    }
+
+    return klass;
+  }
+
+  klass = define_class_id(id, super_klass);
+
+  if (base == cObject) {
+    name_class(klass, id);
+  } else {
+    name_class(klass, base.__classid__ + '::' + id);
+  }
+
+  const_set(base, id, klass);
+  klass.$parent = base;
+
+  // Class#inherited hook - here is a good place to call. We check method
+  // is actually defined first (incase we are calling it during boot). We
+  // can't do this earlier as an error will cause constant names not to be
+  // set etc (this is the last place before returning back to scope).
+  if (super_klass.m$inherited) {
+    super_klass.m$inherited(klass);
+  }
+
+  return klass;
+};
+
+Rt.define_class_under = define_class_under;
+
+/**
+  Actually create class
+*/
+function define_class_id(id, super_klass) {
+  var klass;
+
+  if (!super_klass) {
+    super_klass = cObject;
+  }
+  klass = class_create(super_klass);
+  name_class(klass, id);
+  make_metaclass(klass, super_klass.$klass);
+
+  return klass;
+};
+
+function class_create(super_klass) {
+  return class_boot(super_klass);
+};
+
+/**
+  Get singleton class of obj
+*/
+function singleton_class(obj) {
+  var klass;
+
+  if (obj.$flags & T_OBJECT) {
+    if ((obj.$flags & T_NUMBER) || (obj.$flags & T_SYMBOL)) {
+      raise(eTypeError, "can't define singleton");
+    }
+  }
+
+  if ((obj.$klass.$flags & FL_SINGLETON) && obj.$klass.__attached__ == obj) {
+    klass = obj.$klass;
+  }
+  else {
+    var class_id = obj.$klass.__classid__;
+    klass = make_metaclass(obj, obj.$klass);
+  }
+
+  return klass;
+};
+
+Rt.singleton_class = singleton_class;
+
+/**
+  Define a top level module with the given id
+*/
+function define_module(id) {
+  return define_module_under(cObject, id);
+};
+
+function define_module_under(base, id) {
+  var module;
+
+  if (const_defined(base, id)) {
+    module = const_get(base, id);
+    if (module.$flags & T_MODULE) {
+      return module;
+    }
+
+    throw new Error(id + " is not a module.");
+  }
+
+  module = define_module_id(id);
+
+  if (base == cObject) {
+    name_class(module, id);
+  } else {
+    name_class(module, base.__classid__ + '::' + id);
+  }
+
+  const_set(base, id, module);
+  module.$parent = base;
+  return module;
+};
+
+function define_module_id(id) {
+  var module = class_create(cModule);
+  make_metaclass(module, cModule);
+
+  module.$flags = T_MODULE;
+  module.$included_in = [];
+  return module;
+};
+
+function mod_create() {
+  return class_boot(cModule);
+};
+
+function include_module(klass, module) {
+
+  if (!klass.$included_modules) {
+    klass.$included_modules = [];
+  }
+
+  if (klass.$included_modules.indexOf(module) != -1) {
+    return;
+  }
+  klass.$included_modules.push(module);
+
+  if (!module.$included_in) {
+    module.$included_in = [];
+  }
+
+  module.$included_in.push(klass);
+
+  for (var method in module.$method_table) {
+    if (module.$method_table.hasOwnProperty(method)) {
+      define_raw_method(klass, method,
+                        module.$m_tbl[method],
+                        module.$m_tbl['$' + method]);
+    }
+  }
+
+  for (var constant in module.$c) {
+    if (module.$c.hasOwnProperty(constant)) {
+      const_set(klass, constant, module.$c[constant]);
+    }
+  }
+};
+
+Rt.include_module = include_module;
+
+function extend_module(klass, module) {
+  if (!klass.$extended_modules) {
+    klass.$extended_modules = [];
+  }
+
+  if (klass.$extended_modules.indexOf(module) != -1) {
+    return;
+  }
+  klass.$extended_modules.push(module);
+
+  if (!module.$extended_in) {
+    module.$extended_in = [];
+  }
+
+  module.$extended_in.push(klass);
+
+  var meta = klass.$klass;
+
+  for (var method in module.$method_table) {
+    if (module.$method_table.hasOwnProperty(method)) {
+      define_raw_method(meta, method,
+                        module.$m_tbl[method],
+                        module.$m_tbl['$' + method]);
+    }
+  }
+};
+
+Rt.extend_module = extend_module;
+
+// ..........................................................
+// FILE SYSTEM
+//
+
+/**
+  FileSystem namespace. Overiden in gem and node.js contexts
+*/
+var Fs = Op.fs = {};
+
+/**
+ RegExp for splitting filenames into their dirname, basename and ext.
+ This currently only supports unix style filenames as this is what is
+ used internally when running in the browser.
+*/
+var PATH_RE = /^(.+\/(?!$)|\/)?((?:.+?)?(\.[^.]*)?)$/;
+
+/**
+  Holds the current cwd for the application.
+
+  @type {String}
+*/
+Fs.cwd = '/';
+
+/**
+  Join the given args using the default separator. The returned path
+  is not expanded.
+
+  @param {String} parts
+  @return {String}
+*/
+function fs_join(parts) {
+  parts = [].slice.call(arguments, 0);
+  return parts.join('/');
+}
+
+/**
+  Normalize the given path by removing '..' and '.' parts etc.
+
+  @param {String} path Path to normalize
+  @param {String} base Optional base to normalize with
+  @return {String}
+*/
+function fs_expand_path(path, base) {
+  if (!base) {
+    if (path.charAt(0) !== '/') {
+      base = Fs.cwd;
+    }
+    else {
+      base = '';
+    }
+  }
+
+  path = fs_join(base, path);
+
+  var parts = path.split('/'), result = [], part;
+
+  // initial /
+  if (parts[0] === '') result.push('');
+
+  for (var i = 0, ii = parts.length; i < ii; i++) {
+    part = parts[i];
+
+    if (part == '..') {
+      result.pop();
+    }
+    else if (part == '.' || part == '') {
+
+    }
+    else {
+      result.push(part);
+    }
+  }
+
+  return result.join('/');
+}
+
+/**
+  Return all of the path components except the last one.
+
+  @param {String} path
+  @return {String}
+*/
+var fs_dirname = Fs.dirname = function(path) {
+  var dirname = PATH_RE.exec(path)[1];
+
+  if (!dirname) return '.';
+  else if (dirname === '/') return dirname;
+  else return dirname.substring(0, dirname.length - 1);
+};
+
+/**
+  Returns the file extension of the given `file_name`.
+
+  @param {String} file_name
+  @return {String}
+*/
+Fs.extname = function(file_name) {
+  var extname = PATH_RE.exec(file_name)[3];
+
+  if (!extname || extname === '.') return '';
+  else return extname;
+};
+
+Fs.exist_p = function(path) {
+  return opal.loader.factories[file_expand_path(path)] ? true : false;
+};
+
+/**
+  Glob
+*/
+Fs.glob = function() {
+  var globs = [].slice.call(arguments);
+
+  var result = [], files = opal.loader.factories;
+
+  for (var i = 0, ii = globs.length; i < ii; i++) {
+    var glob = globs[i];
+
+    var re = fs_glob_to_regexp(glob);
+    // console.log("glob: " + glob);
+    // console.log("re  : " + re);
+
+    for (var file in files) {
+      if (re.exec(file)) {
+        result.push(file);
+      }
+    }
+  }
+
+  return result;
+};
+
+/**
+  Turns a glob string into a regexp
+*/
+function fs_glob_to_regexp(glob) {
+  if (typeof glob !== 'string') {
+    throw new Error("file_glob_to_regexp: glob must be a string");
+  }
+
+  // make sure absolute
+  glob = fs_expand_path(glob);
+  // console.log("full glob is: " + glob);
+  
+  var parts = glob.split(''), length = parts.length, result = '';
+
+  var opt_group_stack = 0;
+
+  for (var i = 0; i < length; i++) {
+    var cur = parts[i];
+
+    switch (cur) {
+      case '*':
+        if (parts[i + 1] == '*') {
+          result += '.*';
+          i++;
+        }
+        else {
+          result += '[^/]*';
+        }
+        break;
+
+      case '.':
+        result += '\\';
+        result += cur;
+        break;
+
+      case ',':
+        if (opt_group_stack) {
+          result += '|';
+        }
+        else {
+          result += ',';
+        }
+        break;
+
+      case '{':
+        result += '(';
+        opt_group_stack++;
+        break;
+
+      case '}':
+        if (opt_group_stack) {
+          result += ')';
+          opt_group_stack--;
+        }
+        else {
+          result += '}'
+        }
+        break;
+
+      default:
+        result += cur;
+    }
+  }
+
+  return new RegExp('^' + result + '$');
+};
+
+
+/**
+  Valid file extensions opal can load/run
+*/
+var load_extensions = {};
+
+load_extensions['.js'] = function(loader, path) {
+  var source = loader.file_contents(path);
+  return load_execute_file(loader, source, path);
+};
+
+load_extensions['.rb'] = function(loader, path) {
+  var source = loader.ruby_file_contents(path);
+  return load_execute_file(loader, source, path);
+};
+
+/**
+  Require a file by its given lib path/id, or a full path.
+
+  @param {String} id lib path/name
+  @return {Boolean}
+*/
+var load_require = Op.require = Rt.require = function(lib) {
+  var resolved = Op.loader.resolve_lib(lib);
+  var cached = Op.cache[resolved];
+
+  // If we have a cache for this require then it has already been
+  // required. We return false to indicate this.
+  if (cached) return false;
+
+  Op.cache[resolved] = true;
+
+  // try/catch wrap entire file load?
+  load_file(Op.loader, resolved);
+
+  return true;
+};
+
+/**
+  Sets the primary 'gem', by name, so we know which cwd to use etc.
+  This can be changed at anytime, but it is only really recomended
+  before the application is run.
+
+  Also, if a gem with the given name cannot be found, then an error
+  will/should be thrown.
+
+  @param {String} name The root gem name to use
+*/
+Op.primary = function(name) {
+  Fs.cwd = '/' + name;
+};
+
+/**
+  Just go ahead and run the given block of code. The passed function
+  should rake the usual runtime, self and file variables which it will
+  be passed.
+
+  @param {Function} body
+*/
+Op.run = function(body) {
+  var res = Qnil;
+
+  if (typeof body != 'function') {
+    throw new Error("Expected body to be a function");
+  }
+
+  try {
+    res = body(Rt, Rt.top, "(opal)");
+  }
+  catch (exc) {
+    var exc, stack;
+
+    if (exc && exc['@message']) {
+      puts(exc.$klass.__classid__ + ': ' + exc['@message']);
+    }
+    else {
+      puts('NativeError: ' + exc.message);
+    }
+
+    // first try (if in debug mode...)
+    if (typeof OPAL_DEBUG != 'undefined') {
+      puts(stack);
+      Db.stack = [];
+    }
+    else if (stack = exc.stack) {
+      puts(stack);
+    }
+  }
+  return res;
+};
+
+/**
+  Register a lib or gem with the given info. If info is an object then
+  a gem will be registered with the object represented a JSON version
+  of the gemspec for the gem. If the info is simply a function (or
+  string?) then a singular lib will be registerd with the function as
+  its body.
+
+  @param {String} name The lib/gem name
+  @param {Object, Function} info
+*/
+Op.register = function(name, info) {
+  // make sure name is useful
+  if (typeof name !== 'string') {
+    throw new Error("Cannot register a lib without a proper name");
+  }
+
+  // registering a lib/file?
+  if (typeof info === 'string' || typeof info === 'function') {
+    load_register_lib(name, info);
+  }
+  // registering a gem?
+  else if (typeof info === 'object') {
+    load_register_gem(name, info);
+  }
+  // something has gone wrong..
+  else {
+    throw new Error("Invalid gem/lib data for '" + name + "'");
+  }
+};
+
+/**
+  Actually register a predefined gem. This is for the browser context
+  where gems can be serialized into JSON and defined before hand.
+
+  @param {String} name Gem name
+  @param {Object} info Serialized gemspec
+*/
+function load_register_gem(name, info) {
+  var factories = Op.loader.factories,
+      paths     = Op.loader.paths;
+
+  // register all lib files
+  var files = info.files || {};
+
+  // root dir for gem is '/gem_name'
+  var root_dir = '/' + name;
+
+  // for now assume './lib' as dir for all libs (should be dynamic..)
+  var lib_dir = './lib';
+
+  // add lib dir to paths
+  paths.unshift(fs_expand_path(fs_join(root_dir, lib_dir)));
+
+  for (var file in files) {
+    if (files.hasOwnProperty(file)) {
+      var file_path = fs_expand_path(fs_join(root_dir, file));
+      factories[file_path] = files[file];
+    }
+  }
+
+  // register other info? (version etc??)
+}
+
+/**
+  Register a single lib/file in browser before its needed. These libs
+  are added to top level dir '/lib_name.rb'
+
+  @param {String} name Lib name
+  @param {Function, String} factory
+*/
+function load_register_lib(name, factory) {
+  var path = '/' + name;
+  Op.loader.factories[path] = factory;
+}
+
+/**
+  The loader is the core machinery used for loading and executing libs
+  within opal. An instance of opal will have a `.loader` property which
+  is an instance of this Loader class. A Loader is responsible for
+  finding, opening and reading contents of libs on disk. Within the
+  browser a loader may use XHR requests or cached libs defined by JSON
+  to load required libs/gems.
+
+  @constructor
+  @param {opal} opal Opal instance to use
+*/
+function Loader(opal) {
+  this.opal = opal;
+  this.paths = ['', '/lib'];
+  this.factories = {};
+  return this;
+}
+
+// For minimizing
+var Lp = Loader.prototype;
+
+/**
+  The paths property is an array of disk paths in which to search for
+  required modules. In the browser this functionality isn't really used.
+
+  This array is created within the constructor method for uniqueness
+  between instances for correct sandboxing.
+*/
+Lp.paths = null;
+
+/**
+  factories of registered packages, paths => function/string. This is
+  generic, but in reality only the browser uses this, and it is treated
+  as the mini filesystem. Not just factories can go here, anything can!
+  Images, text, json, whatever.
+*/
+Lp.factories = {};
+
+/**
+  Resolves the path to the lib, which can then be used to load. This
+  will throw an error if the module cannot be found. If this method
+  returns a successful path, then subsequent methods can assume that
+  the path exists.
+
+  @param {String} lib The lib name/path to look for
+  @return {String}
+*/
+Lp.resolve_lib = function(lib) {
+  var resolved = this.find_lib(lib, this.paths);
+
+  if (!resolved) {
+    throw new Error("LoadError: no such file to load -- " + lib);
+  }
+
+  return resolved;
+};
+
+/**
+  Locates the lib/file using the given paths.
+
+  @param {String} lib The lib path/file to look for
+  @param {Array} paths Load paths to use
+  @return {String} Located path
+*/
+Lp.find_lib = function(id, paths) {
+  var extensions = this.valid_extensions, factories = this.factories, candidate;
+
+  for (var i = 0, ii = extensions.length; i < ii; i++) {
+    for (var j = 0, jj = paths.length; j < jj; j++) {
+      candidate = fs_join(paths[j], id + extensions[i]);
+
+      if (factories[candidate]) {
+        return candidate;
+      }
+    }
+  }
+
+  // try full path (we try to load absolute path!)
+  if (factories[id]) {
+    return id;
+  }
+
+  // try full path with each extension
+  for (var i = 0; i < extensions.length; i++) {
+    candidate = id + extensions[i];
+    if (factories[candidate]) {
+      return candidate;
+    }
+  }
+
+  // try each path with no extension (if id already has extension)
+  for (var i = 0; i < paths.length; i++) {
+    candidate = fs_join(paths[j], id);
+
+    if (factories[candidate]) {
+      return candidate;
+    }
+  }
+
+  return null;
+};
+
+/**
+  Valid factory format for use in require();
+*/
+Lp.valid_extensions = ['.js', '.rb'];
+
+/**
+  Get lib contents for js files
+*/
+Lp.file_contents = function(path) {
+  return this.factories[path];
+};
+
+Lp.ruby_file_contents = function(path) {
+  return this.factories[path];
+};
+
+/**
+  Actually run file with resolved name.
+
+  @param {Loader} loader
+  @param {String} path
+*/
+function load_file(loader, path) {
+  var ext = load_extensions[PATH_RE.exec(path)[3] || '.js'];
+
+  if (!ext) {
+    throw new Error("load_run_file - Bad extension for resolved path");
+  }
+
+  ext(loader, path);
+}
+
+/**
+  Run content which must now be javascript. Arguments we pass to func
+  are:
+
+    $rb
+    top_self
+    filename
+
+  @param {String, Function} content
+  @param {String} path
+*/
+function load_execute_file(loader, content, path) {
+  var args = [Rt, top_self, path];
+
+  if (typeof content === 'function') {
+    return content.apply(Op, args);
+
+  } else if (typeof content === 'string') {
+    var func = loader.wrap(content, path);
+    return func.apply(Op, args);
+
+  } else {
+    throw new Error(
+      "Loader.execute - bad content sent for '" + path + "'");
+  }
+}
+
+/**
+  Getter method for getting the load path for opal.
+
+  @param {String} id The globals id being retrieved.
+  @return {Array} Load paths
+*/
+function load_path_getter(id) {
+  return Rt.A(opal.loader.paths);
+}
+
+/**
+  Getter method to get all loaded features.
+
+  @param {String} id Feature global id
+  @return {Array} Loaded features
+*/
+function loaded_feature_getter(id) {
+  return loaded_features;
+}
+
+function obj_require(obj, path) {
+  return Rt.require(path) ? Qtrue : Qfalse;
+}
+
+// ..........................................................
+// Debug Mode
+//
+
+var Db = {};
+
+function init_debug() {
+  // replace define method with our wrapped version
+  var old_dm = Rt.dm;
+
+  Rt.dm = function(klass, name, public_body, arity) {
+    var debug_body = function() {
+      var res, len = arguments.length, arity = debug_body.$rbArity;
+
+      if (arity >= 0) {
+        if (arity != len - 1) {
+          raise(eArgError, "wrong number of arguments(" + (len - 1) + " for " + arity + ")");
+        }
+      }
+      else {
+        if ((-arity - 1) > len) {
+          console.log("raising for " + name + " " + len + " for " + arity);
+          raise(eArgError, "wrong number of arguments(" + len + " for " + arity + ")");
+        }
+      }
+
+      // push call onto stack
+      Db.push(klass, arguments[0], name, Array.prototype.slice.call(arguments, 1));
+
+      // check for block and pass it on
+      if (block.f == arguments.callee) {
+        block.f = public_body
+      }
+
+      res = public_body.apply(this, [].slice.call(arguments));
+
+      Db.pop();
+
+      return res;
+    };
+
+    public_body.$rbWrap = debug_body;
+
+    return old_dm(klass, name, debug_body, arity);
+  };
+
+  // replace super handler with wrapped version
+  var old_super = Rt.S;
+
+  Rt.S = function(callee, self, args) {
+    return old_super(callee.$rbWrap, self, args);
+  };
+
+  // stack trace - chrome/v8/gem/node support
+  if (Error.prepareStackTrace) {
+
+  }
+  else {
+
+  }
+};
+
+
+Db.stack = [];
+
+Db.push = function(klass, object, method) {
+  this.stack.push({ klass: klass, object: object, method: method });
+};
+
+Db.pop = function() {
+  this.stack.pop();
+};
+
+// Returns string
+Db.backtrace = function() {
+  var trace = [], stack = this.stack, frame;
+
+  for (var i = stack.length - 1; i >= 0; i--) {
+    frame = stack[i];
+    trace.push("\tfrom " + frame.klass.$m.inspect(frame.klass) + '#' + frame.method);
+  }
+
+  return trace.join("\n");
+};
+
+init();
+
+})();
+
+// if in a commonjs system already (node etc), exports become our opal
+// object. Otherwise, in the browser, we just get a top level opal var
+if ((typeof require !== 'undefined') && (typeof module !== 'undefined')) {
+  module.exports = opal;
+}
+opal.register('core.rb', function($rb, self, __FILE__) { function $$(){$class(self, nil, 'Module', function(self) {
+
+  $defn(self, 'private', function(self, args) {args = [].slice.call(arguments, 1);
+    $rb.private_methods(self, args);
+    return self;
+  }, -1);
+
+  $defn(self, 'public', function(self, args) {args = [].slice.call(arguments, 1);
+    $rb.public_methods(self, args);
+    return self;
+  }, -1);
+
+  $defn(self, 'include', function(self, mods) {var __a;mods = [].slice.call(arguments, 1);
+    var i = mods.length - 1, mod;
+    while (i >= 0) {
+      mod = mods[i];
+      (__a = mod).$m.append_features(__a, self);
+      (__a = mod).$m.included(__a, self);
+      i--;
+    }
+    return self;
+  }, -1);
+
+  $defn(self, 'append_features', function(self, mod) {
+    $rb.include_module(mod, self);
+    return self;
+  }, 1);
+
+  return $defn(self, 'included', function(self, mod) {
+    return nil;
+  }, 1);
+}, 0);
+
+$class(self, nil, 'Kernel', function(self) {var __a;
+  self.$m.$private(self);
+
+
+
+
+
+
+  $defn(self, 'require', function(self, path) {
+    $rb.require(path) ? Qtrue : Qfalse;
+    return Qtrue;
+  }, 1);
+
+
+
+
+
+  return $defn(self, 'puts', function(self, a) {var __a;a = [].slice.call(arguments, 1);
+    (__a = $rb.gg('$stdout')).$m.puts.apply(nil, [__a].concat(a));
+    return nil;
+  }, -1);
+}, 2);
+
+$class($rb.gg('$stdout'), nil, nil, function(self) {
+
+
+
+  return $defn(self, 'puts', function(self, a) {var __a;a = [].slice.call(arguments, 1);
+    for (var i = 0, ii = a.length; i < ii; i++) {
+      console.log((__a = a[i]).$m.to_s(__a).toString());
+    }
+    return nil;
+  }, -1);
+}, 1);
+
+$class(self, nil, 'Object', function(self) { var __a;
+  return self.$m.$include(self, $cg(self, 'Kernel'));
+}, 0);
+
+$class(self, nil, 'Symbol', function(self) {
+  return $defn(self, 'to_s', function(self) {
+    return self.toString();
+  }, 0);
+}, 0);
+
+$class(self, nil, 'String', function(self) {
+  return $defn(self, 'to_s', function(self) {
+    return self.toString();
+  }, 0);
+}, 0);
+
+self.$m.$require(self, 'core/basic_object');
+self.$m.$require(self, 'core/object');
+self.$m.$require(self, 'core/module');
+self.$m.$require(self, 'core/class');
+self.$m.$require(self, 'core/kernel');
+self.$m.$require(self, 'core/top_self');
+self.$m.$require(self, 'core/nil_class');
+self.$m.$require(self, 'core/true_class');
+self.$m.$require(self, 'core/false_class');
+self.$m.$require(self, 'core/enumerable');
+self.$m.$require(self, 'core/array');
+self.$m.$require(self, 'core/numeric');
+self.$m.$require(self, 'core/hash');
+self.$m.$require(self, 'core/error');
+self.$m.$require(self, 'core/string');
+self.$m.$require(self, 'core/symbol');
+self.$m.$require(self, 'core/proc');
+self.$m.$require(self, 'core/range');
+self.$m.$require(self, 'core/regexp');
+self.$m.$require(self, 'core/match_data');
+self.$m.$require(self, 'core/file');
+self.$m.$require(self, 'core/dir');
+
+var platform = opal.platform;
+$rb.cs(self, 'RUBY_PLATFORM', platform.platform);
+$rb.cs(self, 'RUBY_ENGINE', platform.engine);
+$rb.cs(self, 'RUBY_VERSION', platform.version);
+
+return $rb.cs(self, 'ARGV', platform.argv);
+}
+var __a;var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;$rb.mm(['append_features', 'included', 'private', 'puts', 'to_s', 'include', 'require']);return $$();
+ });
+opal.register('core/array.rb', function($rb, self, __FILE__) { function $$(){return $class(self, nil, 'Array', function(self) { var __a;
+
+
+
+
+
+
+
+
+
+
+  $defs(self, '[]', function(self, objs) {var __a;objs = [].slice.call(arguments, 1);
+    var ary = self.$m.$allocate(self);
+    ary.splice.apply(ary, [0, 0].concat(objs));
+    return ary;
+  }, -1);
+
+  $defs(self, 'allocate', function(self) {
+    var arr = [];
+    arr.$klass = self;
+    arr.$m = self.$m_tbl;
+    return arr;
+  }, 0);
+
+  $defn(self, 'initialize', function(self, len, fill) {if (fill == undefined) {fill = nil;}
+    var ary = self;
+
+    for (var i = 0; i < len; i++) {
+      ary[i] = fill;
+    }
+
+    ary.length = len;
+
+    return self;
+  }, -2);
+
+
+
+
+
+  $defn(self, 'inspect', function(self) {var __a;
+    var description = [];
+
+    for (var i = 0, length = self.length; i < length; i++) {
+      description.push((__a = self[i]).$m.inspect(__a));
+    }
+
+    return '[' + description.join(', ') + ']';
+  }, 0);
+
+
+
+  $defn(self, 'to_s', function(self) {var __a;
+    var description = [];
+
+    for (var i = 0, length = self.length; i < length; i++) {
+      description.push((__a = self[i]).$m.to_s(__a));
+    }
+
+    return description.join('');
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '<<', function(self, obj) {
+    self.push(obj);
+    return self;
+  }, 1);
+
+
+
+
+
+
+
+
+
+  $defn(self, 'length', function(self) {
+    return self.length;
+  }, 0);
+
+  self.$m.$alias_method(self, $symbol_1, $symbol_2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'each', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    if(!(($yy == $y.y ? Qfalse : Qtrue)).$r) {self.$m.$raise(self, "Array#each no block given")};
+
+    for (var i = 0, len = self.length; i < len; i++) {
+    if ($yy($ys, self[i]) == $yb) { return $yb.$value; };
+    }
+    return self;
+  }, 0);
+
+
+
+  $defn(self, 'each_with_index', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    if(!(($yy == $y.y ? Qfalse : Qtrue)).$r) {self.$m.$raise(self, "Array#each_with_index no block given")};
+
+    for (var i = 0, len = self.length; i < len; i++) {
+      ((__a = $yy($ys, self[i], i)) == $yb ? $break() : __a);
+    }
+    return self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'each_index', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    if(!(($yy == $y.y ? Qfalse : Qtrue)).$r) {self.$m.$raise(self, "Array#each_index no block given")};
+
+    for (var i = 0, len = self.length; i < len; i++) {
+    if ($yy($ys, i) == $yb) { return $yb.$value; };
+    }
+    return self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'push', function(self, objs) {objs = [].slice.call(arguments, 1);
+    for (var i = 0, ii = objs.length; i < ii; i++) {
+      self.push(objs[i]);
+    }
+    return self;
+  }, -1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'index', function(self, obj) {var __a;
+    for (var i = 0, len = self.length; i < len; i++) {
+      if ((__a = self[i]).$m['=='](__a, obj).$r) {
+        return i;
+      }
+    }
+
+    return nil;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '+', function(self, other) {
+    return self.slice(0).concat(other.slice());
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '-', function(self, other) {var __a;
+    return self.$m.$raise(self, "Array#- not yet implemented");
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '==', function(self, other) {var __a;
+    if (self.$hash() == other.$hash()) return Qtrue;
+    if (self.length != other.length) return Qfalse;
+
+    for (var i = 0; i < self.length; i++) {
+      if (!(__a = self[i]).$m['=='](__a, other[i]).$r) {
+        return Qfalse;
+      }
+    }
+
+    return Qtrue;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'assoc', function(self, obj) {var __a;
+    var arg;
+
+    for (var i = 0; i < self.length; i++) {
+      arg = self[i];
+
+      if (arg.length && (__a = arg[0]).$m['=='](__a, obj).$r) {
+        return arg;
+      }
+    }
+
+    return nil;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'at', function(self, idx) {
+    if (idx < 0) idx += self.length;
+
+    if (idx < 0 || idx >= self.length) return nil;
+    return self[idx];
+  }, 1);
+
+
+
+
+
+
+
+
+
+  $defn(self, 'clear', function(self) {
+    self.splice(0);
+    return self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'select', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    var result = [], arg;
+
+    for (var i = 0, ii = self.length; i < ii; i++) {
+      arg = self[i];
+
+      if (((__a = $yy($ys, arg)) == $yb ? $break() : __a).$r) {
+        result.push(arg);
+      }
+    }
+
+    return result;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'collect', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    if(!(($yy == $y.y ? Qfalse : Qtrue)).$r) {self.$m.$raise(self, "Array#collect no block given")};
+
+    var result = [];
+
+    for (var i = 0, ii = self.length; i < ii; i++) {
+      result.push(((__a = $yy($ys, self[i])) == $yb ? $break() : __a));
+    }
+
+    return result;
+  }, 0);
+
+  self.$m.$alias_method(self, $symbol_3, $symbol_4);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'collect!', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    for (var i = 0, ii = self.length; i < ii; i++) {
+      self[i] = ((__a = $yy($ys, self[i])) == $yb ? $break() : __a);
+    }
+
+    return self;
+  }, 0);
+
+
+  $defn(self, 'dup', function(self) {
+    return self.slice(0);
+  }, 0);
+
+
+
+
+
+
+
+
+
+  $defn(self, 'compact', function(self) {
+    var result = [], length = self.length;
+
+    for (var i = 0; i < length; i++) {
+      if (self[i] != nil) {
+        result.push(self[i]);
+      }
+    }
+
+    return result;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'compact!', function(self) {
+    var length = self.length;
+
+    for (var i = 0; i < length; i++) {
+      if (self[i] == nil) {
+        self.splice(i, 1);
+        i--;
+      }
+    }
+
+    return length == self.length ? nil : self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'concat', function(self, other) {
+    var length = other.length;
+
+    for (var i = 0; i < length; i++) {
+      self.push(other[i]);
+    }
+
+    return self;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'count', function(self, obj) {var __a;
+    if (obj != undefined) {
+      var total = 0;
+
+      for (var i = 0; i < self.length; i++) {
+        if ((__a = self[i]).$m['=='](__a, obj).$r) {
+          total++;
+        }
+      }
+
+      return total;
+    } else {
+      return self.length;
+    }
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'delete', function(self, obj) {var __a;
+    var length = self.length;
+
+    for (var i = 0; i < self.length; i++) {
+      if ((__a = self[i]).$m['=='](__a, obj).$r) {
+        self.splice(i, 1);
+        i--;
+      }
+    }
+
+    return length == self.length ? nil : obj;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'delete_at', function(self, idx) {
+    if (idx < 0) idx += self.length;
+    if (idx < 0 || idx >= self.length) return nil;
+    var res = self[idx];
+    self.splice(idx, 1);
+    return self;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'delete_if', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    for (var i = 0, ii = self.length; i < ii; i++) {
+      if (((__a = $yy($ys, self[i])) == $yb ? $break() : __a).$r) {
+        self.splice(i, 1);
+        i--;
+        ii = self.length;
+      }
+    }
+    return self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'drop', function(self, n) {
+    if (n > self.length) return [];
+    return self.slice(n);
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'drop_while', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    for (var i = 0; i < self.length; i++) {
+      if (!((__a = $yy($ys, self[i])) == $yb ? $break() : __a).$r) {
+        return self.slice(i);
+      }
+    }
+
+    return [];
+  }, 0);
+
+
+
+
+
+
+
+
+
+  $defn(self, 'empty?', function(self) {
+    return self.length == 0 ? Qtrue : Qfalse;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'fetch', function(self, idx, defaults) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    var original = idx;
+
+    if (idx < 0) idx += self.length;
+    if (idx < 0 || idx >= self.length) {
+      if (defaults == undefined)
+        return rb_raise("Index Error: Array#fetch");
+      else if (__block__)
+        return ((__a = $yy($ys, original)) == $yb ? $break() : __a);
+      else
+        return defaults;
+    }
+
+    return self[idx];
+  }, 2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'first', function(self, count) {if (count == undefined) {count = nil;}
+    if (count == nil) {
+      if (self.length == 0) return nil;
+      return self[0];
+    }
+    return self.slice(0, count);
+  }, -1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'flatten', function(self, level) {var __a;if (level == undefined) {level = nil;}
+    var result = [], item;
+
+    for (var i = 0; i < self.length; i++) {
+      item = self[i];
+
+      if (item.hasOwnProperty('length')) {
+        if (level == nil)
+          result = result.concat((__a = item).$m.flatten(__a));
+        else if (level == 0)
+          result.push(item);
+        else
+          result = result.concat((__a = item).$m.flatten(__a, level - 1));
+      } else {
+        result.push(item);
+      }
+    }
+
+    return result;
+  }, -1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'flatten!', function(self, level) {var __a;if (level == undefined) {level = nil;}
+    var length = self.length;
+    var result = self.$m.flatten(self, level);
+    self.splice(0);
+
+    for (var i = 0; i < result.length; i++) {
+      self.push(result[i]);
+    }
+
+    if (self.length == length)
+      return nil;
+
+    return self;
+  }, -1);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'include?', function(self, member) {var __a;
+    for (var i = 0; i < self.length; i++) {
+      if ((__a = self[i]).$m['=='](__a, member).$r) {
+        return Qtrue;
+      }
+    }
+
+    return Qfalse;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'replace', function(self, other) {
+    self.splice(0);
+
+    for (var i = 0; i < other.length; i++) {
+      self.push(other[i]);
+    }
+
+    return self;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'insert', function(self, idx, objs) {objs = [].slice.call(arguments, 2);
+    if (idx < 0) idx += self.length;
+
+    if (idx < 0 || idx >= self.length)
+      rb_raise("IndexError: out of range");
+
+    self.splice.apply(self, [idx, 0].concat(objs));
+    return self;
+  }, -2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'join', function(self, sep) {var __a;if (sep == undefined) {sep = '';}
+    var result = [];
+
+    for (var i = 0; i < self.length; i++) {
+      result.push((__a = self[i]).$m.to_s(__a));
+    }
+
+    return result.join(sep);
+  }, -1);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'keep_if', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    for (var i = 0; i < self.length; i++) {
+      if (!((__a = $yy($ys, self[i])) == $yb ? $break() : __a).$r) {
+        self.splice(i, 1);
+        i--;
+      }
+    }
+
+    return self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'last', function(self, count) {if (count == undefined) {count = nil;}
+    if (count == nil) {
+      if (self.length == 0) return nil;
+      return self[self.length - 1];
+    } else {
+      if (count > self.length) count = self.length;
+      return self.slice(self.length - count, self.length);
+    }
+  }, -1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'pop', function(self, count) {if (count == undefined) {count = nil;}
+    if (count == nil) {
+      if (self.length) return self.pop();
+      return nil;
+    } else {
+      return self.splice(self.length - count, self.length);
+    }
+  }, -1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'rassoc', function(self, obj) {var __a;
+    var test;
+
+    for (var i = 0; i < self.length; i++) {
+      test = self[i];
+      if (test.hasOwnProperty('length') && test[1] != undefined) {
+        if ((__a = test[1]).$m['=='](__a, obj).$r) return test;
+      }
+    }
+
+    return nil;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'reject', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    var result = [];
+
+    for (var i = 0; i < self.length; i++) {
+      if (!((__a = $yy($ys, self[i])) == $yb ? $break() : __a).$r) {
+        result.push(self[i]);
+      }
+    }
+
+    return result;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'reject!', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    var length = self.length;
+
+    for (var i = 0; i < self.length; i++) {
+      if (((__a = $yy($ys, self[i])) == $yb ? $break() : __a).$r) {
+        self.splice(i, 1);
+        i--;
+      }
+    }
+
+    return self.length == length ? nil : self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'reverse', function(self) {
+    var result = [];
+
+    for (var i = self.length - 1; i >= 0; i--) {
+      result.push(self[i]);
+    }
+
+    return result;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'reverse!', function(self) {
+    var length = self.length / 2, tmp;
+
+    for (var i = 0; i < length; i++) {
+      tmp = self[i];
+      self[i] = self[self.length - (i + 1)];
+      self[self.length - (i + 1)] = tmp;
+    }
+
+    return self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'reverse_each', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    var ary = self, len = ary.length;
+
+    for (var i = len - 1; i >= 0; i--) {
+      ((__a = $yy($ys, ary[i])) == $yb ? $break() : __a);
+    }
+
+    return self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'rindex', function(self, obj) {var __a;if (obj == undefined) {obj = undefined;}
+    if (obj != undefined) {
+      for (var i = self.length - 1; i >=0; i--) {
+        if ((__a = self[i]).$m['=='](__a, obj).$r) {
+          return i;
+        }
+      }
+    } else if (true || __block__) {
+      rb_raise("array#rindex needs to do block action");
+    }
+
+    return nil;
+  }, -1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'select!', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    var length = self.length;
+
+    for (var i = 0; i < self.length; i++) {
+      if (!((__a = $yy($ys, self[i])) == $yb ? $break() : __a).$r) {
+        self.splice(i, 1);
+        i--;
+      }
+    }
+
+    return self.length == length ? nil : self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'shift', function(self, count) {if (count == undefined) {count = nil;}
+    if (count != nil)
+      return self.splice(0, count);
+
+    if (self.length) 
+      return self.shift();
+
+    return nil;
+  }, -1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'slice!', function(self, index, length) {if (length == undefined) {length = nil;}
+    var size = self.length;
+
+    if (index < 0) index += size;
+
+    if (index >= size || index < 0) return nil;
+
+    if (length != nil) {
+      if (length <= 0 || length > self.length) return nil;
+      return self.splice(index, index + length);
+    } else {
+      return self.splice(index, 1)[0];
+    }
+  }, -2);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'take', function(self, count) {
+    return self.slice(0, count);
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'take_while', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    var result = [], arg;
+
+    for (var i = 0, ii = self.length; i < ii; i++) {
+      arg = self[i];
+      if (((__a = $yy($ys, arg)) == $yb ? $break() : __a).$r) {
+        result.push(self[i]);
+      } else {
+        break;
+      }
+    }
+
+    return result;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'to_a', function(self) {
+    return self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'uniq', function(self) {
+    var result = [], seen = [];
+
+    for (var i = 0; i < self.length; i++) {
+      var test = self[i], hash = test.$hash();
+      if (seen.indexOf(hash) == -1) {
+        seen.push(hash);
+        result.push(test);
+      }
+    }
+
+    return result;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'uniq!', function(self) {
+    var seen = [], length = self.length;
+
+    for (var i = 0; i < self.length; i++) {
+      var test = self[i], hash = test.$hash();
+      if (seen.indexOf(hash) == -1) {
+        seen.push(hash);
+      } else {
+        self.splice(i, 1);
+        i--;
+      }
+    }
+
+    return self.length == length ? nil : self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'unshift', function(self, objs) {objs = [].slice.call(arguments, 1);
+    for (var i = objs.length - 1; i >= 0; i--) {
+      self.unshift(objs[i]);
+    }
+
+    return self;
+  }, -1);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '&', function(self, other) {
+    var result = [], seen = [];
+
+    for (var i = 0; i < self.length; i++) {
+      var test = self[i], hash = test.$hash();
+
+      if (seen.indexOf(hash) == -1) {
+        for (var j = 0; j < other.length; j++) {
+          var test_b = other[j], hash_b = test_b.$hash();
+
+          if ((hash == hash_b) && seen.indexOf(hash) == -1) {
+            seen.push(hash);
+            result.push(test);
+          }
+        }
+      }
+    }
+
+    return result;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '*', function(self, arg) {var __a;
+    if (typeof arg == 'string') {
+      return self.$m.join(self, arg);
+    } else {
+      var result = [];
+      for (var i = 0; i < parseInt(arg); i++) {
+        result = result.concat(self);
+      }
+
+      return result;
+    }
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '[]', function(self, index, length) {if (length == undefined) {length = undefined;}
+    var ary = self, size = ary.length;
+
+    if (index < 0) index += size;
+
+    if (index >= size || index < 0) return nil;
+
+    if (length != undefined) {
+      if (length <= 0) return [];
+      return ary.slice(index, index + length);
+    } else {
+      return ary[index];
+    }
+  }, -2);
+
+
+
+
+  return $defn(self, '[]=', function(self, index, value) {
+    if (index < 0) index += self.length;
+    return self[index] = value;
+  }, 2);
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G, $symbol_1 = $symbol('size'), $symbol_2 = $symbol('length'), $symbol_3 = $symbol('map'), $symbol_4 = $symbol('collect');$rb.mm(['allocate', 'inspect', 'to_s', 'alias_method', 'raise', '==', 'flatten', 'join']);return $$();
+ });
+opal.register('core/basic_object.rb', function($rb, self, __FILE__) { function $$(){
+
+
+
+
+return $class(self, nil, 'BasicObject', function(self) {
+
+  $defn(self, 'initialize', function(self, a) {a = [].slice.call(arguments, 1);    return nil;
+
+  }, -1);
+
+  $defn(self, '==', function(self, other) {
+    if (self == other) return Qtrue;
+    return Qfalse;
+  }, 1);
+
+  $defn(self, 'equal?', function(self, other) {var __a;
+    return self.$m['=='](self, other);
+  }, 1);
+
+  $defn(self, '!', function(self) {
+    return (self.$r ? Qfalse : Qtrue);
+  }, 0);
+
+  $defn(self, '!=', function(self, obj) {var __a;
+    return (self.$m['=='](self, obj).$r ? Qfalse : Qtrue);
+  }, 1);
+
+  $defn(self, '__send__', function(self, method_id, args) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;args = [].slice.call(arguments, 2);var block = (($yy == $y.y) ? nil: $yy);
+    var method = self.$m[method_id.$m.to_s(method_id)];
+
+    if ($B.f == arguments.callee) {
+      $B.f = method;
+    }
+
+    args.unshift(self);
+
+    return method.apply(self, args);
+  }, -2);
+
+  $defn(self, 'instance_eval', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;var block = (($yy == $y.y) ? nil: $yy);
+    if(!(($yy == $y.y ? Qfalse : Qtrue)).$r) {self.$m.$raise(self, $cg(self, 'ArgumentError'), "block not supplied")};
+    block(self);
+    return self;
+  }, 0);
+
+  return $defn(self, 'method_missing', function(self, sym, args) {var __a, __b, __c;args = [].slice.call(arguments, 2);
+    return self.$m.$raise(self, $cg(self, 'NoMethodError'), ("undefined method `" + (__b = sym).$m.to_s(__b) + "` for " + (__b = self.$m.inspect(self)).$m.to_s(__b)));
+  }, -2);
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;$rb.mm(['==', 'to_s', 'raise', 'inspect']);return $$();
+ });
+opal.register('core/class.rb', function($rb, self, __FILE__) { function $$(){return $class(self, $cg(self, 'Module'), 'Class', function(self) {
+
+  $defn(self, 'allocate', function(self) {
+    return new $rb.RObject(self);
+  }, 0);
+
+  $defn(self, 'new', function(self, args) {var obj, __a;args = [].slice.call(arguments, 1);
+    obj = self.$m.$allocate(self);
+
+    if ($B.f == arguments.callee) {
+      $B.f = obj.$m.initialize;
+    }
+
+    obj.$m.initialize.apply(nil, [obj].concat(args));
+    return obj;
+  }, -1);
+
+  $defn(self, 'inherited', function(self, cls) {
+    return nil;
+  }, 1);
+
+  $defn(self, 'superclass', function(self) {
+    var sup = self.$super;
+
+    if (!sup) {
+      if (self == $rb.BasicObject) return nil;
+      throw new Error('RuntimeError: uninitialized class');
+    }
+
+    return sup;
+  }, 0);
+
+  return $defn(self, 'native_prototype', function(self, proto) {
+    $rb.native_prototype(self, proto);
+    return nil;
+  }, 1);
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;$rb.mm(['allocate', 'initialize']);return $$();
+ });
+opal.register('core/dir.rb', function($rb, self, __FILE__) { function $$(){
+return $class(self, nil, 'Dir', function(self) {
+
+
+
+  var OPAL_FS = $rb.opal.fs;
+
+
+
+
+  $defs(self, 'getwd', function(self) {
+    return OPAL_FS.cwd;
+  }, 0);
+
+
+
+
+  $defs(self, 'pwd', function(self) {
+    return OPAL_FS.cwd;
+  }, 0);
+
+  return $defs(self, '[]', function(self, a) {a = [].slice.call(arguments, 1);
+    return OPAL_FS.glob.apply(OPAL_FS, a);
+  }, -1);
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;return $$();
+ });
+opal.register('core/enumerable.rb', function($rb, self, __FILE__) { function $$(){
+return $class(self, nil, 'Enumerable', function(self) {var __a;
+
+
+
+
+
+
+
+
+
+  $defn(self, 'to_a', function(self) {var ary, __a, __b;
+    ary = [];
+    ($B.f = self.$m.$each, ($B.p =function(self, arg) {if (arg === undefined) { arg = nil; }      ary.push(arg);}).$proc =[self], $B.f)(self);
+    return ary;
+  }, 0);
+
+  self.$m.$alias_method(self, $symbol_1, $symbol_2);
+
+  $defn(self, 'collect', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a, __b;var block = (($yy == $y.y) ? nil: $yy);
+    if(!(($yy == $y.y ? Qfalse : Qtrue)).$r) {self.$m.$raise(self, "Enumerable#collect no block given")};
+    var result = [];
+
+    ($B.f = self.$m.$each, ($B.p =function(self, args) { var __a;args = [].slice.call($A, 1);
+      result.push(block.$m.call.apply(nil, [block].concat(args)));
+    }).$proc =[self], $B.f)(self);
+
+    return result;
+  }, 0);
+
+  return self.$m.$alias_method(self, $symbol_3, $symbol_4);
+}, 2);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G, $symbol_1 = $symbol('entries'), $symbol_2 = $symbol('to_a'), $symbol_3 = $symbol('map'), $symbol_4 = $symbol('collect');$rb.mm(['each', 'alias_method', 'raise', 'call']);return $$();
+ });
+opal.register('core/error.rb', function($rb, self, __FILE__) { function $$(){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$class(self, nil, 'Exception', function(self) {
+
+  $defs(self, 'allocate', function(self) {
+    var err = new Error();
+    err.$klass = self;
+    err.$m = self.$m_tbl;
+    return err;
+  }, 0);
+
+  $defn(self, 'initialize', function(self, message) {if (message == undefined) {message = '';}
+    return self['@message'] = message;
+  }, -1);
+
+  $defn(self, 'message', function(self) {var __a;self['@message']==undefined&&(self['@message']=nil);
+    return ((__a = self['@message']).$r ? __a : self.message);
+  }, 0);
+
+  $defn(self, 'inspect', function(self) {self['@message']==undefined&&(self['@message']=nil);
+    return "#<" + self.$klass.__classid__ + ": '" + self['@message'] + "'>";
+  }, 0);
+
+  return $defn(self, 'to_s', function(self) {self['@message']==undefined&&(self['@message']=nil);
+    return self['@message'];
+  }, 0);
+}, 0);
+
+$class(self, $cg(self, 'Exception'), 'StandardError', function(self) {  return nil;}, 0);
+$class(self, $cg(self, 'Exception'), 'RuntimeError', function(self) {  return nil;}, 0);
+$class(self, $cg(self, 'StandardError'), 'LocalJumpError', function(self) {  return nil;}, 0);
+$class(self, $cg(self, 'StandardError'), 'TypeError', function(self) {  return nil;}, 0);
+
+$class(self, $cg(self, 'StandardError'), 'NameError', function(self) {  return nil;}, 0);
+$class(self, $cg(self, 'NameError'), 'NoMethodError', function(self) {  return nil;}, 0);
+$class(self, $cg(self, 'StandardError'), 'ArgumentError', function(self) {  return nil;}, 0);
+
+$class(self, $cg(self, 'Exception'), 'ScriptError', function(self) {  return nil;}, 0);
+$class(self, $cg(self, 'ScriptError'), 'LoadError', function(self) {  return nil;}, 0);
+
+$class(self, $cg(self, 'StandardError'), 'IndexError', function(self) {  return nil;}, 0);
+$class(self, $cg(self, 'IndexError'), 'KeyError', function(self) {  return nil;}, 0);
+return $class(self, $cg(self, 'StandardError'), 'RangeError', function(self) {  return nil;}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;return $$();
+ });
+opal.register('core/false_class.rb', function($rb, self, __FILE__) { function $$(){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$class(self, nil, 'FalseClass', function(self) {
+
+
+
+
+
+
+
+
+
+  $defn(self, 'to_s', function(self) {
+    return "false";
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '&', function(self, other) {
+    return Qfalse;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '|', function(self, other) {
+    return other.$r ? Qtrue : Qfalse;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+  return $defn(self, '^', function(self, other) {
+    return other.$r ? Qtrue : Qfalse;
+  }, 1);
+}, 0);
+
+return $rb.cs(self, 'FALSE', Qfalse);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;return $$();
+ });
+opal.register('core/file.rb', function($rb, self, __FILE__) { function $$(){
+return $class(self, nil, 'File', function(self) {
+
+  var OPAL_FS = $rb.opal.fs;
+
+
+
+
+
+
+
+
+  $defs(self, 'expand_path', function(self, file_name, dir_string) {if (dir_string == undefined) {dir_string = nil;}
+    if (dir_string.$r) {
+      return OPAL_FS.expand_path(file_name, dir_string);
+    } else {
+      return OPAL_FS.expand_path(file_name);
+    }
+  }, -2);
+
+
+
+
+
+
+  $defs(self, 'join', function(self, str) {str = [].slice.call(arguments, 1);
+    return OPAL_FS.join.apply(OPAL_FS, str);
+  }, -1);
+
+
+
+
+
+
+  $defs(self, 'dirname', function(self, file_name) {
+    return OPAL_FS.dirname(file_name);
+  }, 1);
+
+
+
+
+
+  $defs(self, 'extname', function(self, file_name) {
+    return OPAL_FS.extname(file_name);
+  }, 1);
+
+
+
+
+
+
+
+
+  $defs(self, 'basename', function(self, file_name, suffix) {
+    return OPAL_FS.basename(file_name, suffix);
+  }, 2);
+
+  return $defs(self, 'exist?', function(self, path) {
+    return OPAL_FS.exist_p(path) ? Qtrue : Qfalse;
+  }, 1);
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;return $$();
+ });
+opal.register('core/hash.rb', function($rb, self, __FILE__) { function $$(){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+return $class(self, nil, 'Hash', function(self) {
+
+
+
+
+  $defs(self, '[]', function(self, args) {args = [].slice.call(arguments, 1);
+    return $rb.H.apply(null, args);
+  }, -1);
+
+  $defs(self, 'allocate', function(self) {
+    return $rb.H();
+  }, 0);
+
+
+
+
+
+
+
+
+
+  $defn(self, 'values', function(self) {
+    var result = [], length = self.$keys.length;
+
+    for (var i = 0; i < length; i++) {
+      result.push(self.$assocs[self.$keys[i].$hash()]);
+    }
+
+    return result;
+  }, 0);
+
+
+
+
+
+
+
+
+
+  $defn(self, 'inspect', function(self) {var __a;
+    var description = [], key, value;
+
+    for (var i = 0; i < self.$keys.length; i++) {
+      key = self.$keys[i];
+      value = self.$assocs[key.$hash()];
+      description.push((__a = key).$m.inspect(__a) + '=>' + (__a = value).$m.inspect(__a));
+    }
+
+    return '{' + description.join(', ') + '}';
+  }, 0);
+
+
+
+
+  $defn(self, 'to_s', function(self) {var __a;
+    var description = [], key, value;
+
+    for (var i = 0; i < self.$keys.length; i++) {
+      key = self.$keys[i];
+      value = self.$assocs[key.$hash()];
+      description.push((__a = key).$m.inspect(__a) + (__a = value).$m.inspect(__a));
+    }
+
+    return description.join('');
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'each', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    var keys = self.$keys, values = self.$assocs, length = keys.length, key;
+
+    for (var i = 0; i < length; i++) {
+      try {
+        key = keys[i];
+        ((__a = $yy($ys, key, values[key.$hash()])) == $yb ? $break() : __a);
+      } catch (e) {
+        switch (e.$keyword) {
+          case 2:
+            return e['@exit_value'];
+          default:
+            throw e;
+        }
+      }
+    }
+
+    return self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'assoc', function(self, obj) {var __a;
+    var key, keys = self.$keys, length = keys.length;
+
+    for (var i = 0; i < length; i++) {
+      key = keys[i];
+      if ((__a = key).$m['=='](__a, obj).$r) {
+        return [key, self.$assocs[key.$hash()]];
+      }
+    }
+
+    return nil;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '==', function(self, other) {var __a;
+    if (self === other) return Qtrue;
+    if (!other.$keys || !other.$assocs) return Qfalse;
+    if (self.$keys.length != other.$keys.length) return Qfalse;
+
+    for (var i = 0; i < self.$keys.length; i++) {
+      var key1 = self.$keys[i], assoc1 = key1.$hash();
+
+      if (!other.$assocs.hasOwnProperty(assoc1))
+        return Qfalse;
+
+      var assoc2 = other.$assocs[assoc1];
+
+      if (!(__a = self.$assocs[assoc1]).$m['=='](__a, assoc2).$r)
+        return Qfalse;
+    }
+
+    return Qtrue;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '[]', function(self, key) {
+    var assoc = key.$hash();
+
+    if (self.$assocs.hasOwnProperty(assoc))
+      return self.$assocs[assoc];
+
+    return self.$default;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '[]=', function(self, key, value) {
+    var assoc = key.$hash();
+
+    if (!self.$assocs.hasOwnProperty(assoc))
+      self.$keys.push(key);
+
+    return self.$assocs[assoc] = value;
+  }, 2);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'clear', function(self) {
+    self.$keys = [];
+    self.$assocs = {};
+
+    return self;
+  }, 0);
+
+
+  $defn(self, 'default', function(self) {
+    return self.$default;
+  }, 0);
+
+
+
+
+
+  $defn(self, 'default=', function(self, obj) {
+    return self.$default = obj;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'delete', function(self, key) {
+    var assoc = key.$hash();
+
+    if (self.$assocs.hasOwnProperty(assoc)) {
+      var ret = self.$assocs[assoc];
+      delete self.$assocs[assoc];
+      self.$keys.splice(self.$keys.indexOf(key), 1);
+      return ret;
+    }
+
+    return self.$default;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'delete_if', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    var key, value;
+
+    for (var i = 0; i < self.$keys.length; i++) {
+      try {
+        key = self.$keys[i];
+        value = self.$assocs[key.$hash()];
+
+        if (((__a = $yy($ys, key, value)) == $yb ? $break() : __a).$r) {
+          delete self.$assocs[key.$hash()];
+          self.$keys.splice(i, 1);
+          i--;
+        }
+      } catch (e) {
+        switch (e.$keyword) {
+          case 2:
+            return e['@exit_value'];
+          default:
+            throw e;
+        }
+      }
+    }
+
+    return self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'each_key', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    var key;
+
+    for (var i = 0; i < self.$keys.length; i++) {
+      try {
+        key = self.$keys[i];
+        ((__a = $yy($ys, key)) == $yb ? $break() : __a);
+      } catch (e) {
+        switch (e.$keyword) {
+          case 2:
+            return e['@exit_value'];
+          default:
+            throw e;
+        }
+      }
+    }
+
+    return self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'each_value', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    var val;
+
+    for (var i = 0; i < self.$keys.length; i++) {
+      try {
+        val = self.$assocs[self.$keys[i].$hash()];
+        ((__a = $yy($ys, val)) == $yb ? $break() : __a);
+      } catch (e) {
+        switch (e.$keyword) {
+          case 2:
+            return e['@exit_value'];
+          default:
+            throw e;
+        }
+      }
+    }
+
+    return self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+  $defn(self, 'empty?', function(self) {
+    return self.$keys.length == 0 ? Qtrue : Qfalse;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'fetch', function(self, key, defaults) {if (defaults == undefined) {defaults = undefined;}
+    var value = self.$assocs[key.$hash()];
+
+    if (value != undefined)
+      return value;
+    else if (defaults == undefined)
+      rb_raise('KeyError: key not found');
+    else
+      return defaults;
+  }, -2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'flatten', function(self, level) {var __a;if (level == undefined) {level = 1;}
+    var result = [], key, value;
+
+    for (var i = 0; i < self.$keys.length; i++) {
+      key = self.$keys[i];
+      value = self.$assocs[key.$hash()];
+      result.push(key);
+
+      if (value instanceof Array) {
+        if (level == 1) {
+          result.push(value);
+        } else {
+          var tmp = (__a = value).$m.flatten(__a, level - 1);
+          result = result.concat(tmp);
+        }
+      } else {
+        result.push(value);
+      }
+    }
+
+    return result;
+  }, -1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'has_key?', function(self, key) {
+    if (self.$assocs.hasOwnProperty(key.$hash()))
+      return Qtrue;
+
+    return Qfalse;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'has_value?', function(self, value) {var __a;
+    var key, value;
+
+    for (var i = 0; i < self.$keys.length; i++) {
+      key = self.$keys[i];
+      val = self.$assocs[key.$hash()];
+
+      if ((__a = value).$m['=='](__a, val).$r)
+        return Qtrue;
+    }
+
+    return Qfalse;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'replace', function(self, other) {
+    self.$keys = []; self.$assocs = {};
+
+    for (var i = 0; i < other.$keys.length; i++) {
+      var key = other.$keys[i];
+      var val = other.$assocs[key.$hash()];
+      self.$keys.push(key);
+      self.$assocs[key.$hash()] = val;
+    }
+
+    return self;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'invert', function(self) {    return nil;
+
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'key', function(self, value) {var __a;
+    var key, val;
+
+    for (var i = 0; i < self.$keys.length; i++) {
+      key = self.$keys[i];
+      val = self.$assocs[key.$hash()];
+
+      if ((__a = value).$m['=='](__a, val).$r) {
+        return key;
+      }
+    }
+
+    return nil;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'keys', function(self) {
+    return self.$keys.slice(0);
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'length', function(self) {
+    return self.$keys.length;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'merge', function(self, other) {
+    var result = $opal.H() , key, val;
+
+    for (var i = 0; i < self.$keys.length; i++) {
+      key = self.$keys[i], val = self.$assocs[key.$hash()];
+
+      result.$keys.push(key);
+      result.$assocs[key.$hash()] = val;
+    }
+
+    for (var i = 0; i < other.$keys.length; i++) {
+      key = other.$keys[i], val = other.$assocs[key.$hash()];
+
+      if (!result.$assocs.hasOwnProperty(key.$hash())) {
+        result.$keys.push(key);
+      }
+
+      result.$assocs[key.$hash()] = val;
+    }
+
+    return result;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'merge!', function(self, other) {
+    var key, val;
+
+    for (var i = 0; i < other.$keys.length; i++) {
+      key = other.$keys[i];
+      val = other.$assocs[key.$hash()];
+
+      if (!self.$assocs.hasOwnProperty(key.$hash())) {
+        self.$keys.push(key);
+      }
+
+      self.$assocs[key.$hash()] = val;
+    }
+
+    return self;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'rassoc', function(self, obj) {var __a;
+    var key, val;
+
+    for (var i = 0; i < self.$keys.length; i++) {
+      key = self.$keys[i];
+      val = self.$assocs[key.$hash()];
+
+      if ((__a = val).$m['=='](__a, obj).$r)
+        return [key, val];
+    }
+
+    return nil;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'shift', function(self) {
+    var key, val;
+
+    if (self.$keys.length > 0) {
+      key = self.$keys[0];
+      val = self.$assocs[key.$hash()];
+
+      self.$keys.shift();
+      delete self.$assocs[key.$hash()];
+      return [key, val];
+    }
+
+    return self.$default;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'to_a', function(self) {
+    var result = [], key, value;
+
+    for (var i = 0; i < self.$keys.length; i++) {
+      key = self.$keys[i];
+      value = self.$assocs[key.$hash()];
+      result.push([key, value]);
+    }
+
+    return result;
+  }, 0);
+
+
+
+
+  return $defn(self, 'to_hash', function(self) {
+    return self;
+  }, 0);
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;$rb.mm(['inspect', '==', 'flatten']);return $$();
+ });
+opal.register('core/kernel.rb', function($rb, self, __FILE__) { function $$(){
+
+
+return $class(self, nil, 'Kernel', function(self) {var __a;
+
+
+  $defn(self, 'instance_variable_defined?', function(self, name) {var __a;
+    name = name.$m.to_s(name);
+    return self[name] == undefined ? Qfalse : Qtrue;
+  }, 1);
+
+  $defn(self, 'instance_variable_get', function(self, name) {var __a;
+    name = name.$m.to_s(name);
+    return self[name] == undefined ? nil : self[name];
+  }, 1);
+
+  $defn(self, 'instance_variable_set', function(self, name, value) {var __a;
+    name = name.$m.to_s(name);
+    return self[name] = value;
+  }, 2);
+
+
+
+
+
+
+
+
+  $defn(self, 'block_given?', function(self) {
+    return Qfalse;
+  }, 0);
+
+
+  $defn(self, '__flags__', function(self) {
+    return self.$flags;
+  }, 0);
+
+  $defn(self, 'to_a', function(self) {
+    return [self];
+  }, 0);
+
+  $defn(self, 'tap', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    if(!(($yy == $y.y ? Qfalse : Qtrue)).$r) {self.$m.$raise(self, $cg(self, 'LocalJumpError'), "no block given")};
+    if ($yy($ys, self) == $yb) { return $yb.$value; };
+    return self;
+  }, 0);
+
+  $defn(self, 'kind_of?', function(self, klass) {
+    var search = self.$klass;
+
+    while (search) {
+      if (search == klass) {
+        return Qtrue;
+      }
+
+      search = search.$super;
+    }
+
+    return Qfalse;
+  }, 1);
+
+  $defn(self, 'is_a?', function(self, klass) {var __a;
+    return self.$m['$kind_of?'](self, klass);
+  }, 1);
+
+  $defn(self, 'nil?', function(self) {
+    return Qfalse;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'respond_to?', function(self, method_id) {var __a;
+    var method = self['m$' + (__a = method_id).$m.to_s(__a)];
+
+    if (method && !method.$rbMM) {
+      return Qtrue;
+    }
+
+    return Qfalse;
+  }, 1);
+
+  $defn(self, '===', function(self, other) {var __a;
+    return self.$m['=='](self, other);
+  }, 1);
+
+  $defn(self, 'send', function(self, method_id, args) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;args = [].slice.call(arguments, 2);var block = (($yy == $y.y) ? nil: $yy);
+    var method = self.$m[method_id.$m.to_s(method_id)];
+
+    if ($B.f == arguments.callee) {
+      $B.f = method;
+    }
+
+    args.unshift(self);
+
+    return method.apply(self, args);
+  }, -2);
+
+  $defn(self, 'class', function(self) {
+    return $rb.class_real(self.$klass);
+  }, 0);
+
+  $defn(self, 'singleton_class', function(self) {
+    return $rb.singleton_class(self);
+  }, 0);
+
+  $defn(self, 'methods', function(self) {
+    return self.$klass.$methods;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'rand', function(self, max) {if (max == undefined) {max = undefined;}
+    if (max != undefined)
+        return Math.floor(Math.random() * max);
+    else
+      return Math.random();
+  }, -1);
+
+  $defn(self, '__id__', function(self) {
+    return self.$hash();
+  }, 0);
+
+  $defn(self, 'object_id', function(self) {
+    return self.$hash();
+  }, 0);
+
+
+
+
+
+
+  $defn(self, 'to_s', function(self) {var __a;
+    return ("#<" + (__a = $rb.class_real(self.$klass)).$m.to_s(__a) + ":0x" + (__a = (self.$hash() * 400487).toString(16)).$m.to_s(__a) + ">");
+  }, 0);
+
+  $defn(self, 'inspect', function(self) {var __a;
+    return self.$m.$to_s(self);
+  }, 0);
+
+  $defn(self, 'const_set', function(self, name, value) {
+    return rb_const_set($rb.class_real(self.$klass), name, value);
+  }, 2);
+
+  $defn(self, 'const_defined?', function(self, name) {
+    return Qfalse;
+  }, 1);
+
+  $defn(self, '=~', function(self, obj) {
+    return nil;
+  }, 1);
+
+  $defn(self, 'extend', function(self, mod) {
+    $rb.extend_module($rb.singleton_class(self), mod);
+    return nil;
+  }, 1);
+
+
+  self.$m.$private(self);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'raise', function(self, exception, string) {var __a;if (string == undefined) {string = nil;}
+    var msg = nil, exc;
+
+    if (typeof exception == 'string') {
+      msg = exception;
+      exc = (__a = $cg(self, 'RuntimeError')).$m['new'](__a, msg);
+    } else if ((__a = exception).$m['kind_of?'](__a, $cg(self, 'Exception')).$r) {
+      exc = exception;
+    } else {
+      if (string != nil) msg = string;
+      exc = (__a = exception).$m['new'](__a, msg);
+    }
+    $rb.raise_exc(exc);
+  }, -2);
+
+  self.$m.$alias_method(self, $symbol_1, $symbol_2);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'loop', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    while (true) {
+      ((__a = $yy($ys)) == $yb ? $break() : __a);
+    }
+
+    return self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+  $defn(self, 'proc', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;var block = (($yy == $y.y) ? nil: $yy);
+
+    if(!(($yy == $y.y ? Qfalse : Qtrue)).$r) {self.$m.$raise(self, $cg(self, 'ArgumentError'), "tried to create Proc object without a block")};
+    return block;
+  }, 0);
+
+  return $defn(self, 'lambda', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;var block = (($yy == $y.y) ? nil: $yy);
+
+    if(!(($yy == $y.y ? Qfalse : Qtrue)).$r) {self.$m.$raise(self, $cg(self, 'ArgumentError'), "tried to create Proc object without a block")};
+    return $rb.lambda(block);
+  }, 0);
+
+
+}, 2);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G, $symbol_1 = $symbol('fail'), $symbol_2 = $symbol('raise');$rb.mm(['to_s', 'raise', 'kind_of?', '==', 'private', 'new', 'alias_method']);return $$();
+ });
+opal.register('core/match_data.rb', function($rb, self, __FILE__) { function $$(){return $class(self, nil, 'MatchData', function(self) {
+
+  $defn(self, 'inspect', function(self) {var __a, __b;
+    return ("#<MatchData " + (__a = (__b = self.$data[0]).$m.inspect(__b)).$m.to_s(__a) + ">");
+  }, 0);
+
+  $defn(self, 'to_s', function(self) {
+    return self.$data[0];
+  }, 0);
+
+  $defn(self, 'length', function(self) {
+    return self.$data.length;
+  }, 0);
+
+  $defn(self, 'size', function(self) {
+    return self.$data.length;
+  }, 0);
+
+  $defn(self, 'to_a', function(self) {
+    return [].slice.call(self.$data, 0);
+  }, 0);
+
+  return $defn(self, '[]', function(self, index) {
+    var length = self.$data.length;
+
+    if (index < 0) index += length;
+
+    if (index >= length || index < 0) return nil;
+
+    return self.$data[index];
+  }, 1);
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;$rb.mm(['to_s', 'inspect']);return $$();
+ });
+opal.register('core/module.rb', function($rb, self, __FILE__) { function $$(){
+
+
+return $class(self, nil, 'Module', function(self) {
+
+  $defn(self, 'name', function(self) {
+    return self.__classid__;
+  }, 0);
+
+  $defn(self, '===', function(self, obj) {var __a;
+    return obj.$m['kind_of?'](obj, self);
+  }, 1);
+
+  $defn(self, 'define_method', function(self, method_id) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;var block = (($yy == $y.y) ? nil: $yy);
+    if(!(($yy == $y.y ? Qfalse : Qtrue)).$r) {self.$m.$raise(self, $cg(self, 'LocalJumpError'), "no block given")};
+    $rb.dm(self, method_id.$m.to_s(method_id).toString(), block)
+    return nil;
+  }, 1);
+
+  $defn(self, 'attr_accessor', function(self, attrs) {var __a;attrs = [].slice.call(arguments, 1);
+    self.$m.$attr_reader.apply(nil, [self].concat(attrs));
+    return self.$m.$attr_writer.apply(nil, [self].concat(attrs));
+  }, -1);
+
+  $defn(self, 'attr_reader', function(self, attrs) {var __a, __b;attrs = [].slice.call(arguments, 1);
+    ($B.f = attrs.$m.each, ($B.p =function(self, a) { var method_id, __a;if (a === undefined) { a = nil; }
+      method_id = a.$m.to_s(a);
+      $rb.dm(self, method_id, function(self) {
+        var iv = self['@' + method_id];
+        return iv == undefined ? nil : iv;
+      });
+    }).$proc =[self], $B.f)(attrs);
+    return nil;
+  }, -1);
+
+  $defn(self, 'attr_writer', function(self, attrs) {var __a, __b;attrs = [].slice.call(arguments, 1);
+    ($B.f = attrs.$m.each, ($B.p =function(self, a) { var method_id, __a;if (a === undefined) { a = nil; }
+      method_id = a.$m.to_s(a);
+      $rb.dm(self, method_id + '=', function(self, val) {
+        return self['@' + method_id] = val;
+      });
+    }).$proc =[self], $B.f)(attrs);
+    return nil;
+  }, -1);
+
+  $defn(self, 'alias_method', function(self, new_name, old_name) {var __a;
+    $rb.alias_method(self, new_name.$m.to_s(new_name), old_name.$m.to_s(old_name));
+    return self;
+  }, 2);
+
+  $defn(self, 'instance_methods', function(self) {
+    return self.$methods;
+  }, 0);
+
+  $defn(self, 'ancestors', function(self) {
+    var ary = [], parent = self;
+
+    while (parent) {
+      if (parent.$flags & $rb.FL_SINGLETON) {
+        // nothing?
+      }
+      else {
+        ary.push(parent);
+      }
+
+      parent = parent.$super;
+    }
+
+    return ary;
+  }, 0);
+
+  $defn(self, 'to_s', function(self) {
+    return self.__classid__;
+  }, 0);
+
+  $defn(self, 'const_set', function(self, id, value) {var __a;
+    return $rb.cs(self, id.$m.to_s(id), value);
+  }, 2);
+
+  $defn(self, 'class_eval', function(self, str) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;if (str == undefined) {str = nil;}var block = (($yy == $y.y) ? nil: $yy);
+    if (($yy == $y.y ? Qfalse : Qtrue).$r) {
+      block(self)
+    } else {
+      return self.$m.$raise(self, "need to compile str");
+    }
+  }, -1);
+
+  $defn(self, 'module_eval', function(self, str) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;if (str == undefined) {str = nil;}var block = (($yy == $y.y) ? nil: $yy);
+    return ($B.p = block, $B.f = self.$m.$class_eval)(self, str);
+  }, -1);
+
+  return $defn(self, 'extend', function(self, mod) {
+    $rb.extend_module(self, mod)
+    return nil;
+  }, 1);
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;$rb.mm(['kind_of?', 'raise', 'to_s', 'attr_reader', 'attr_writer', 'each', 'class_eval']);return $$();
+ });
+opal.register('core/nil_class.rb', function($rb, self, __FILE__) { function $$(){
+
+
+
+
+
+
+
+
+
+
+
+
+$class(self, nil, 'NilClass', function(self) {
+
+  $defn(self, 'to_i', function(self) {
+    return 0;
+  }, 0);
+
+  $defn(self, 'to_f', function(self) {
+    return 0.0;
+  }, 0);
+
+  $defn(self, 'to_s', function(self) {
+    return '';
+  }, 0);
+
+  $defn(self, 'to_a', function(self) {
+    return [];
+  }, 0);
+
+  $defn(self, 'inspect', function(self) {
+    return "nil";
+  }, 0);
+
+  $defn(self, 'nil?', function(self) {
+    return Qtrue;
+  }, 0);
+
+  $defn(self, '&', function(self, other) {
+    return Qfalse;
+  }, 1);
+
+  $defn(self, '|', function(self, other) {
+    return other.$r ? Qtrue : Qfalse;
+  }, 1);
+
+  return $defn(self, '^', function(self, other) {
+    return other.$r ? Qtrue : Qfalse;
+  }, 1);
+}, 0);
+
+return $rb.cs(self, 'NIL', nil);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;return $$();
+ });
+opal.register('core/numeric.rb', function($rb, self, __FILE__) { function $$(){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+return $class(self, nil, 'Numeric', function(self) {
+
+
+
+
+
+
+
+
+  $defn(self, '+@', function(self) {
+    return self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+  $defn(self, '-@', function(self) {
+    return -self;
+  }, 0);
+
+
+
+
+
+  $defn(self, '%', function(self, other) {
+    return self % other;
+  }, 1);
+
+  $defn(self, 'modulo', function(self, other) {
+    return self % other;
+  }, 1);
+
+
+
+
+
+  $defn(self, '&', function(self, num2) {
+    return self & num2;
+  }, 1);
+
+
+
+
+
+  $defn(self, '*', function(self, other) {
+    return self * other;
+  }, 1);
+
+
+
+
+
+  $defn(self, '**', function(self, other) {
+    return Math.pow(self, other);
+  }, 1);
+
+
+
+
+
+  $defn(self, '+', function(self, other) {
+    return self + other;
+  }, 1);
+
+
+
+
+
+  $defn(self, '-', function(self, other) {
+    return self - other;
+  }, 1);
+
+
+
+
+
+  $defn(self, '/', function(self, other) {
+    return self / other;
+  }, 1);
+
+
+
+
+
+
+  $defn(self, '<', function(self, other) {
+    return self < other ? Qtrue : Qfalse;
+  }, 1);
+
+
+
+
+
+
+  $defn(self, '<=', function(self, other) {
+    return self <= other ? Qtrue : Qfalse;
+  }, 1);
+
+
+
+
+
+
+  $defn(self, '>', function(self, other) {
+    return self > other ? Qtrue : Qfalse;
+  }, 1);
+
+
+
+
+
+
+  $defn(self, '>=', function(self, other) {
+    return self >= other ? Qtrue : Qfalse;
+  }, 1);
+
+
+
+
+
+  $defn(self, '<<', function(self, count) {
+    return self << count;
+  }, 1);
+
+
+
+
+
+  $defn(self, '>>', function(self, count) {
+    return self >> count;
+  }, 1);
+
+
+
+
+
+
+  $defn(self, '<=>', function(self, other) {
+    if (typeof other != 'number') return nil;
+    else if (self < other) return -1;
+    else if (self > other) return 1;
+    return 0;
+  }, 1);
+
+
+
+
+
+  $defn(self, '==', function(self, other) {
+    return self.valueOf() === other.valueOf() ? Qtrue : Qfalse;
+  }, 1);
+
+
+
+
+
+  $defn(self, '^', function(self, other) {
+    return self ^ other;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'abs', function(self) {
+    return Math.abs(self);
+  }, 0);
+
+  $defn(self, 'magnitude', function(self) {
+    return Math.abs(self);
+  }, 0);
+
+
+
+
+  $defn(self, 'even?', function(self) {
+    return (self % 2 == 0) ? Qtrue : Qfalse;
+  }, 0);
+
+
+
+
+  $defn(self, 'odd?', function(self) {
+    return (self % 2 == 0) ? Qfalse : Qtrue;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'succ', function(self) {
+    return self + 1;
+  }, 0);
+
+  $defn(self, 'next', function(self) {
+    return self + 1;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'pred', function(self) {
+    return self - 1;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'upto', function(self, finish) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    for (var i = self; i <= finish; i++) {
+      ((__a = $yy($ys, i)) == $yb ? $break() : __a);
+    }
+
+    return self;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'downto', function(self, finish) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    for (var i = self; i >= finish; i--) {
+      ((__a = $yy($ys, i)) == $yb ? $break() : __a);
+    }
+
+    return self;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'times', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    if(!(($yy == $y.y ? Qfalse : Qtrue)).$r) {self.$m.$raise(self, "no block given")};
+    for (var i = 0; i < self; i++) {
+      ((__a = $yy($ys, i)) == $yb ? $break() : __a);
+    }
+
+    return self;
+  }, 0);
+
+
+
+
+
+  $defn(self, '|', function(self, other) {
+    return self | other;
+  }, 1);
+
+
+
+
+  $defn(self, 'zero?', function(self) {
+    return self == 0 ? Qtrue : Qfalse;
+  }, 0);
+
+
+
+
+  $defn(self, 'nonzero?', function(self) {
+    return self == 0 ? nil : self;
+  }, 0);
+
+
+
+
+  $defn(self, '~', function(self) {
+    return ~self;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'ceil', function(self) {
+    return Math.ceil(self);
+  }, 0);
+
+
+
+
+
+
+
+
+
+  $defn(self, 'floor', function(self) {
+    return Math.floor(self);
+  }, 0);
+
+
+
+
+  $defn(self, 'integer?', function(self) {
+    return self % 1 == 0 ? Qtrue : Qfalse;
+  }, 0);
+
+  $defn(self, 'inspect', function(self) {
+    return self.toString();
+  }, 0);
+
+  $defn(self, 'to_s', function(self) {
+    return self.toString();
+  }, 0);
+
+  $defn(self, 'to_i', function(self) {
+    return parseInt(self);
+  }, 0);
+
+  return $defs(self, 'allocate', function(self) {var __a;
+    return self.$m.$raise(self, $cg(self, 'RuntimeError'), "cannot instantiate instance of Numeric class");
+  }, 0);
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;$rb.mm(['raise']);return $$();
+ });
+opal.register('core/object.rb', function($rb, self, __FILE__) { function $$(){
+
+return $class(self, $cg(self, 'BasicObject'), 'Object', function(self) {  return nil;
+
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;return $$();
+ });
+opal.register('core/proc.rb', function($rb, self, __FILE__) { function $$(){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+return $class(self, nil, 'Proc', function(self) {
+
+  $defs(self, 'new', function(self) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;var block = (($yy == $y.y) ? nil: $yy);
+
+    if(!(($yy == $y.y ? Qfalse : Qtrue)).$r) {self.$m.$raise(self, $cg(self, 'ArgumentError'), "tried to create Proc object without a block")};
+
+    return block;
+  }, 0);
+
+  $defn(self, 'to_proc', function(self) {
+    return self;
+  }, 0);
+
+  $defn(self, 'call', function(self, args) {args = [].slice.call(arguments, 1);
+    args.unshift(self.$proc[0]); return self.apply(null, args);
+  }, -1);
+
+  $defn(self, 'to_s', function(self) {
+    return "#<Proc:0x" + (self.$hash() * 400487).toString(16) + (self.$lambda ? ' (lambda)' : '') + ">";
+  }, 0);
+
+  return $defn(self, 'lambda?', function(self) {
+    return self.$fn.$lambda ? Qtrue : Qfalse;
+  }, 0);
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;$rb.mm(['raise']);return $$();
+ });
+opal.register('core/range.rb', function($rb, self, __FILE__) { function $$(){return $class(self, nil, 'Range', function(self) { var __a;
+
+  $defn(self, 'begin', function(self) {
+    return self.$beg;
+  }, 0);
+
+  self.$m.$alias_method(self, $symbol_1, $symbol_2);
+
+  $defn(self, 'end', function(self) {
+    return self.$end;
+  }, 0);
+
+  $defn(self, 'to_s', function(self) {var __a;
+    var str = (__a = self.$beg).$m.to_s(__a);
+    var str2 = (__a = self.$end).$m.to_s(__a);
+    var join = self.$exc ? '...' : '..';
+    return str + join + str2;
+  }, 0);
+
+  return $defn(self, 'inspect', function(self) {var __a;
+    var str = (__a = self.$beg).$m.inspect(__a);
+    var str2 = (__a = self.$end).$m.inspect(__a);
+    var join = self.$exc ? '...' : '..';
+    return str + join + str2;
+  }, 0);
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G, $symbol_1 = $symbol('first'), $symbol_2 = $symbol('begin');$rb.mm(['alias_method', 'to_s', 'inspect']);return $$();
+ });
+opal.register('core/regexp.rb', function($rb, self, __FILE__) { function $$(){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+return $class(self, nil, 'Regexp', function(self) {
+
+  $defs(self, 'escape', function(self, s) {
+    return s;
+  }, 1);
+
+  $defs(self, 'new', function(self, s) {
+    return new RegExp(s);
+  }, 1);
+
+  $defn(self, 'inspect', function(self) {
+    return self.toString();
+  }, 0);
+
+  $defn(self, 'to_s', function(self) {
+    return self.source;
+  }, 0);
+
+  $defn(self, '==', function(self, other) {
+    return self.toString() === other.toString() ? Qtrue : Qfalse;
+  }, 1);
+
+  $defn(self, 'eql?', function(self, other) {var __a;
+    return self.$m['=='](self, other);
+  }, 1);
+
+
+
+
+
+
+
+  $defn(self, '=~', function(self, str) {
+    var result = self.exec(str);
+    $rb.X = result;
+
+    if (result) {
+      return result.index;
+    }
+    else {
+      return nil;
+    }
+  }, 1);
+
+  return $defn(self, 'match', function(self, pattern) {var __a;
+    self.$m['=~'](self, pattern);
+    return $rb.gg('$~');
+  }, 1);
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;$rb.mm(['==', '=~']);return $$();
+ });
+opal.register('core/string.rb', function($rb, self, __FILE__) { function $$(){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+return $class(self, nil, 'String', function(self) {
+
+  $defs(self, 'new', function(self, str) {if (str == undefined) {str = '';}
+    var result = new String(str);
+    result.$klass = self;
+    result.$m = self.$m_tbl;
+    return result;
+  }, -1);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '*', function(self, count) {
+    var result = [];
+
+    for (var i = 0; i < count; i++) {
+      result.push(self);
+    }
+
+    return result.join('');
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '+', function(self, other) {
+    return self + other;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'capitalize', function(self) {
+    return self.charAt(0).toUpperCase() + self.substr(1).toLowerCase();
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'downcase', function(self) {
+    return self.toLowerCase();
+  }, 0);
+
+  $defn(self, 'upcase', function(self) {
+    return self.toUpperCase();
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'inspect', function(self) {
+    /* borrowed from json2.js, see file for license */
+    var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+
+    escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+
+    meta = {
+      '\b': '\\b',
+      '\t': '\\t',
+      '\n': '\\n',
+      '\f': '\\f',
+      '\r': '\\r',
+      '"' : '\\"',
+      '\\': '\\\\'
+    };
+
+    escapable.lastIndex = 0;
+
+    return escapable.test(self) ? '"' + self.replace(escapable, function (a) {
+      var c = meta[a];
+      return typeof c === 'string' ? c :
+        '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+      }) + '"' : '"' + self + '"';
+  }, 0);
+
+
+
+
+  $defn(self, 'length', function(self) {
+    return self.length;
+  }, 0);
+
+  $defn(self, 'to_i', function(self) {
+    return parseInt(self);
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'to_sym', function(self) {
+    return $rb.Y(self);
+  }, 0);
+
+  $defn(self, 'intern', function(self) {
+    return $rb.Y(self);
+  }, 0);
+
+
+
+
+
+
+
+
+
+  $defn(self, 'reverse', function(self) {
+    return self.split('').reverse().join('');
+  }, 0);
+
+  $defn(self, 'succ', function(self) {
+    return String.fromCharCode(self.charCodeAt(0));
+  }, 0);
+
+  $defn(self, '[]', function(self, idx) {
+    return self.substr(idx, idx + 1);
+  }, 1);
+
+  $defn(self, 'sub', function(self, pattern) {var $y = $B, $yy, $ys, $yb = $y.b;if ($y.f == arguments.callee) { $yy = $y.p; }else { $yy = $y.y; }$y.f = nil ;$ys = $yy.$proc[0];var __a;
+    return self.replace(pattern, function(str) {
+      return ((__a = $yy($ys, str)) == $yb ? $break() : __a);
+    });
+  }, 1);
+
+  $defn(self, 'gsub', function(self, pattern, replace) {
+    var r = pattern.toString();
+    r = r.substr(1, r.lastIndexOf('/') - 1);
+    r = new RegExp(r, 'g');
+    return self.replace(pattern, function(str) {
+      return replace;
+    });
+  }, 2);
+
+  $defn(self, 'slice', function(self, start, finish) {if (finish == undefined) {finish = nil;}
+    return self.substr(start, finish);
+  }, -2);
+
+  $defn(self, 'split', function(self, split, limit) {if (limit == undefined) {limit = nil;}
+    return self.split(split);
+  }, -2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '<=>', function(self, other) {
+    if (typeof other != 'string') return nil;
+    else if (self > other) return 1;
+    else if (self < other) return -1;
+    return 0;
+  }, 1);
+
+
+
+
+
+
+  $defn(self, '==', function(self, other) {
+    return self.valueOf() === other.valueOf() ? Qtrue : Qfalse;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, '=~', function(self, obj) {var __a;
+    if (obj.$flags & $rb.T_STRING) {
+      $rb.raise(VM.TypeError, "type mismatch: String given");
+    }
+
+    return obj.$m['=~'](obj, self);
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'casecmp', function(self, other) {
+    if (typeof other != 'string') return nil;
+    var a = self.toLowerCase(), b = other.toLowerCase();
+    if (a > b) return 1;
+    else if (a < b) return -1;
+    return 0;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'empty?', function(self) {
+    return self.length == 0 ? Qtrue : Qfalse;
+  }, 0);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'end_with?', function(self, suffix) {
+    if (self.lastIndexOf(suffix) == self.length - suffix.length) {
+      return Qtrue;
+    }
+
+    return Qfalse;
+  }, 1);
+
+
+
+
+
+  $defn(self, 'eql?', function(self, other) {
+    return self == other ? Qtrue : Qfalse;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'include?', function(self, other) {
+    return self.indexOf(other) == -1 ? Qfalse : Qtrue;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $defn(self, 'index', function(self, substr) {
+    var res = self.indexOf(substr);
+
+    return res == -1 ? nil : res;
+  }, 1);
+
+
+
+
+
+
+
+
+
+
+
+  return $defn(self, 'lstrip', function(self) {
+    return self.replace(/^\s*/, '');
+  }, 0);
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;$rb.mm(['=~']);return $$();
+ });
+opal.register('core/symbol.rb', function($rb, self, __FILE__) { function $$(){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+return $class(self, nil, 'Symbol', function(self) {
+
+  $defn(self, 'inspect', function(self) {
+    return ':' + self.toString();
+  }, 0);
+
+  $defn(self, 'to_sym', function(self) {
+    return self;
+  }, 0);
+
+  return $defn(self, 'intern', function(self) {
+    return self;
+  }, 0);
+}, 0);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;return $$();
+ });
+opal.register('core/top_self.rb', function($rb, self, __FILE__) { function $$(){$defs(self, 'to_s', function(self) {
+  return "main";
+}, 0);
+
+return $defs(self, 'include', function(self, mod) {var __a;
+  return (__a = $cg(self, 'Object')).$m.include(__a, mod);
+}, 1);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;$rb.mm(['include']);return $$();
+ });
+opal.register('core/true_class.rb', function($rb, self, __FILE__) { function $$(){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$class(self, nil, 'TrueClass', function(self) {
+  $defn(self, 'to_s', function(self) {
+    return "true";
+  }, 0);
+
+  $defn(self, '&', function(self, other) {
+    return other.$r ? Qtrue : Qfalse;
+  }, 1);
+
+  $defn(self, '|', function(self, other) {
+    return Qtrue;
+  }, 1);
+
+  return $defn(self, '^', function(self, other) {
+    return other.$r ? Qfalse : Qtrue;
+  }, 1);
+}, 0);
+
+return $rb.cs(self, 'TRUE', Qtrue);
+}
+var nil = $rb.Qnil, $ac = $rb.ac, $super = $rb.S, $break = $rb.B, $class = $rb.dc, $defn = $rb.dm, $defs = $rb.ds, $symbol = $rb.Y, $hash = $rb.H, $B = $rb.P, Qtrue = $rb.Qtrue, Qfalse = $rb.Qfalse, $cg = $rb.cg, $range = $rb.G;return $$();
+ });
+opal.require('core');
