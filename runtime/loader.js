@@ -67,23 +67,24 @@ Op.run = function(body) {
   try {
     res = body(Rt, Rt.top, "(opal)");
   }
-  catch (exc) {
+  catch (err) {
     var exc, stack;
+    exc = err.$rb_exc;
 
     if (exc && exc['@message']) {
-      puts(exc.$klass.__classid__ + ': ' + exc['@message']);
+      console.log(exc.$klass.__classid__ + ': ' + exc['@message']);
     }
     else {
-      puts('NativeError: ' + exc.message);
+      console.log('NativeError: ' + err.message);
     }
 
     // first try (if in debug mode...)
-    if (typeof OPAL_DEBUG != 'undefined') {
-      puts(stack);
+    if (Db.backtrace()) {
+      console.log(Db.backtrace());
       Db.stack = [];
     }
-    else if (stack = exc.stack) {
-      puts(stack);
+    else if (stack = err.stack) {
+      console.log(stack);
     }
   }
   return res;

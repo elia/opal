@@ -135,18 +135,17 @@ Rt.um = function(kls) {
   Method missing support - used in debug mode (opt in).
 */
 Rt.mm = function(method_ids) {
-  var prototype = cBasicObject.$m_tbl;
+  var prototype = boot_base_class.prototype;
 
   for (var i = 0, ii = method_ids.length; i < ii; i++) {
-    var mid = method_ids[i];
+    var mid = 'm$' + method_ids[i];
 
     if (!prototype[mid]) {
       var imp = (function(mid, method_id) {
-        return function(self) {
+        return function() {
           var args = [].slice.call(arguments, 0);
-          args.unshift(intern(method_id));
-          args.unshift(self);
-          return self.$m.method_missing.apply(null, args);
+          args.unshift(Rt.Y(method_id));
+          return this.m$method_missing.apply(this, args);
         };
       })(mid, method_ids[i]);
 
@@ -187,9 +186,8 @@ Rt.dm = function(klass, name, public_body, arity) {
     private_body.$rbArity = arity;
   }
 
-  // FIXME: add to private/public methods
-  // klass.$methods.push(intern(name));
-  define_raw_method(klass, name, private_body, public_body);
+  klass.$methods.push(intern(name));
+  define_raw_method(klass, 'm$' + name, private_body, public_body);
 
   return Qnil;
 };
@@ -215,7 +213,7 @@ Rt.ds = function(base, method_id, body, arity) {
   This is actually done in super_find.
 */
 Rt.S = function(callee, self, args) {
-  var mid = callee.$rbName;
+  var mid = 'm$' + callee.$rbName;
   var func = super_find(self.$klass, callee, mid);
 
   if (!func) {
@@ -223,7 +221,8 @@ Rt.S = function(callee, self, args) {
       " for " + self.m$inspect());
   }
 
-  var args_to_send = [self].concat(args);
+  // var args_to_send = [self].concat(args);
+  var args_to_send = [].concat(args);
   return func.apply(self, args_to_send);
 };
 
@@ -234,9 +233,9 @@ function super_find(klass, callee, mid) {
   var cur_method;
 
   while (klass) {
-    if (klass.$m_tbl[mid]) {
-      if (klass.$m_tbl[mid] == callee) {
-        cur_method = klass.$m_tbl[mid];
+    if (klass.$method_table[mid]) {
+      if (klass.$method_table[mid] == callee) {
+        cur_method = klass.$method_table[mid];
         break;
       }
     }
@@ -248,8 +247,8 @@ function super_find(klass, callee, mid) {
   klass = klass.$super;
 
   while (klass) {
-    if (klass.$m_tbl[mid]) {
-      return klass.$m_tbl[mid];
+    if (klass.$method_table[mid]) {
+      return klass.$method_table[mid];
     }
 
     klass = klass.$super;

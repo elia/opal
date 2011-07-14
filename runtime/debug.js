@@ -13,8 +13,8 @@ function init_debug() {
       var res, len = arguments.length, arity = debug_body.$rbArity;
 
       if (arity >= 0) {
-        if (arity != len - 1) {
-          raise(eArgError, "wrong number of arguments(" + (len - 1) + " for " + arity + ")");
+        if (arity != len) {
+          raise(eArgError, "wrong number of arguments(" + len + " for " + arity + ")");
         }
       }
       else {
@@ -25,7 +25,7 @@ function init_debug() {
       }
 
       // push call onto stack
-      Db.push(klass, arguments[0], name, Array.prototype.slice.call(arguments, 1));
+      Db.push(klass, this, name, Array.prototype.slice.call(arguments));
 
       // check for block and pass it on
       if (block.f == arguments.callee) {
@@ -77,8 +77,9 @@ Db.backtrace = function() {
 
   for (var i = stack.length - 1; i >= 0; i--) {
     frame = stack[i];
-    trace.push("\tfrom " + frame.klass.$m.inspect(frame.klass) + '#' + frame.method);
+    trace.push("\tfrom " + frame.klass.$m$inspect() + '#' + frame.method);
   }
 
   return trace.join("\n");
 };
+
