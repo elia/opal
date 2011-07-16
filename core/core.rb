@@ -12,7 +12,7 @@ class Module
   end
 
   def append_features(mod)
-    `$rb.include_module(mod, self);`
+    `include_module(mod, self);`
     self
   end
 
@@ -29,7 +29,7 @@ module Kernel
   # @param [String] path The path to load
   # @return [true, false]
   def require(path)
-    `$rb.require(path) ? Qtrue : Qfalse;`
+    `rb_require(path) ? Qtrue : Qfalse;`
     true
   end
 

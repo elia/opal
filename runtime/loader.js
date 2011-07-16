@@ -20,7 +20,7 @@ load_extensions['.rb'] = function(loader, path) {
   @param {String} id lib path/name
   @return {Boolean}
 */
-var load_require = Op.require = Rt.require = function(lib) {
+var rb_require = Op.require = Rt.require = function(lib) {
   var resolved = Op.loader.resolve_lib(lib);
   var cached = Op.cache[resolved];
 

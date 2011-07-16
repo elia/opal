@@ -172,7 +172,7 @@ module Kernel
   end
 
   def extend(mod)
-    `$rb.extend_module($rb.singleton_class(self), mod);`
+    `extend_module($rb.singleton_class(self), mod);`
     nil
   end
 
@@ -207,7 +207,7 @@ module Kernel
       if (string != nil) msg = string;
       exc = #{`exception`.new `msg`};
     }
-    $rb.raise_exc(exc);`
+    raise_exc(exc);`
   end
 
   alias_method :fail, :raise
