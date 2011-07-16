@@ -74,10 +74,11 @@ end
 
 desc "Check file sizes for core builds"
 task :file_sizes => :build do
-  m = File.read("extras/opal.js")
+  o = File.read "extras/opal.js"
+  m = uglify(o)
   g = gzip(m)
 
-  puts "minified: #{m.size}, gzipped: #{g.size}"
+  puts "development: #{o.size}, minified: #{m.size}, gzipped: #{g.size}"
 end
 
 desc "Rebuild ruby_parser.rb for opal build tools"
