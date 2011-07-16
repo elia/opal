@@ -66,12 +66,12 @@ function boot_makemeta(id, klass, superklass) {
   }
 
   var result = new meta();
-  klass.prototype.$klass = result;
+  klass.prototype.o$k = result;
   return result;
 };
 
 function boot_defmetameta(klass, meta) {
-  klass.$klass = meta;
+  klass.o$k = meta;
 }
 
 function class_boot(superklass) {
@@ -111,7 +111,7 @@ function class_boot(superklass) {
   proto.$constants_alloc.prototype = proto.$c;
 
   var result = new meta();
-  cls.prototype.$klass = result;
+  cls.prototype.o$k = result;
   return result;
 };
 
@@ -142,10 +142,10 @@ function make_metaclass(klass, super_class) {
       var meta = class_boot(super_class);
       // remove this??!
       meta.o$a.prototype = klass.constructor.prototype;
-      meta.$c = meta.$klass.$c_prototype;
+      meta.$c = meta.o$k.$c_prototype;
       meta.o$f |= FL_SINGLETON;
       meta.__classid__ = "#<Class:" + klass.__classid__ + ">";
-      klass.$klass = meta;
+      klass.o$k = meta;
       meta.$c = klass.$c;
       singleton_class_attached(meta, klass);
       // console.log("meta id: " + klass.__classid__);
@@ -158,12 +158,12 @@ function make_metaclass(klass, super_class) {
 };
 
 function make_singleton_class(obj) {
-  var orig_class = obj.$klass;
+  var orig_class = obj.o$k;
   var klass = class_boot(orig_class);
 
   klass.o$f |= FL_SINGLETON;
 
-  obj.$klass = klass;
+  obj.o$k = klass;
 
   // make methods we define here actually point to instance
   // FIXME: we could just take advantage of $bridge_prototype like we
@@ -172,7 +172,7 @@ function make_singleton_class(obj) {
 
   singleton_class_attached(klass, obj);
 
-  klass.$klass = class_real(orig_class).$klass;
+  klass.o$k = class_real(orig_class).o$k;
   klass.__classid__ = "#<Class:#<" + orig_class.__classid__ + ":" + klass.$id + ">>";
 
   return klass;
@@ -187,34 +187,33 @@ function singleton_class_attached(klass, obj) {
 function make_metametaclass(metaclass) {
   var metametaclass, super_of_metaclass;
 
-  if (metaclass.$klass == metaclass) {
+  if (metaclass.o$k == metaclass) {
     metametaclass = class_boot(null);
-    metametaclass.$klass = metametaclass;
+    metametaclass.o$k = metametaclass;
   }
   else {
     metametaclass = class_boot(null);
-    metametaclass.$klass = metaclass.$klass.$klass == metaclass.$klass
-      ? make_metametaclass(metaclass.$klass)
-      : metaclass.$klass.$klass;
+    metametaclass.o$k = metaclass.o$k.o$k == metaclass.o$k
+      ? make_metametaclass(metaclass.o$k)
+      : metaclass.o$k.o$k;
   }
 
   metametaclass.o$f |= FL_SINGLETON;
 
   singleton_class_attached(metametaclass, metaclass);
-  metaclass.$klass = metametaclass;
-  metaclsss.$m = metametaclass.$m_tbl;
+  metaclass.o$k = metametaclass;
   super_of_metaclass = metaclass.$super;
 
-  metametaclass.$super = super_of_metaclass.$klass.__attached__
+  metametaclass.$super = super_of_metaclass.o$k.__attached__
     == super_of_metaclass
-    ? super_of_metaclass.$klass
+    ? super_of_metaclass.o$k
     : make_metametaclass(super_of_metaclass);
 
   return metametaclass;
 };
 
 function boot_defmetametaclass(klass, metametaclass) {
-  klass.$klass.$klass = metametaclass;
+  klass.o$k.o$k = metametaclass;
 };
 
 // Holds an array of all prototypes that are bridged. Any method defined on
@@ -238,7 +237,7 @@ function bridge_class(prototype, flags, id, super_class) {
     prototype[meth] = cObject.o$m[meth];
   }
 
-  prototype.$klass = klass;
+  prototype.o$k = klass;
   prototype.o$f = flags;
   prototype.$r = true;
 
@@ -307,7 +306,7 @@ function define_class_id(id, super_klass) {
   }
   klass = class_create(super_klass);
   name_class(klass, id);
-  make_metaclass(klass, super_klass.$klass);
+  make_metaclass(klass, super_klass.o$k);
 
   return klass;
 };
@@ -328,12 +327,12 @@ function singleton_class(obj) {
     }
   }
 
-  if ((obj.$klass.o$f & FL_SINGLETON) && obj.$klass.__attached__ == obj) {
-    klass = obj.$klass;
+  if ((obj.o$k.o$f & FL_SINGLETON) && obj.o$k.__attached__ == obj) {
+    klass = obj.o$k;
   }
   else {
-    var class_id = obj.$klass.__classid__;
-    klass = make_metaclass(obj, obj.$klass);
+    var class_id = obj.o$k.__classid__;
+    klass = make_metaclass(obj, obj.o$k);
   }
 
   return klass;

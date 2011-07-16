@@ -42,7 +42,7 @@ class Exception
   end
 
   def inspect
-    `return "#<" + self.$klass.__classid__ + ": '" + #{@message} + "'>";`
+    `return "#<" + self.o$k.__classid__ + ": '" + #{@message} + "'>";`
   end
 
   def to_s

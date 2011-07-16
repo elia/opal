@@ -72,7 +72,7 @@ Op.run = function(body) {
     exc = err.$rb_exc;
 
     if (exc && exc['@message']) {
-      console.log(exc.$klass.__classid__ + ': ' + exc['@message']);
+      console.log(exc.o$k.__classid__ + ': ' + exc['@message']);
     }
     else {
       console.log('NativeError: ' + err.message);

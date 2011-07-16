@@ -74,7 +74,7 @@ Rt.dc = function(base, super_class, id, body, flag) {
   switch (flag) {
     case 0:
       if (base.o$f & T_OBJECT) {
-        base = class_real(base.$klass);
+        base = class_real(base.o$k);
       }
 
       if (super_class == Qnil) {
@@ -90,7 +90,7 @@ Rt.dc = function(base, super_class, id, body, flag) {
 
     case 2:
       if (base.o$f & T_OBJECT) {
-        base = class_real(base.$klass);
+        base = class_real(base.o$k);
       }
       klass = define_module_under(base, id);
       break;
@@ -169,7 +169,7 @@ Rt.mm = function(method_ids) {
 */
 Rt.dm = function(klass, name, body, arity) {
   if (klass.o$f & T_OBJECT) {
-    klass = klass.$klass;
+    klass = klass.o$k;
   }
 
   var mode = klass.$mode;
@@ -207,7 +207,7 @@ Rt.ds = function(base, method_id, body, arity) {
 */
 Rt.S = function(callee, self, args) {
   var mid = 'm$' + callee.$rbName;
-  var func = super_find(self.$klass, callee, mid);
+  var func = super_find(self.o$k, callee, mid);
 
   if (!func) {
     raise(eNoMethodError, "super: no super class method `" + mid + "`" +
@@ -295,7 +295,7 @@ Rt.R = function(value, func) {
 */
 Rt.cg = function(base, id) {
   if (base.o$f & T_OBJECT) {
-    base = class_real(base.$klass);
+    base = class_real(base.o$k);
   }
   return const_get(base, id);
 };
@@ -305,7 +305,7 @@ Rt.cg = function(base, id) {
 */
 Rt.cs = function(base, id, val) {
   if (base.o$f & T_OBJECT) {
-    base = class_real(base.$klass);
+    base = class_real(base.o$k);
   }
   return const_set(base, id, val);
 };

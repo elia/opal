@@ -46,7 +46,7 @@ module Kernel
   end
 
   def kind_of?(klass)
-    `var search = self.$klass;
+    `var search = self.o$k;
 
     while (search) {
       if (search == klass) {
@@ -108,7 +108,7 @@ module Kernel
   end
 
   def class
-    `return $rb.class_real(self.$klass);`
+    `return $rb.class_real(self.o$k);`
   end
 
   def singleton_class
@@ -116,7 +116,7 @@ module Kernel
   end
 
   def methods
-    `return self.$klass.$methods;`
+    `return self.o$k.$methods;`
   end
 
   # Returns a random number. If max is `nil`, then the result is 0. Otherwise
@@ -152,7 +152,7 @@ module Kernel
   #
   # FIXME: proper hex output needed
   def to_s
-    "#<#{`$rb.class_real(self.$klass)`}:0x#{`(self.$hash() * 400487).toString(16)`}>"
+    "#<#{`$rb.class_real(self.o$k)`}:0x#{`(self.$hash() * 400487).toString(16)`}>"
   end
 
   def inspect
@@ -160,7 +160,7 @@ module Kernel
   end
 
   def const_set(name, value)
-    `return rb_const_set($rb.class_real(self.$klass), name, value);`
+    `return rb_const_set($rb.class_real(self.o$k), name, value);`
   end
 
   def const_defined?(name)

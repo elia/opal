@@ -281,7 +281,7 @@ var intern = Rt.Y = function(intern) {
 */
 Rt.S = function(callee, self, args) {
   var mid = 'm$' + callee.$rbName;
-  var func = super_find(self.$klass, callee, mid);
+  var func = super_find(self.o$k, callee, mid);
 
   if (!func) {
     raise(eNoMethodError, "super: no super class method `" + mid + "`" +
@@ -369,7 +369,7 @@ Rt.R = function(value, func) {
 */
 Rt.cg = function(base, id) {
   if (base.o$f & T_OBJECT) {
-    base = class_real(base.$klass);
+    base = class_real(base.o$k);
   }
   return const_get(base, id);
 };
@@ -379,7 +379,7 @@ Rt.cg = function(base, id) {
 */
 Rt.cs = function(base, id, val) {
   if (base.o$f & T_OBJECT) {
-    base = class_real(base.$klass);
+    base = class_real(base.o$k);
   }
   return const_set(base, id, val);
 };
@@ -634,11 +634,11 @@ function init() {
   eBreakInstance.$keyword = 2;
 
   eReturnInstance = new Error('unexpected return');
-  eReturnInstance.$klass = eLocalJumpError;
+  eReturnInstance.o$k = eLocalJumpError;
   eReturnInstance.$keyword = 1;
 
   eNextInstance = new Error('unexpected next');
-  eNextInstance.$klass = eLocalJumpError;
+  eNextInstance.o$k = eLocalJumpError;
   eNextInstance.$keyword = 3;
 
   // need to do this after we make symbol

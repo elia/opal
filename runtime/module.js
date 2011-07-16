@@ -93,7 +93,7 @@ function extend_module(klass, module) {
 
   module.$extended_in.push(klass);
 
-  var meta = klass.$klass;
+  var meta = klass.o$k;
 
   for (var method in module.o$m) {
     if (hasOwnProperty.call(module.o$m, method)) {
