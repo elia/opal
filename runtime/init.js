@@ -262,7 +262,7 @@ var cString, cSymbol;
   @return {RSymbol} symbol
 */
 var intern = Rt.Y = function(intern) {
-  if (symbol_table.hasOwnProperty(intern)) {
+  if (hasOwnProperty.call(symbol_table, intern)) {
     return symbol_table[intern];
   }
 

@@ -18,10 +18,12 @@ var PLATFORM_VERSION  = "1.9.2";
 var PLATFORM_ARGV     = "[]";
 
 // Minimize js types
-var ArrayProto  = Array.prototype,
-    ObjectProto = Object.prototype,
+var ArrayProto     = Array.prototype,
+    ObjectProto    = Object.prototype,
 
-    ArraySlice  = ArrayProto.slice;
+    ArraySlice     = ArrayProto.slice,
+
+    hasOwnProperty = ObjectProto.hasOwnProperty;
 
 /**
   prototypes of actual instances of classes.

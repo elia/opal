@@ -914,7 +914,7 @@ class Array
 
     for (var i = 0; i < self.length; i++) {
       test = self[i];
-      if (test.hasOwnProperty('length') && test[1] != undefined) {
+      if (test.o$f & T_ARRAY && test[1] != undefined) {
         if (#{`test[1]` == obj}.$r) return test;
       }
     }

@@ -170,12 +170,12 @@ class Hash
   def ==(other)
     `if (self === other) return Qtrue;
     if (!other.k || !other.a) return Qfalse;
-    if (self.k.length != other.$keys.length) return Qfalse;
+    if (self.k.length != other.k.length) return Qfalse;
 
     for (var i = 0; i < self.k.length; i++) {
       var key1 = self.k[i], assoc1 = key1.$hash();
 
-      if (!other.a.hasOwnProperty(assoc1))
+      if (!hasOwnProperty.call(other.a, assoc1))
         return Qfalse;
 
       var assoc2 = other.a[assoc1];
@@ -203,7 +203,7 @@ class Hash
   def [](key)
     `var assoc = key.$hash();
 
-    if (self.a.hasOwnProperty(assoc))
+    if (hasOwnProperty.call(self.a, assoc))
       return self.a[assoc];
 
     return self.d;`
@@ -227,7 +227,7 @@ class Hash
   def []=(key, value)
     `var assoc = key.$hash();
 
-    if (!self.a.hasOwnProperty(assoc))
+    if (!hasOwnProperty.call(self.a, assoc))
       self.k.push(key);
 
     return self.a[assoc] = value;`
@@ -280,7 +280,7 @@ class Hash
   def delete(key)
     `var assoc = key.$hash();
 
-    if (self.a.hasOwnProperty(assoc)) {
+    if (hasOwnProperty.call(self.a, assoc)) {
       var ret = self.a[assoc];
       delete self.a[assoc];
       self.k.splice(self.$keys.indexOf(key), 1);
@@ -448,7 +448,7 @@ class Hash
   # @param [Object] key the key to check
   # @return [true, false]
   def has_key?(key)
-    `if (self.a.hasOwnProperty(key.$hash()))
+    `if (hasOwnProperty.call(self.a, key.$hash()))
       return Qtrue;
 
     return Qfalse;`
@@ -601,7 +601,7 @@ class Hash
     for (var i = 0; i < other.k.length; i++) {
       key = other.k[i], val = other.a[key.$hash()];
 
-      if (!result.a.hasOwnProperty(key.$hash())) {
+      if (!hasOwnProperty.call(result.a, key.$hash())) {
         result.k.push(key);
       }
 
@@ -632,7 +632,7 @@ class Hash
       key = other.k[i];
       val = other.a[key.$hash()];
 
-      if (!self.a.hasOwnProperty(key.$hash())) {
+      if (!hasOwnProperty.call(self.a, key.$hash())) {
         self.k.push(key);
       }
 

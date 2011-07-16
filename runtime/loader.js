@@ -144,7 +144,7 @@ function load_register_gem(name, info) {
   paths.unshift(fs_expand_path(fs_join(root_dir, lib_dir)));
 
   for (var file in files) {
-    if (files.hasOwnProperty(file)) {
+    if (hasOwnProperty.call(files, file)) {
       var file_path = fs_expand_path(fs_join(root_dir, file));
       factories[file_path] = files[file];
     }
