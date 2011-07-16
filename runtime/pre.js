@@ -1,6 +1,6 @@
 opal = {};
 
-(function() {
+(function(undefined) {
 
 // So we can minimize
 var Op = opal;

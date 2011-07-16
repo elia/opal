@@ -178,13 +178,10 @@ var alias_method = Rt.alias_method = function(klass, new_name, old_name) {
   singleton_method_added etc. define_method does that.
 
 */
-function define_raw_method(klass, public_name, private_body, public_body) {
-  var private_name = '$' + public_name;
+function define_raw_method(klass, name, body) {
 
-  klass.o$a.prototype[public_name] = public_body;
-  klass.$method_table[public_name] = public_body;
-
-  klass.o$a.prototype[private_name] = private_body;
+  klass.o$a.prototype[name] = body;
+  klass.$method_table[name] = body;
 
   var included_in = klass.$included_in, includee;
 
@@ -192,15 +189,14 @@ function define_raw_method(klass, public_name, private_body, public_body) {
     for (var i = 0, ii = included_in.length; i < ii; i++) {
       includee = included_in[i];
 
-      define_raw_method(includee, public_name, private_body, public_body);
+      define_raw_method(includee, name, body);
     }
   }
 
   // this class is actually bridged, so add method to bridge native
   // prototype as well
   if (klass.$bridge_prototype) {
-    klass.$bridge_prototype[public_name] = public_body;
-    klass.$bridge_prototype[private_name] = private_body;
+    klass.$bridge_prototype[name] = body;
   }
 
   // if we are dealing with Object or BasicObject, we need to donate
@@ -210,46 +206,10 @@ function define_raw_method(klass, public_name, private_body, public_body) {
 
     for (var i = 0, ii = bridged.length; i < ii; i++) {
       // do not overwrite bridged's own implementation
-      if (!bridged[i][public_name] || bridged[i][public_name].$rbMM) {
-        bridged[i][public_name] = public_body;
+      if (!bridged[i][name] || bridged[i][name].$rbMM) {
+        bridged[i][name] = body;
       }
     }
-  }
-};
-
-Rt.private_methods = function(klass, args) {
-
-  if (args.length) {
-    var proto = klass.o$a.prototype;
-
-    for (var i = 0, ii = args.length; i < ii; i++) {
-      var arg = args[i].$m$to_s(), mid = 'm$' + arg;
-
-      // If method doesn't exist throw an error. Also check that if it
-      // does exist that it isnt just a method missing implementation.
-      if (!proto[mid] || proto[mid].$rbMM) {
-        raise(eNameError, "undefined method `" + arg +
-              "' for class `" + klass.__classid__ + "'");
-      }
-
-      // Set the public implementation to a function that just throws
-      // and error when called
-      klass.o$a.prototype[mid] = function() {
-        raise(eNoMethodError, "private method `" + arg + "' called for " +
-              this.$m$inspect());
-      }
-
-      // If this method is in the method_table then we must also set that.
-      // If not then we inherited this method from further up the chain,
-      // so we do not set it in our method table.
-      if (klass.$method_table[mid]) {
-        // set
-      }
-    }
-  }
-  else {
-    // no args - set klass mode to private
-    klass.$mode = FL_PRIVATE;
   }
 };
 
@@ -703,9 +663,12 @@ function init() {
   Op.loader = new Loader(Op);
   Op.cache = {};
 
-  // const_set(cObject, 'RUBY_ENGINE', Op.platform.engine);
-  const_set(cObject, 'RUBY_ENGINE', 'opal-gem');
+  const_set(cObject, 'RUBY_ENGINE', PLATFORM_ENGINE);
+  const_set(cObject, 'RUBY_PLATFORM', PLATFORM_PLATFORM);
+  const_set(cObject, 'RUBY_VERSION', PLATFORM_VERSION);
+  const_set(cObject, 'ARGV', PLATFORM_ARGV);
 
+  opal.run(core_lib);
 };
 
 /**

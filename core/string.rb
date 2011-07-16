@@ -252,7 +252,7 @@ class String
   # @param [String] other string to compare
   # @return [-1, 0, 1, nil] result
   def <=>(other)
-    `if (typeof other != 'string') return nil;
+    `if (!(other.o$f & T_STRING)) return nil;
     else if (self > other) return 1;
     else if (self < other) return -1;
     return 0;`

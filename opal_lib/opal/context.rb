@@ -34,10 +34,6 @@ module Opal
       opal = self['opal']
       opal['loader'] = Loader.new opal, self
       opal['fs'] = FileSystem.new opal, self
-      opal['platform']['engine'] = 'opal-gem'
-
-      # eval "opal.require('core');", "(opal)"
-      # require_file 'core'
     end
 
     # Require the given id as if it was required in the context. This simply

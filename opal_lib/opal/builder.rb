@@ -17,21 +17,15 @@ module Opal
 
     CORE_PATH = File.join OPAL_PATH, 'core'
 
-    def build_runtime
-      code = ''
-
-      %w[pre runtime init class module fs loader debug post].each do |f|
-        code += File.read(File.join RUNTIME_PATH, f + '.js')
-      end
-
-      code
-    end
-
     # Builds core opal runtime + core libs, and returns as a string.
     # This can then just be used directly by any compiled code. The
     # core lib is then auto loaded so it is ready for running.
     def build_core
-      code = build_runtime
+      code = ''
+
+      %w[pre runtime init class module fs loader debug].each do |f|
+        code += File.read(File.join RUNTIME_PATH, f + '.js')
+      end
 
       order = File.read(File.join(CORE_PATH, 'load_order')).strip.split
 
@@ -39,7 +33,9 @@ module Opal
         File.read File.join(CORE_PATH, o + '.rb')
       end
 
-      code + 'opal.run(function($rb, self, __FILE__) { ' + Opal::RubyParser.new(core.join).parse!.generate_top + '});'
+      code += 'var core_lib = function($rb, self, __FILE__) { ' + Opal::RubyParser.new(core.join).parse!.generate_top + '};'
+
+      code + File.read(File.join RUNTIME_PATH, 'post.js')
     end
 
     # Builds the opal parser and dev.rb file, and returns as a string.

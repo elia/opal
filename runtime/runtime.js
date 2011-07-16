@@ -12,12 +12,16 @@ Rt.opal = Op;
   Opal platform - this is overriden in gem context and nodejs context. These
   are the default values used in the browser, `opal-browser'.
 */
-Op.platform = {
-  platform: "opal",
-  engine: "opal-browser",
-  version: "1.9.2",
-  argv: []
-};
+var PLATFORM_PLATFORM = "opal";
+var PLATFORM_ENGINE   = "opal-gem";
+var PLATFORM_VERSION  = "1.9.2";
+var PLATFORM_ARGV     = "[]";
+
+// Minimize js types
+var ArrayProto  = Array.prototype,
+    ObjectProto = Object.prototype,
+
+    ArraySlice  = ArrayProto.slice;
 
 /**
   Core runtime classes, objects and literals.
@@ -46,12 +50,6 @@ var T_CLASS       = Rt.T_CLASS       = 1,
     T_RANGE       = Rt.T_RANGE       = 1024,
     T_ICLASS      = Rt.T_ICLASS      = 2056,
     FL_SINGLETON  = Rt.FL_SINGLETON  = 4112;
-
-/**
-  Method visibility modes
- */
-var FL_PUBLIC  = 0,
-    FL_PRIVATE = 1;
 
 /**
   Define classes. This is the public API for defining classes, shift classes
@@ -93,9 +91,6 @@ Rt.dc = function(base, super_class, id, body, flag) {
     default:
       raise(eException, "define_class got a unknown flag " + flag);
   }
-
-  // when reopening a class always set it back to public
-  klass.$mode = FL_PUBLIC;
 
   var res = body(klass);
 
@@ -165,29 +160,20 @@ Rt.mm = function(method_ids) {
   @param {Number} arity Method arity
   @return {Qnil}
 */
-Rt.dm = function(klass, name, public_body, arity) {
+Rt.dm = function(klass, name, body, arity) {
   if (klass.o$f & T_OBJECT) {
     klass = klass.$klass;
   }
 
   var mode = klass.$mode;
-  var private_body = public_body;
 
-  if (mode == FL_PRIVATE) {
-    public_body = function() {
-      raise(eNoMethodError, "private method `" + name +
-        "' called for " + this.$m$inspect());
-    };
-    public_body.$arity = -1;
-  }
-
-  if (!private_body.$rbName) {
-    private_body.$rbName = name;
-    private_body.$rbArity = arity;
+  if (!body.$rbName) {
+    body.$rbName = name;
+    body.$rbArity = arity;
   }
 
   klass.$methods.push(intern(name));
-  define_raw_method(klass, 'm$' + name, private_body, public_body);
+  define_raw_method(klass, 'm$' + name, body);
 
   return Qnil;
 };

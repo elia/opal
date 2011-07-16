@@ -71,10 +71,3 @@ class String
   end
 end
 
-`var platform = opal.platform;`
-RUBY_PLATFORM = `platform.platform`
-RUBY_ENGINE = `platform.engine`
-RUBY_VERSION = `platform.version`
-
-ARGV = `platform.argv`
-

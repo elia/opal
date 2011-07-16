@@ -64,8 +64,7 @@ function include_module(klass, module) {
   for (var method in module.$method_table) {
     if (module.$method_table.hasOwnProperty(method)) {
       define_raw_method(klass, method,
-                        module.o$a.prototype['$' + method],
-                        module.$method_table[method]);
+                        module.o$a.prototype[method]);
     }
   }
 
@@ -99,8 +98,7 @@ function extend_module(klass, module) {
   for (var method in module.$method_table) {
     if (module.$method_table.hasOwnProperty(method)) {
       define_raw_method(meta, method,
-                        module.o$a.prototype['$' + method],
-                        module.$method_table[method]);
+                        module.o$a.prototype[method]);
     }
   }
 };

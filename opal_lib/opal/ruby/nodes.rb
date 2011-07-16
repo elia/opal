@@ -418,7 +418,6 @@ module Opal
         recv = @recv.process opts, LEVEL_EXPR
       else
         recv = "self"
-        mid = '$' + mid
       end
 
       if @recv.is_a? NumericNode

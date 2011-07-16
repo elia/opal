@@ -19,7 +19,6 @@ function init_debug() {
       }
       else {
         if ((-arity - 1) > len) {
-          console.log("raising for " + name + " " + len + " for " + arity);
           raise(eArgError, "wrong number of arguments(" + len + " for " + arity + ")");
         }
       }
@@ -77,7 +76,7 @@ Db.backtrace = function() {
 
   for (var i = stack.length - 1; i >= 0; i--) {
     frame = stack[i];
-    trace.push("\tfrom " + frame.klass.$m$inspect() + '#' + frame.method);
+    trace.push("\tfrom " + frame.klass.m$inspect() + '#' + frame.method);
   }
 
   return trace.join("\n");

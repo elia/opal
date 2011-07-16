@@ -1331,7 +1331,7 @@ class Array
   # @param [String, Number] num string or number used to join or concat
   # @return [String, Array] depending on argument
   def *(arg)
-    `if (typeof arg == 'string') {
+    `if (arg.o$f & T_STRING) {
       return #{self.join `arg`};
     } else {
       var result = [];

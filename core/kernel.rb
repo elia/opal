@@ -198,7 +198,7 @@ module Kernel
   def raise(exception, string = nil)
     `var msg = nil, exc;
 
-    if (typeof exception == 'string') {
+    if (exception.o$f & T_STRING) {
       msg = exception;
       exc = #{RuntimeError.new `msg`};
     } else if (#{`exception`.kind_of? Exception}.$r) {
