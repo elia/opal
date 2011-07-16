@@ -29,7 +29,7 @@ module Opal
     def setup_context
       self['console'] = Console.new
       eval "OPAL_DEBUG = true;", "(opal)"
-      eval @builder.build_runtime, "(opal)"
+      eval @builder.build_core, "(opal)"
 
       opal = self['opal']
       opal['loader'] = Loader.new opal, self
@@ -37,7 +37,7 @@ module Opal
       opal['platform']['engine'] = 'opal-gem'
 
       # eval "opal.require('core');", "(opal)"
-      require_file 'core'
+      # require_file 'core'
     end
 
     # Require the given id as if it was required in the context. This simply

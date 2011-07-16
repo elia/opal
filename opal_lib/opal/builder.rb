@@ -15,6 +15,8 @@ module Opal
 
     RUNTIME_PATH = File.join OPAL_PATH, 'runtime'
 
+    CORE_PATH = File.join OPAL_PATH, 'core'
+
     def build_runtime
       code = ''
 
@@ -30,10 +32,14 @@ module Opal
     # core lib is then auto loaded so it is ready for running.
     def build_core
       code = build_runtime
-      code += build_stdlib('core.rb', 'core/*.rb')
-      code += "opal.require('core');"
 
-      code
+      order = File.read(File.join(CORE_PATH, 'load_order')).strip.split
+
+      core = order.map do |o|
+        File.read File.join(CORE_PATH, o + '.rb')
+      end
+
+      code + 'opal.run(function($rb, self, __FILE__) { ' + Opal::RubyParser.new(core.join).parse!.generate_top + '});'
     end
 
     # Builds the opal parser and dev.rb file, and returns as a string.

@@ -71,29 +71,6 @@ class String
   end
 end
 
-require 'core/basic_object'
-require 'core/object'
-require 'core/module'
-require 'core/class'
-require 'core/kernel'
-require 'core/top_self'
-require 'core/nil_class'
-require 'core/true_class'
-require 'core/false_class'
-require 'core/enumerable'
-require 'core/array'
-require 'core/numeric'
-require 'core/hash'
-require 'core/error'
-require 'core/string'
-require 'core/symbol'
-require 'core/proc'
-require 'core/range'
-require 'core/regexp'
-require 'core/match_data'
-require 'core/file'
-require 'core/dir'
-
 `var platform = opal.platform;`
 RUBY_PLATFORM = `platform.platform`
 RUBY_ENGINE = `platform.engine`
