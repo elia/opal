@@ -471,7 +471,7 @@ module Opal
         if args[1]
           tmp_recv = opts[:scope].temp_local
           splat = args[1].generate(opts, LEVEL_EXPR)
-          splat_args = arg_res.empty? ? "#{splat}.slice()" : "[#{arg_res.join ', '}].concat(#{splat}.slice())"
+          splat_args = arg_res.empty? ? "#{splat}" : "[#{arg_res.join ', '}].concat(#{splat})"
           # when using splat, our this val for apply may need a tmp var
           # to save just outputting it twice (have to follow recv path twice)
           splat_recv = recv
