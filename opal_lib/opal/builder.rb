@@ -46,7 +46,7 @@ module Opal
     def build_parser
       code = ''
 
-      %w[opal/ruby/nodes opal/ruby/parser opal/ruby/ruby_parser].each do |src|
+      %w[opal/ruby/nodes opal/ruby/lexer opal/ruby/ruby_parser].each do |src|
         full = File.join OPAL_PATH, 'opal_lib', src + '.rb'
         compiled = compile_source full
         code += "opal.register('#{src}.rb', #{compiled});"

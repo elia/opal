@@ -14,7 +14,7 @@ token CLASS MODULE DEF UNDEF BEGIN RESCUE ENSURE END IF UNLESS
       '~' '%' '/' '+' '-' '<' '>' '|' '!' '^'
       '{@' '}' BACK_REF2 SYMBOL_BEG STRING_BEG XSTRING_BEG REGEXP_BEG
       WORDS_BEG AWORDS_BEG STRING_DBEG STRING_DVAR STRING_END STRING
-      SYMBOL '\\n' '?' ':' ',' SPACE ';' LABEL
+      SYMBOL '\\n' '?' ':' ',' SPACE ';' LABEL UNDEFINED
 
 prechigh
   right    '!' '~' '+@'
@@ -1188,6 +1188,10 @@ variable:
   | NIL
     {
       result = NilNode.new val[0]
+    }
+  | UNDEFINED
+    {
+      result = UndefinedNode.new val[0]
     }
   | SELF
     {

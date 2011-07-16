@@ -725,6 +725,10 @@ module Opal
           @lex_state = :expr_end
           return :NIL, scanner.matched
 
+        when 'undefined'
+          @lex_state = :expr_end
+          return :UNDEFINED, scanner.matched
+
         when '__LINE__'
           @lex_state = :expr_end
           return :LINE, @line_number.to_s

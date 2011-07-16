@@ -6,7 +6,7 @@ module Opal
 end
 
 require 'opal/version'
-require 'opal/ruby/parser'
+require 'opal/ruby/lexer'
 
 require 'opal/gem'
 require 'opal/bundle'

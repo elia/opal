@@ -21,7 +21,7 @@ class Array
     return arr;`
   end
 
-  def initialize(len, fill = nil)
+  def initialize(len = 0, fill = nil)
     `var ary = self;
 
     for (var i = 0; i < len; i++) {
@@ -456,7 +456,7 @@ class Array
   #
   # @param [Object] obj object to check
   # @return [Numeric] count or count of obj
-  def count(obj)
+  def count(obj = undefined)
     `if (obj != undefined) {
       var total = 0;
 
@@ -623,7 +623,7 @@ class Array
   # @param [Numeric] idx
   # @param [Object] defaults
   # @return [Object] returns result
-  def fetch(idx, defaults)
+  def fetch(idx, defaults = undefined)
     `var original = idx;
 
     if (idx < 0) idx += self.length;
@@ -653,8 +653,8 @@ class Array
   #
   # @param [Numeric] count number of elements
   # @return [Object, Array] object or array of objects
-  def first(count = nil)
-    `if (count == nil) {
+  def first(count = undefined)
+    `if (count == undefined) {
       if (self.length == 0) return nil;
       return self[0];
     }
@@ -682,14 +682,14 @@ class Array
   #
   # @param [Numeric] level the level to flatten
   # @return [Array] returns new array
-  def flatten(level = nil)
+  def flatten(level = undefined)
     `var result = [], item;
 
     for (var i = 0; i < self.length; i++) {
       item = self[i];
 
       if (item.hasOwnProperty('length')) {
-        if (level == nil)
+        if (level == undefined)
           result = result.concat(#{`item`.flatten});
         else if (level == 0)
           result.push(item);
@@ -718,7 +718,7 @@ class Array
   #
   # @param [Number] level to flatten to
   # @return [Array] returns the receiver
-  def flatten!(level = nil)
+  def flatten!(level = undefined)
     `var length = self.length;
     var result = #{self.flatten level};
     self.splice(0);
@@ -854,8 +854,8 @@ class Array
   #
   # @param [Number] count the number of items to get
   # @return [Object, Array] result
-  def last(count = nil)
-    `if (count == nil) {
+  def last(count = undefined)
+    `if (count == undefined) {
       if (self.length == 0) return nil;
       return self[self.length - 1];
     } else {
@@ -880,8 +880,8 @@ class Array
   #
   # @param [Numeric] count number to pop
   # @return [Array] returns popped items
-  def pop(count = nil)
-    `if (count == nil) {
+  def pop(count = undefined)
+    `if (count == undefined) {
       if (self.length) return self.pop();
       return nil;
     } else {
@@ -1047,7 +1047,7 @@ class Array
   #     # => 3
   #
   # @return [Object, nil] returns result or nil
-  def rindex(obj = `undefined`)
+  def rindex(obj = undefined)
     `if (obj != undefined) {
       for (var i = self.length - 1; i >=0; i--) {
         if (#{`self[i]` == obj}.$r) {
@@ -1110,11 +1110,11 @@ class Array
   #
   # @param [Numeric] count elements to shift
   # @return [Array] result
-  def shift(count = nil)
-    `if (count != nil)
+  def shift(count = undefined)
+    `if (count != undefined)
       return self.splice(0, count);
 
-    if (self.length) 
+    if (self.length)
       return self.shift();
 
     return nil;`
@@ -1368,7 +1368,7 @@ class Array
   # @param [Range, Numeric] index to begin
   # @param [Numeric] length last index
   # @return [Array, Object, nil] result
-  def [](index, length = `undefined`)
+  def [](index, length = undefined)
     `var ary = self, size = ary.length;
 
     if (index < 0) index += size;

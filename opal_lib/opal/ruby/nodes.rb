@@ -514,6 +514,17 @@ module Opal
     end
   end
 
+  class UndefinedNode < BaseNode
+
+    def initialize(val)
+      @line = val[:line]
+    end
+
+    def generate(opts, level)
+      'undefined'
+    end
+  end
+
   class ModuleNode < ScopeNode
 
     def initialize(mod, path, body, _end)
@@ -688,7 +699,13 @@ module Opal
         args[1].each do |arg|
           param_variable arg[0][:value]
           method_args << arg[0][:value]
-          pre_code += "if (#{arg[0][:value]} == undefined) {#{arg[0][:value]} = #{arg[1].generate(opts, LEVEL_EXPR)};}"
+
+          # undefined is a special case... we use it to make core libs have
+          # right arity, but we dont want overhead of checking for no arg.
+          # i.e. non given arg will be undefined, not nil..
+          unless arg[1].is_a? UndefinedNode
+            pre_code += "if (#{arg[0][:value]} == undefined) {#{arg[0][:value]} = #{arg[1].generate(opts, LEVEL_EXPR)};}"
+          end
         end
       end
 
