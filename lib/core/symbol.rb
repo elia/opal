@@ -28,7 +28,7 @@
 class Symbol
 
   def inspect
-    `return ':' + self.toString();`
+    `return ':' + self.sym.toString();`
   end
 
   def to_sym

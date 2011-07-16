@@ -1,4 +1,3 @@
-`console.log(1);`
 class Module
 
   def include(*mods)
@@ -22,7 +21,6 @@ class Module
   end
 end
 
-`console.log(1);`
 module Kernel
 
   # Try to load the library or file named `path`. An error is thrown if the
@@ -31,7 +29,6 @@ module Kernel
   # @param [String] path The path to load
   # @return [true, false]
   def require(path)
-    `console.log("about to require: " + path);`
     `$rb.require(path) ? Qtrue : Qfalse;`
     true
   end
@@ -46,7 +43,6 @@ module Kernel
   end
 end
 
-`console.log(1);`
 class << $stdout
   # FIXME: Should this really be here? We only need to override this when we
   # are in the browser context as we don't have native access to file
@@ -59,26 +55,22 @@ class << $stdout
   end
 end
 
-`console.log(1);`
 class Object
   include Kernel
 end
 
-`console.log(2);`
 class Symbol
   def to_s
     `return self.sym.toString();`
   end
 end
 
-`console.log(2);`
 class String
   def to_s
     `return self.toString();`
   end
 end
 
-`console.log(3);`
 require 'core/basic_object'
 require 'core/object'
 require 'core/module'

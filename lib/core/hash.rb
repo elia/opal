@@ -59,10 +59,10 @@ class Hash
   #
   # @return [Array]
   def values
-    `var result = [], length = self.$keys.length;
+    `var result = [], length = self.k.length;
 
     for (var i = 0; i < length; i++) {
-      result.push(self.$assocs[self.$keys[i].$hash()]);
+      result.push(self.a[self.k[i].$hash()]);
     }
 
     return result;`
@@ -79,9 +79,9 @@ class Hash
   def inspect
     `var description = [], key, value;
 
-    for (var i = 0; i < self.$keys.length; i++) {
-      key = self.$keys[i];
-      value = self.$assocs[key.$hash()];
+    for (var i = 0, ii = self.k.length; i < ii; i++) {
+      key = self.k[i];
+      value = self.a[key.$hash()];
       description.push(#{`key`.inspect} + '=>' + #{`value`.inspect});
     }
 
@@ -94,9 +94,9 @@ class Hash
   def to_s
     `var description = [], key, value;
 
-    for (var i = 0; i < self.$keys.length; i++) {
-      key = self.$keys[i];
-      value = self.$assocs[key.$hash()];
+    for (var i = 0, ii = self.k.length; i < ii; i++) {
+      key = self.k[i];
+      value = self.a[key.$hash()];
       description.push(#{`key`.inspect} + #{`value`.inspect});
     }
 
@@ -114,20 +114,11 @@ class Hash
   #
   # @return [Hash] returns the receiver
   def each
-    `var keys = self.$keys, values = self.$assocs, length = keys.length, key;
+    `var keys = self.k, values = self.a, length = keys.length, key;
 
     for (var i = 0; i < length; i++) {
-      try {
-        key = keys[i];
-        #{yield `key`, `values[key.$hash()]`};
-      } catch (e) {
-        switch (e.$keyword) {
-          case 2:
-            return e['@exit_value'];
-          default:
-            throw e;
-        }
-      }
+      key = keys[i];
+      #{yield `key`, `values[key.$hash()]`};
     }
 
     return self;`
@@ -147,12 +138,12 @@ class Hash
   # @param [Object] obj key to search for
   # @return [Array<Object, Object>, nil] result or nil
   def assoc(obj)
-    `var key, keys = self.$keys, length = keys.length;
+    `var key, keys = self.k, length = keys.length;
 
     for (var i = 0; i < length; i++) {
       key = keys[i];
       if (#{`key` == obj}.$r) {
-        return [key, self.$assocs[key.$hash()]];
+        return [key, self.a[key.$hash()]];
       }
     }
 
@@ -178,18 +169,18 @@ class Hash
   # @return [true, false]
   def ==(other)
     `if (self === other) return Qtrue;
-    if (!other.$keys || !other.$assocs) return Qfalse;
-    if (self.$keys.length != other.$keys.length) return Qfalse;
+    if (!other.k || !other.a) return Qfalse;
+    if (self.k.length != other.$keys.length) return Qfalse;
 
-    for (var i = 0; i < self.$keys.length; i++) {
-      var key1 = self.$keys[i], assoc1 = key1.$hash();
+    for (var i = 0; i < self.k.length; i++) {
+      var key1 = self.k[i], assoc1 = key1.$hash();
 
-      if (!other.$assocs.hasOwnProperty(assoc1))
+      if (!other.a.hasOwnProperty(assoc1))
         return Qfalse;
 
-      var assoc2 = other.$assocs[assoc1];
+      var assoc2 = other.a[assoc1];
 
-      if (!#{`self.$assocs[assoc1]` == `assoc2`}.$r)
+      if (!#{`self.a[assoc1]` == `assoc2`}.$r)
         return Qfalse;
     }
 
@@ -212,10 +203,10 @@ class Hash
   def [](key)
     `var assoc = key.$hash();
 
-    if (self.$assocs.hasOwnProperty(assoc))
-      return self.$assocs[assoc];
+    if (self.a.hasOwnProperty(assoc))
+      return self.a[assoc];
 
-    return self.$default;`
+    return self.d;`
   end
 
   # Element assignment - Associates the value given by 'value' with the key
@@ -236,10 +227,10 @@ class Hash
   def []=(key, value)
     `var assoc = key.$hash();
 
-    if (!self.$assocs.hasOwnProperty(assoc))
-      self.$keys.push(key);
+    if (!self.a.hasOwnProperty(assoc))
+      self.k.push(key);
 
-    return self.$assocs[assoc] = value;`
+    return self.a[assoc] = value;`
   end
 
   # Remove all key-value pairs from `self`.
@@ -252,15 +243,15 @@ class Hash
   #
   # @return [Hash]
   def clear
-    `self.$keys = [];
-    self.$assocs = {};
+    `self.k = [];
+    self.a = {};
 
     return self;`
   end
 
   # Returns the default value for the hash.
   def default
-    `return self.$default;`
+    `return self.d;`
   end
 
   # Sets the default value - the value returned when a key does not exist.
@@ -268,7 +259,7 @@ class Hash
   # @param [Object] obj the new default
   # @return [Object] returns the new default
   def default=(obj)
-    `return self.$default = obj;`
+    `return self.d = obj;`
   end
 
   # Deletes and returns a key-value pair from self whose key is equal to `key`.
@@ -289,14 +280,14 @@ class Hash
   def delete(key)
     `var assoc = key.$hash();
 
-    if (self.$assocs.hasOwnProperty(assoc)) {
-      var ret = self.$assocs[assoc];
-      delete self.$assocs[assoc];
-      self.$keys.splice(self.$keys.indexOf(key), 1);
+    if (self.a.hasOwnProperty(assoc)) {
+      var ret = self.a[assoc];
+      delete self.a[assoc];
+      self.k.splice(self.$keys.indexOf(key), 1);
       return ret;
     }
 
-    return self.$default;`
+    return self.d;`
   end
 
   # Deletes every key-value pair from `self` for which the block evaluates to
@@ -312,23 +303,14 @@ class Hash
   def delete_if
     `var key, value;
 
-    for (var i = 0; i < self.$keys.length; i++) {
-      try {
-        key = self.$keys[i];
-        value = self.$assocs[key.$hash()];
+    for (var i = 0; i < self.k.length; i++) {
+      key = self.k[i];
+      value = self.a[key.$hash()];
 
-        if (#{yield `key`, `value`}.$r) {
-          delete self.$assocs[key.$hash()];
-          self.$keys.splice(i, 1);
-          i--;
-        }
-      } catch (e) {
-        switch (e.$keyword) {
-          case 2:
-            return e['@exit_value'];
-          default:
-            throw e;
-        }
+      if (#{yield `key`, `value`}.$r) {
+        delete self.a[key.$hash()];
+        self.k.splice(i, 1);
+        i--;
       }
     }
 
@@ -347,20 +329,8 @@ class Hash
   #
   # @return [Hash] returns receiver
   def each_key
-    `var key;
-
-    for (var i = 0; i < self.$keys.length; i++) {
-      try {
-        key = self.$keys[i];
-        #{yield `key`};
-      } catch (e) {
-        switch (e.$keyword) {
-          case 2:
-            return e['@exit_value'];
-          default:
-            throw e;
-        }
-      }
+    `for (var i = 0, ii = self.k.length; i < ii; i++) {
+      #{yield `self.k[i]`};
     }
 
     return self;`
@@ -380,18 +350,8 @@ class Hash
   def each_value
     `var val;
 
-    for (var i = 0; i < self.$keys.length; i++) {
-      try {
-        val = self.$assocs[self.$keys[i].$hash()];
-        #{yield `val`};
-      } catch (e) {
-        switch (e.$keyword) {
-          case 2:
-            return e['@exit_value'];
-          default:
-            throw e;
-        }
-      }
+    for (var i = 0, ii = self.k.length; i < ii; i++) {
+      #{yield `self.a[self.k[i].$hash()]`};
     }
 
     return self;`
@@ -406,7 +366,7 @@ class Hash
   #
   # @return [true, false]
   def empty?
-    `return self.$keys.length == 0 ? Qtrue : Qfalse;`
+    `return self.k.length == 0 ? Qtrue : Qfalse;`
   end
 
   # Returns a value from the hash for the given key. If the key can't be found,
@@ -426,7 +386,7 @@ class Hash
   # @param [Object] defaults the default value to return
   # @return [Object] value from hash
   def fetch(key, defaults = `undefined`)
-    `var value = self.$assocs[key.$hash()];
+    `var value = self.a[key.$hash()];
 
     if (value != undefined)
       return value;
@@ -455,9 +415,9 @@ class Hash
   def flatten(level = 1)
     `var result = [], key, value;
 
-    for (var i = 0; i < self.$keys.length; i++) {
-      key = self.$keys[i];
-      value = self.$assocs[key.$hash()];
+    for (var i = 0; i < self.k.length; i++) {
+      key = self.k[i];
+      value = self.a[key.$hash()];
       result.push(key);
 
       if (value instanceof Array) {
@@ -488,7 +448,7 @@ class Hash
   # @param [Object] key the key to check
   # @return [true, false]
   def has_key?(key)
-    `if (self.$assocs.hasOwnProperty(key.$hash()))
+    `if (self.a.hasOwnProperty(key.$hash()))
       return Qtrue;
 
     return Qfalse;`
@@ -509,9 +469,9 @@ class Hash
   def has_value?(value)
     `var key, value;
 
-    for (var i = 0; i < self.$keys.length; i++) {
-      key = self.$keys[i];
-      val = self.$assocs[key.$hash()];
+    for (var i = 0; i < self.k.length; i++) {
+      key = self.k[i];
+      val = self.a[key.$hash()];
 
       if (#{`value` == `val`}.$r)
         return Qtrue;
@@ -531,13 +491,13 @@ class Hash
   # @param [Hash] other hash to replace with
   # @return [Hash] returns receiver
   def replace(other)
-    `self.$keys = []; self.$assocs = {};
+    `self.k = []; self.a = {};
 
-    for (var i = 0; i < other.$keys.length; i++) {
-      var key = other.$keys[i];
-      var val = other.$assocs[key.$hash()];
-      self.$keys.push(key);
-      self.$assocs[key.$hash()] = val;
+    for (var i = 0; i < other.k.length; i++) {
+      var key = other.k[i];
+      var val = other.a[key.$hash()];
+      self.k.push(key);
+      self.a[key.$hash()] = val;
     }
 
     return self;`
@@ -572,9 +532,9 @@ class Hash
   def key(value)
     `var key, val;
 
-    for (var i = 0; i < self.$keys.length; i++) {
-      key = self.$keys[i];
-      val = self.$assocs[key.$hash()];
+    for (var i = 0; i < self.k.length; i++) {
+      key = self.k[i];
+      val = self.a[key.$hash()];
 
       if (#{`value` == `val`}.$r) {
         return key;
@@ -595,7 +555,7 @@ class Hash
   #
   # @return [Array]
   def keys
-    `return self.$keys.slice(0);`
+    `return self.k.slice(0);`
   end
 
   # Returns the number of key-value pairs in the hash.
@@ -608,7 +568,7 @@ class Hash
   #
   # @return [Numeric]
   def length
-    `return self.$keys.length;`
+    `return self.k.length;`
   end
 
   # Returns a new hash containing the contents of `other` and `self`. If no
@@ -631,21 +591,21 @@ class Hash
   def merge(other)
     `var result = $opal.H() , key, val;
 
-    for (var i = 0; i < self.$keys.length; i++) {
-      key = self.$keys[i], val = self.$assocs[key.$hash()];
+    for (var i = 0; i < self.k.length; i++) {
+      key = self.k[i], val = self.a[key.$hash()];
 
-      result.$keys.push(key);
-      result.$assocs[key.$hash()] = val;
+      result.k.push(key);
+      result.a[key.$hash()] = val;
     }
 
-    for (var i = 0; i < other.$keys.length; i++) {
-      key = other.$keys[i], val = other.$assocs[key.$hash()];
+    for (var i = 0; i < other.k.length; i++) {
+      key = other.k[i], val = other.a[key.$hash()];
 
-      if (!result.$assocs.hasOwnProperty(key.$hash())) {
-        result.$keys.push(key);
+      if (!result.a.hasOwnProperty(key.$hash())) {
+        result.k.push(key);
       }
 
-      result.$assocs[key.$hash()] = val;
+      result.a[key.$hash()] = val;
     }
 
     return result;`
@@ -668,15 +628,15 @@ class Hash
   def merge!(other)
     `var key, val;
 
-    for (var i = 0; i < other.$keys.length; i++) {
-      key = other.$keys[i];
-      val = other.$assocs[key.$hash()];
+    for (var i = 0; i < other.k.length; i++) {
+      key = other.k[i];
+      val = other.a[key.$hash()];
 
-      if (!self.$assocs.hasOwnProperty(key.$hash())) {
-        self.$keys.push(key);
+      if (!self.a.hasOwnProperty(key.$hash())) {
+        self.k.push(key);
       }
 
-      self.$assocs[key.$hash()] = val;
+      self.a[key.$hash()] = val;
     }
 
     return self;`
@@ -698,9 +658,9 @@ class Hash
   def rassoc(obj)
     `var key, val;
 
-    for (var i = 0; i < self.$keys.length; i++) {
-      key = self.$keys[i];
-      val = self.$assocs[key.$hash()];
+    for (var i = 0; i < self.k.length; i++) {
+      key = self.k[i];
+      val = self.a[key.$hash()];
 
       if (#{`val` == obj}.$r)
         return [key, val];
@@ -726,16 +686,16 @@ class Hash
   def shift
     `var key, val;
 
-    if (self.$keys.length > 0) {
-      key = self.$keys[0];
-      val = self.$assocs[key.$hash()];
+    if (self.k.length > 0) {
+      key = self.k[0];
+      val = self.a[key.$hash()];
 
-      self.$keys.shift();
-      delete self.$assocs[key.$hash()];
+      self.k.shift();
+      delete self.a[key.$hash()];
       return [key, val];
     }
 
-    return self.$default;`
+    return self.d;`
   end
 
   # Convert self into a nested array of `[key, value]` arrays.
@@ -750,9 +710,9 @@ class Hash
   def to_a
     `var result = [], key, value;
 
-    for (var i = 0; i < self.$keys.length; i++) {
-      key = self.$keys[i];
-      value = self.$assocs[key.$hash()];
+    for (var i = 0; i < self.k.length; i++) {
+      key = self.k[i];
+      value = self.a[key.$hash()];
       result.push([key, value]);
     }
 

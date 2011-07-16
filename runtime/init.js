@@ -146,17 +146,17 @@ var cHash;
   Returns a new hash with values passed from the runtime.
 */
 Rt.H = function() {
-  var hash = new cHash.allocator(), k, v, args = [].slice.call(arguments);
-  hash.$keys = [];
-  hash.$assocs = {};
-  hash.$default = Qnil;
+  var hash = new cHash.allocator(), k, v, args = Array.prototype.slice.call(arguments);
+  var keys = hash.k = [];
+  var assocs = hash.a = {};
+  hash.d = Qnil;
 
   for (var i = 0, ii = args.length; i < ii; i++) {
     k = args[i];
     v = args[i + 1];
     i++;
-    hash.$keys.push(k);
-    hash.$assocs[k.$hash()] = v;
+    keys.push(k);
+    assocs[k.$hash()] = v;
   }
 
   return hash;
@@ -571,13 +571,6 @@ Rt.G = function(beg, end, exc) {
   range.$exc = exc;
   return range;
 };
-
-Rt.A = function(objs) {
-  var arr = new cArray.allocator();
-  arr.splice.apply(arr, [0, 0].concat(objs));
-  return arr;
-};
-
 
 /**
   Main init method. This is called once this file has fully loaded. It setups
