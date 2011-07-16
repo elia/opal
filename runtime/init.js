@@ -579,7 +579,7 @@ function init() {
   Rt.Qfalse = Qfalse = obj_alloc(cFalseClass);
   Qfalse.$r = false;
 
-  cArray = bridge_class(Array.prototype, T_OBJECT | T_NUMBER, 'Array', cObject);
+  cArray = bridge_class(Array.prototype, T_OBJECT | T_ARRAY, 'Array', cObject);
   var ary_proto = Array.prototype, ary_inst = cArray.o$a.prototype;
   ary_inst.o$f = T_ARRAY | T_OBJECT;
   ary_inst.push    = ary_proto.push;

@@ -22,13 +22,11 @@ class Array
   end
 
   def initialize(len = 0, fill = nil)
-    `var ary = self;
-
-    for (var i = 0; i < len; i++) {
-      ary[i] = fill;
+    `for (var i = 0; i < len; i++) {
+      self[i] = fill;
     }
 
-    ary.length = len;
+    self.length = len;
 
     return self;`
   end
@@ -119,9 +117,9 @@ class Array
   def each_with_index
     raise "Array#each_with_index no block given" unless block_given?
 
-    `for (var i = 0, len = self.length; i < len; i++) {
-      #{ yield `self[i]`, `i` };
-    }`
+    `for (var i = 0, len = self.length; i < len; i++) {`
+      yield `self[i]`, `i`
+    `}`
     self
   end
 
@@ -287,9 +285,11 @@ class Array
   # @param [Numeric] index the index to get
   # @return [Object, nil] returns nil or the result
   def at(idx)
-    `if (idx < 0) idx += self.length;
+    `var size = self.length;
 
-    if (idx < 0 || idx >= self.length) return nil;
+    if (idx < 0) idx += size;
+
+    if (idx < 0 || idx >= size) return nil;
     return self[idx];`
   end
 
@@ -688,7 +688,7 @@ class Array
     for (var i = 0; i < self.length; i++) {
       item = self[i];
 
-      if (item.hasOwnProperty('length')) {
+      if (item.o$f & T_ARRAY) {
         if (level == undefined)
           result = result.concat(#{`item`.flatten});
         else if (level == 0)
@@ -790,10 +790,12 @@ class Array
   # @param [Object] objs objects to insert
   # @return [Array] returns the receiver
   def insert(idx, *objs)
-    `if (idx < 0) idx += self.length;
+    `var size = self.length;
 
-    if (idx < 0 || idx >= self.length)
-      rb_raise("IndexError: out of range");
+    if (idx < 0) idx += size;
+
+    if (idx < 0 || idx >= size)
+      raise("IndexError: out of range");
 
     self.splice.apply(self, [idx, 0].concat(objs));
     return self;`
@@ -855,12 +857,14 @@ class Array
   # @param [Number] count the number of items to get
   # @return [Object, Array] result
   def last(count = undefined)
-    `if (count == undefined) {
-      if (self.length == 0) return nil;
-      return self[self.length - 1];
+    `var size = self.length;
+
+    if (count == undefined) {
+      if (size == 0) return nil;
+      return self[size - 1];
     } else {
-      if (count > self.length) count = self.length;
-      return self.slice(self.length - count, self.length);
+      if (count > size) count = size;
+      return self.slice(size - count, size);
     }`
   end
 
@@ -881,11 +885,13 @@ class Array
   # @param [Numeric] count number to pop
   # @return [Array] returns popped items
   def pop(count = undefined)
-    `if (count == undefined) {
-      if (self.length) return self.pop();
+    `var size = self.length;
+
+    if (count == undefined) {
+      if (size) return self.pop();
       return nil;
     } else {
-      return self.splice(self.length - count, self.length);
+      return self.splice(size - count, size);
     }`
   end
 
