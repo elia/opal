@@ -57,10 +57,7 @@
 class String
 
   def self.new(str = "")
-    `var result = new String(str);
-    result.$klass = self;
-    result.$m = self.$m_tbl;
-    return result;`
+    str
   end
 
   # Copy - returns a new string containing `count` copies of the receiver.
