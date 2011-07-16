@@ -32,7 +32,7 @@ module Kernel
 
   # raw object flags (used by runtime)
   def __flags__
-    `return self.$flags;`
+    `return self.o$f;`
   end
 
   def to_a

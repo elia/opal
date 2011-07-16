@@ -33,13 +33,6 @@
 # platform to platform basis.
 class Exception
 
-  def self.allocate
-    `var err = new Error();
-    err.$klass = self;
-    err.$m = self.$m_tbl;
-    return err;`
-  end
-
   def initialize(message = '')
     @message = message
   end

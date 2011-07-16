@@ -56,7 +56,7 @@ class Module
     `var ary = [], parent = self;
 
     while (parent) {
-      if (parent.$flags & $rb.FL_SINGLETON) {
+      if (parent.o$f & $rb.FL_SINGLETON) {
         // nothing?
       }
       else {

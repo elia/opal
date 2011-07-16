@@ -277,7 +277,7 @@ class String
   # @param [Regexp, Objec] obj
   # @return [Numeric, nil]
   def =~(obj)
-    `if (obj.$flags & $rb.T_STRING) {
+    `if (obj.o$f & $rb.T_STRING) {
       $rb.raise(VM.TypeError, "type mismatch: String given");
     }`
 

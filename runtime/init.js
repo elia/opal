@@ -146,7 +146,7 @@ var cHash;
   Returns a new hash with values passed from the runtime.
 */
 Rt.H = function() {
-  var hash = new cHash.allocator(), k, v, args = Array.prototype.slice.call(arguments);
+  var hash = new cHash.o$a(), k, v, args = Array.prototype.slice.call(arguments);
   var keys = hash.k = [];
   var assocs = hash.a = {};
   hash.d = Qnil;
@@ -163,7 +163,7 @@ Rt.H = function() {
 };
 
 var alias_method = Rt.alias_method = function(klass, new_name, old_name) {
-  var body = klass.allocator.prototype['m$' + old_name];
+  var body = klass.o$a.prototype['m$' + old_name];
 
   if (!body) {
     throw new Error("NameError: undefined method `" + old_name + "' for class `" + klass.__classid__ + "'");
@@ -181,10 +181,10 @@ var alias_method = Rt.alias_method = function(klass, new_name, old_name) {
 function define_raw_method(klass, public_name, private_body, public_body) {
   var private_name = '$' + public_name;
 
-  klass.allocator.prototype[public_name] = public_body;
+  klass.o$a.prototype[public_name] = public_body;
   klass.$method_table[public_name] = public_body;
 
-  klass.allocator.prototype[private_name] = private_body;
+  klass.o$a.prototype[private_name] = private_body;
 
   var included_in = klass.$included_in, includee;
 
@@ -220,7 +220,7 @@ function define_raw_method(klass, public_name, private_body, public_body) {
 Rt.private_methods = function(klass, args) {
 
   if (args.length) {
-    var proto = klass.allocator.prototype;
+    var proto = klass.o$a.prototype;
 
     for (var i = 0, ii = args.length; i < ii; i++) {
       var arg = args[i].$m$to_s(), mid = 'm$' + arg;
@@ -234,7 +234,7 @@ Rt.private_methods = function(klass, args) {
 
       // Set the public implementation to a function that just throws
       // and error when called
-      klass.allocator.prototype[mid] = function() {
+      klass.o$a.prototype[mid] = function() {
         raise(eNoMethodError, "private method `" + arg + "' called for " +
               this.$m$inspect());
       }
@@ -259,7 +259,7 @@ function define_alias(base, new_name, old_name) {
 };
 
 function obj_alloc(klass) {
-  var result = new klass.allocator();
+  var result = new klass.o$a();
   return result;
 };
 
@@ -277,12 +277,6 @@ function raise(exc, str) {
 };
 
 Rt.raise = raise;
-
-Rt.native_exc = function(err) {
-  var exc = new eException.allocator();
-  exc.$rb_err = err;
-  return exc;
-};
 
 /**
   Raise an exception instance (DO NOT pass strings to this)
@@ -312,7 +306,7 @@ var intern = Rt.Y = function(intern) {
     return symbol_table[intern];
   }
 
-  var res = new cSymbol.allocator();
+  var res = new cSymbol.o$a();
   res.sym = intern;
   symbol_table[intern] = res;
   return res;
@@ -414,7 +408,7 @@ Rt.R = function(value, func) {
   Get the given constant name from the given base
 */
 Rt.cg = function(base, id) {
-  if (base.$flags & T_OBJECT) {
+  if (base.o$f & T_OBJECT) {
     base = class_real(base.$klass);
   }
   return const_get(base, id);
@@ -424,7 +418,7 @@ Rt.cg = function(base, id) {
   Set constant from runtime
 */
 Rt.cs = function(base, id, val) {
-  if (base.$flags & T_OBJECT) {
+  if (base.o$f & T_OBJECT) {
     base = class_real(base.$klass);
   }
   return const_set(base, id, val);
@@ -451,7 +445,7 @@ function regexp_match_getter(id) {
     if (matched.$md) {
       return matched.$md;
     } else {
-      var res = new cMatch.allocator();
+      var res = new cMatch.o$a();
       res.$data = matched;
       matched.$md = res;
       return res;
@@ -492,7 +486,7 @@ function stdio_setter(id, value) {
 };
 
 Rt.re = function(re) {
-  var regexp = new cRegexp.allocator();
+  var regexp = new cRegexp.o$a();
   regexp.$re = re;
   return regexp;
 };
@@ -517,7 +511,7 @@ var block = Rt.P = {
 block.y.$proc = [block.y];
 
 Rt.proc = function(func) {
-  var proc = new cProc.allocator();
+  var proc = new cProc.o$a();
   proc.fn = func;
   return proc;
 };
@@ -626,8 +620,8 @@ function init() {
   Qfalse.$r = false;
 
   cArray = bridge_class(Array.prototype, T_OBJECT | T_NUMBER, 'Array', cObject);
-  var ary_proto = Array.prototype, ary_inst = cArray.allocator.prototype;
-  ary_inst.$flags = T_ARRAY | T_OBJECT;
+  var ary_proto = Array.prototype, ary_inst = cArray.o$a.prototype;
+  ary_inst.o$f = T_ARRAY | T_OBJECT;
   ary_inst.push    = ary_proto.push;
   ary_inst.pop     = ary_proto.pop;
   ary_inst.slice   = ary_proto.slice;
@@ -673,7 +667,7 @@ function init() {
   eKeyError = define_class("KeyError", eIndexError);
   eRangeError = define_class("RangeError", eStandardError);
 
-  eBreakInstance = new eLocalJumpError.allocator();
+  eBreakInstance = new eLocalJumpError.o$a();
   eBreakInstance['@message'] = "unexpected break";
   block.b = eBreakInstance;
   // dont need this anymore???

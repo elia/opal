@@ -16,7 +16,7 @@ class Array
   end
 
   def self.allocate
-    `var arr = new self.allocator();
+    `var arr = new self.o$a();
     arr.length = 0;
     return arr;`
   end

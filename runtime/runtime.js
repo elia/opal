@@ -68,7 +68,7 @@ Rt.dc = function(base, super_class, id, body, flag) {
 
   switch (flag) {
     case 0:
-      if (base.$flags & T_OBJECT) {
+      if (base.o$f & T_OBJECT) {
         base = class_real(base.$klass);
       }
 
@@ -84,7 +84,7 @@ Rt.dc = function(base, super_class, id, body, flag) {
       break;
 
     case 2:
-      if (base.$flags & T_OBJECT) {
+      if (base.o$f & T_OBJECT) {
         base = class_real(base.$klass);
       }
       klass = define_module_under(base, id);
@@ -120,7 +120,7 @@ Rt.um = function(kls) {
         raise(eNoMethodError, "undefined method `" + mid + "' for " + this.m$inspect());
       };
 
-      kls.allocator.prototype['m$' + mid] = func;
+      kls.o$a.prototype['m$' + mid] = func;
 
       if (kls.$bridge_prototype) {
         kls.$bridge_prototype['m$' + mid] = func;
@@ -151,7 +151,7 @@ Rt.mm = function(method_ids) {
 
       imp.$rbMM = true;
 
-      prototype[mid] = prototype['$' + mid] = imp;
+      prototype[mid] = prototype[mid] = imp;
     }
   }
 };
@@ -166,7 +166,7 @@ Rt.mm = function(method_ids) {
   @return {Qnil}
 */
 Rt.dm = function(klass, name, public_body, arity) {
-  if (klass.$flags & T_OBJECT) {
+  if (klass.o$f & T_OBJECT) {
     klass = klass.$klass;
   }
 
@@ -301,7 +301,7 @@ Rt.R = function(value, func) {
   Get the given constant name from the given base
 */
 Rt.cg = function(base, id) {
-  if (base.$flags & T_OBJECT) {
+  if (base.o$f & T_OBJECT) {
     base = class_real(base.$klass);
   }
   return const_get(base, id);
@@ -311,7 +311,7 @@ Rt.cg = function(base, id) {
   Set constant from runtime
 */
 Rt.cs = function(base, id, val) {
-  if (base.$flags & T_OBJECT) {
+  if (base.o$f & T_OBJECT) {
     base = class_real(base.$klass);
   }
   return const_set(base, id, val);
@@ -338,7 +338,7 @@ function regexp_match_getter(id) {
     if (matched.$md) {
       return matched.$md;
     } else {
-      var res = new cMatch.allocator();
+      var res = new cMatch.o$a();
       res.$data = matched;
       matched.$md = res;
       return res;

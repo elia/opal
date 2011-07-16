@@ -1,7 +1,7 @@
 class Class < Module
 
   def allocate
-    `return new self.allocator();`
+    `return new self.o$a();`
   end
 
   def new(*args)

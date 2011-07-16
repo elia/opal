@@ -27,7 +27,7 @@ function boot_defclass(id, super_klass) {
   }
 
   cls.prototype.constructor = cls;
-  cls.prototype.$flags = T_OBJECT;
+  cls.prototype.o$f = T_OBJECT;
 
   cls.prototype.$hash = function() { return this.$id; };
   cls.prototype.$r = true;
@@ -48,11 +48,12 @@ function boot_makemeta(id, klass, superklass) {
   proto.$included_in = [];
   proto.$method_table = {};
   proto.$methods = [];
-  proto.allocator = klass;
-  proto.constructor = meta;
+
+  proto.o$a = klass;
+  proto.o$f = T_CLASS;
   proto.__classid__ = id;
   proto.$super = superklass;
-  proto.$flags = T_CLASS;
+  proto.constructor = meta;
 
   // constants
   if (superklass.prototype.$constants_alloc) {
@@ -80,12 +81,12 @@ function class_boot(superklass) {
   };
 
   var ctor = function() {};
-  ctor.prototype = superklass.allocator.prototype;
+  ctor.prototype = superklass.o$a.prototype;
   cls.prototype = new ctor();
 
   var proto = cls.prototype;
   proto.constructor = cls;
-  proto.$flags = T_OBJECT;
+  proto.o$f = T_OBJECT;
 
   // class itself
   var meta = function() {
@@ -97,8 +98,8 @@ function class_boot(superklass) {
   meta.prototype = new mtor();
 
   proto = meta.prototype;
-  proto.allocator = cls;
-  proto.$flags = T_CLASS;
+  proto.o$a = cls;
+  proto.o$f = T_CLASS;
   proto.$method_table = {};
   proto.$methods = [];
   proto.constructor = meta;
@@ -115,7 +116,7 @@ function class_boot(superklass) {
 };
 
 function class_real(klass) {
-  while (klass.$flags & FL_SINGLETON) { klass = klass.$super; }
+  while (klass.o$f & FL_SINGLETON) { klass = klass.$super; }
   return klass;
 };
 
@@ -132,17 +133,17 @@ function name_class(klass, id) {
   Make metaclass for the given class
 */
 function make_metaclass(klass, super_class) {
-  if (klass.$flags & T_CLASS) {
-    if ((klass.$flags & T_CLASS) && (klass.$flags & FL_SINGLETON)) {
+  if (klass.o$f & T_CLASS) {
+    if ((klass.o$f & T_CLASS) && (klass.o$f & FL_SINGLETON)) {
       return make_metametaclass(klass);
     }
     else {
       // FIXME this needs fixinfg to remove hacked stuff now in make_singleton_class
       var meta = class_boot(super_class);
       // remove this??!
-      meta.allocator.prototype = klass.constructor.prototype;
+      meta.o$a.prototype = klass.constructor.prototype;
       meta.$c = meta.$klass.$c_prototype;
-      meta.$flags |= FL_SINGLETON;
+      meta.o$f |= FL_SINGLETON;
       meta.__classid__ = "#<Class:" + klass.__classid__ + ">";
       klass.$klass = meta;
       meta.$c = klass.$c;
@@ -160,7 +161,7 @@ function make_singleton_class(obj) {
   var orig_class = obj.$klass;
   var klass = class_boot(orig_class);
 
-  klass.$flags |= FL_SINGLETON;
+  klass.o$f |= FL_SINGLETON;
 
   obj.$klass = klass;
 
@@ -178,7 +179,7 @@ function make_singleton_class(obj) {
 };
 
 function singleton_class_attached(klass, obj) {
-  if (klass.$flags & FL_SINGLETON) {
+  if (klass.o$f & FL_SINGLETON) {
     klass.__attached__ = obj;
   }
 };
@@ -197,7 +198,7 @@ function make_metametaclass(metaclass) {
       : metaclass.$klass.$klass;
   }
 
-  metametaclass.$flags |= FL_SINGLETON;
+  metametaclass.o$f |= FL_SINGLETON;
 
   singleton_class_attached(metametaclass, metaclass);
   metaclass.$klass = metametaclass;
@@ -238,7 +239,7 @@ function bridge_class(prototype, flags, id, super_class) {
   }
 
   prototype.$klass = klass;
-  prototype.$flags = flags;
+  prototype.o$f = flags;
   prototype.$r = true;
 
   prototype.$hash = function() { return flags + '_' + this; };
@@ -260,7 +261,7 @@ function define_class_under(base, id, super_klass) {
   if (const_defined(base, id)) {
     klass = const_get(base, id);
 
-    if (!(klass.$flags & T_CLASS)) {
+    if (!(klass.o$f & T_CLASS)) {
       throw new Error(id + " is not a class!");
     }
 
@@ -321,13 +322,13 @@ function class_create(super_klass) {
 function singleton_class(obj) {
   var klass;
 
-  if (obj.$flags & T_OBJECT) {
-    if ((obj.$flags & T_NUMBER) || (obj.$flags & T_SYMBOL)) {
+  if (obj.o$f & T_OBJECT) {
+    if ((obj.o$f & T_NUMBER) || (obj.o$f & T_SYMBOL)) {
       raise(eTypeError, "can't define singleton");
     }
   }
 
-  if ((obj.$klass.$flags & FL_SINGLETON) && obj.$klass.__attached__ == obj) {
+  if ((obj.$klass.o$f & FL_SINGLETON) && obj.$klass.__attached__ == obj) {
     klass = obj.$klass;
   }
   else {

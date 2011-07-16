@@ -11,7 +11,7 @@ function define_module_under(base, id) {
 
   if (const_defined(base, id)) {
     module = const_get(base, id);
-    if (module.$flags & T_MODULE) {
+    if (module.o$f & T_MODULE) {
       return module;
     }
 
@@ -35,7 +35,7 @@ function define_module_id(id) {
   var module = class_create(cModule);
   make_metaclass(module, cModule);
 
-  module.$flags = T_MODULE;
+  module.o$f = T_MODULE;
   module.$included_in = [];
   return module;
 };
@@ -64,7 +64,7 @@ function include_module(klass, module) {
   for (var method in module.$method_table) {
     if (module.$method_table.hasOwnProperty(method)) {
       define_raw_method(klass, method,
-                        module.allocator.prototype['$' + method],
+                        module.o$a.prototype['$' + method],
                         module.$method_table[method]);
     }
   }
@@ -99,7 +99,7 @@ function extend_module(klass, module) {
   for (var method in module.$method_table) {
     if (module.$method_table.hasOwnProperty(method)) {
       define_raw_method(meta, method,
-                        module.allocator.prototype['$' + method],
+                        module.o$a.prototype['$' + method],
                         module.$method_table[method]);
     }
   }
