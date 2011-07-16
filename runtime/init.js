@@ -518,7 +518,7 @@ block.y.$proc = [block.y];
 
 Rt.proc = function(func) {
   var proc = new cProc.allocator();
-  proc.$fn = func;
+  proc.fn = func;
   return proc;
 };
 
@@ -632,7 +632,7 @@ function init() {
   Rt.Qfalse = Qfalse = obj_alloc(cFalseClass);
   Qfalse.$r = false;
 
-  cArray = define_class('Array', cObject);
+  cArray = bridge_class(Array.prototype, T_OBJECT | T_NUMBER, 'Array', cObject);
   var ary_proto = Array.prototype, ary_inst = cArray.allocator.prototype;
   ary_inst.$flags = T_ARRAY | T_OBJECT;
   ary_inst.push    = ary_proto.push;

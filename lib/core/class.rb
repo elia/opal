@@ -1,14 +1,14 @@
 class Class < Module
 
   def allocate
-    `return new $rb.RObject(self);`
+    `return new self.allocator();`
   end
 
   def new(*args)
     obj = allocate
 
     `if ($B.f == arguments.callee) {
-      $B.f = obj.$m.initialize;
+      $B.f = obj.m$initialize;
     }`
 
     obj.initialize *args

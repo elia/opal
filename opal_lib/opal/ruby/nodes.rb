@@ -459,7 +459,7 @@ module Opal
         tmp_recv = opts[:scope].temp_local
         arg_res.unshift tmp_recv
 
-        code = "($B.p = #{args[3].process opts, LEVEL_LIST}.$fn, "
+        code = "($B.p = #{args[3].process opts, LEVEL_LIST}.fn, "
         code += "$B.f = (#{tmp_recv} = #{recv})#{mid}).call(#{arg_res.join ', '})"
 
         opts[:scope].queue_temp tmp_recv
@@ -1345,7 +1345,7 @@ module Opal
           pre_code += "var $yield, #@block_arg_name; if ($B.f == arguments.callee && $B.p != nil) { #@block_arg_name = "
           pre_code += "$yield = $B.p; } else { #@block_arg_name = nil; "
           pre_code += "$yield = $B.y; } $B.p = $B.f = nil;"
-          pre_code += "var $yself = $yield.$fn.$proc[0];"
+          pre_code += "var $yself = $yield.fn.$proc[0];"
 
           stmt = "try{" + stmt
 
