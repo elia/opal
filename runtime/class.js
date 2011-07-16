@@ -46,7 +46,7 @@ function boot_makemeta(id, klass, superklass) {
 
   var proto = meta.prototype;
   proto.$included_in = [];
-  proto.$method_table = {};
+  proto.o$m = {};
   proto.$methods = [];
 
   proto.o$a = klass;
@@ -100,7 +100,7 @@ function class_boot(superklass) {
   proto = meta.prototype;
   proto.o$a = cls;
   proto.o$f = T_CLASS;
-  proto.$method_table = {};
+  proto.o$m = {};
   proto.$methods = [];
   proto.constructor = meta;
   proto.$super = superklass;
@@ -230,12 +230,12 @@ function bridge_class(prototype, flags, id, super_class) {
   bridged_classes.push(prototype);
   klass.$bridge_prototype = prototype;
 
-  for (var meth in cBasicObject.$method_table) {
-    prototype[meth] = cBasicObject.$method_table[meth];
+  for (var meth in cBasicObject.o$m) {
+    prototype[meth] = cBasicObject.o$m[meth];
   }
 
-  for (var meth in cObject.$method_table) {
-    prototype[meth] = cObject.$method_table[meth];
+  for (var meth in cObject.o$m) {
+    prototype[meth] = cObject.o$m[meth];
   }
 
   prototype.$klass = klass;

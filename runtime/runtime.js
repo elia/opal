@@ -226,9 +226,9 @@ function super_find(klass, callee, mid) {
   var cur_method;
 
   while (klass) {
-    if (klass.$method_table[mid]) {
-      if (klass.$method_table[mid] == callee) {
-        cur_method = klass.$method_table[mid];
+    if (klass.o$m[mid]) {
+      if (klass.o$m[mid] == callee) {
+        cur_method = klass.o$m[mid];
         break;
       }
     }
@@ -240,8 +240,8 @@ function super_find(klass, callee, mid) {
   klass = klass.$super;
 
   while (klass) {
-    if (klass.$method_table[mid]) {
-      return klass.$method_table[mid];
+    if (klass.o$m[mid]) {
+      return klass.o$m[mid];
     }
 
     klass = klass.$super;

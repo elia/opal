@@ -61,8 +61,8 @@ function include_module(klass, module) {
 
   module.$included_in.push(klass);
 
-  for (var method in module.$method_table) {
-    if (hasOwnProperty.call(module.$method_table, method)) {
+  for (var method in module.o$m) {
+    if (hasOwnProperty.call(module.o$m, method)) {
       define_raw_method(klass, method,
                         module.o$a.prototype[method]);
     }
@@ -95,8 +95,8 @@ function extend_module(klass, module) {
 
   var meta = klass.$klass;
 
-  for (var method in module.$method_table) {
-    if (hasOwnProperty.call(module.$method_table, method)) {
+  for (var method in module.o$m) {
+    if (hasOwnProperty.call(module.o$m, method)) {
       define_raw_method(meta, method,
                         module.o$a.prototype[method]);
     }
