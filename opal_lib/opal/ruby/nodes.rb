@@ -260,7 +260,7 @@ module Opal
 
       # ivars
       @ivars.each do |ivar|
-        post += "if (self['#{ivar}'] == undefined) { self['#{ivar}'] = nil; }"
+        post += "if (self.$#{ivar} == undefined) { self.$#{ivar} = nil; }"
       end
 
       post += "return $$();\n"
@@ -738,7 +738,7 @@ module Opal
 
       # ivars
       @ivars.each do |ivar|
-        pre_code += "self['#{ivar}']==undefined&&(self['#{ivar}']=nil);"
+        pre_code += "self.$#{ivar}==undefined&&(self.$#{ivar}=nil);"
       end
 
       # block support
@@ -1072,7 +1072,7 @@ module Opal
 
     def generate(opts, level)
       if @lhs.is_a? IvarNode
-        return "#{SelfNode.new.generate(opts, level)}['#{@lhs.value}'] = #{@rhs.generate(opts, LEVEL_EXPR)}"
+        return "#{SelfNode.new.generate(opts, level)}.$#{@lhs.value.slice(1, @lhs.value.length)} = #{@rhs.generate(opts, LEVEL_EXPR)}"
 
       elsif @lhs.is_a? GvarNode
         return "$rb.gs('#{@lhs.value}', #{@rhs.generate(opts, LEVEL_EXPR)})"
@@ -1182,8 +1182,8 @@ module Opal
     end
 
     def generate(opts, level)
-      opts[:scope].ensure_ivar @value
-      "#{SelfNode.new.generate(opts, level)}['#{@value}']"
+      opts[:scope].ensure_ivar @value.slice(1, @value.length)
+      "self.$#{@value.slice(1, @value.length)}"
     end
   end
 
