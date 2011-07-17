@@ -447,7 +447,7 @@ function stdio_setter(id, value) {
 
 Rt.re = function(re) {
   var regexp = new cRegexp.o$a();
-  regexp.$re = re;
+  regexp.re = re;
   return regexp;
 };
 

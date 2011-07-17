@@ -1,4 +1,4 @@
-require 'opal/ruby/parser'
+require 'opal/ruby/lexer'
 
 module Opal
 
@@ -29,11 +29,13 @@ module Opal
     xhr.open('GET', filename, true);
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4) {
+        opal.run(function() {
         if (xhr.status == 0 || xhr.status == 200) {
           #{ run_ruby_content `xhr.responseText`, filename };
         } else {
           #{ raise "LoadError: Cannot load: #{filename}" };
         }
+        });
       }
     };
     xhr.send(null);`
@@ -50,7 +52,9 @@ module Opal
         if (script.src) {
           #{ run_remote_content `script.src` };
         } else {
+          opal.run(function() {
           #{ run_ruby_content `script.innerHTML`, "(script-tag)" };
+          });
         }
       }
     }`

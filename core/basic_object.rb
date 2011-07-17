@@ -27,20 +27,18 @@ class BasicObject
   end
 
   def __send__(method_id, *args, &block)
-    `var method = self.$m[#{method_id.to_s}];
+    `var method = self['m$' + #{method_id.to_s}];
 
     if ($B.f == arguments.callee) {
       $B.f = method;
     }
-
-    args.unshift(self);
 
     return method.apply(self, args);`
   end
 
   def instance_eval(&block)
     raise ArgumentError, "block not supplied" unless block_given?
-    `block(self);`
+    `block.call(self);`
     self
   end
 

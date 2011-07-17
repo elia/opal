@@ -1870,6 +1870,7 @@ module Opal
       end
 
       opts[:top].register_regexp "/#{parts.join ''}/"
+      # "/#{parts.join ''}/"
     end
   end
 
