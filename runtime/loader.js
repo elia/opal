@@ -71,11 +71,12 @@ Op.run = function(body) {
     var exc, stack;
     exc = err.$rb_exc;
 
-    if (exc && exc['@message']) {
-      console.log(exc.o$k.__classid__ + ': ' + exc['@message']);
+    if (exc && exc.$message) {
+      console.log(exc.o$k.__classid__ + ': ' + exc.$message);
     }
     else {
       console.log('NativeError: ' + err.message);
+      //console.log(err);
     }
 
     // first try (if in debug mode...)

@@ -250,6 +250,13 @@ function raise_exc(exc) {
 
 Rt.raise_exc = raise_exc;
 
+Rt.native_exc = function(err) {
+  var res = new eException.o$a();
+  res.$rb_err = err;
+  err.$rb_exc = res;
+  return res;
+};
+
 var cString, cSymbol;
 
 /**

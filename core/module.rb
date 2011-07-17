@@ -13,7 +13,7 @@ class Module
 
   def define_method(method_id, &block)
     raise LocalJumpError, "no block given" unless block_given?
-    `$rb.dm(self, #{method_id.to_s}.toString(), block)`
+    `$rb.dm(self, #{method_id.to_s}.toString(), block.fn)`
     nil
   end
 
@@ -26,7 +26,7 @@ class Module
     attrs.each do |a|
       method_id = a.to_s
       `$rb.dm(self, method_id, function() {
-        var iv = this['@' + method_id];
+        var iv = this['$' + method_id];
         return iv == undefined ? nil : iv;
       });`
     end
@@ -37,7 +37,7 @@ class Module
     attrs.each do |a|
       method_id = a.to_s
       `$rb.dm(self, method_id + '=', function(val) {
-        return this['@' + method_id] = val;
+        return this['$' + method_id] = val;
       });`
     end
     nil

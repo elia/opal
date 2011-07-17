@@ -102,7 +102,7 @@ Fs.extname = function(file_name) {
 };
 
 Fs.exist_p = function(path) {
-  return opal.loader.factories[file_expand_path(path)] ? true : false;
+  return Op.loader.factories[fs_expand_path(path)] ? true : false;
 };
 
 /**

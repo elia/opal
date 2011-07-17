@@ -6,17 +6,17 @@ module Kernel
 
   def instance_variable_defined?(name)
     `name = #{name.to_s};
-    return self[name] == undefined ? Qfalse : Qtrue;`
+    return self['$' + name.substr(1)] == undefined ? Qfalse : Qtrue;`
   end
 
   def instance_variable_get(name)
     `name = #{name.to_s};
-    return self[name] == undefined ? nil : self[name];`
+    return self['$' + name.substr(1)] == undefined ? nil : self['$' + name.substr(1)];`
   end
 
   def instance_variable_set(name, value)
     `name = #{name.to_s};
-    return self[name] = value;`
+    return self['$' + name.substr(1)] = value;`
   end
 
   # Returns `true` if a block was given to the current method, `false`

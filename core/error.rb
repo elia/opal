@@ -38,7 +38,7 @@ class Exception
   end
 
   def message
-    @message || `self.message`
+    @message || `self.$rb_err.message`
   end
 
   def inspect

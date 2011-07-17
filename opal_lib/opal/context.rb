@@ -39,7 +39,7 @@ module Opal
     # Require the given id as if it was required in the context. This simply
     # passes the require through to the underlying context.
     def require_file(path)
-      eval "opal.require('#{path}');", "(opal)"
+      eval "opal.run(function() {opal.require('#{path}');});", "(opal)"
     end
 
     # Set ARGV for the context
