@@ -604,7 +604,6 @@ function init() {
 
   cSymbol = define_class('Symbol', cObject);
 
-
   cRange = define_class('Range', cObject);
 
   cRegexp = define_class('Regexp', cObject);
@@ -631,21 +630,14 @@ function init() {
   eRangeError = define_class("RangeError", eStandardError);
 
   eBreakInstance = new eLocalJumpError.o$a();
-  eBreakInstance['@message'] = "unexpected break";
+  eBreakInstance.$message = "unexpected break";
   block.b = eBreakInstance;
-  // dont need this anymore???
-  eBreakInstance.$keyword = 2;
 
   eReturnInstance = new Error('unexpected return');
   eReturnInstance.o$k = eLocalJumpError;
-  eReturnInstance.$keyword = 1;
 
   eNextInstance = new Error('unexpected next');
   eNextInstance.o$k = eLocalJumpError;
-  eNextInstance.$keyword = 3;
-
-  // need to do this after we make symbol
-  Rt.ds(cClass, 'new', class_s_new);
 
   cIO = define_class('IO', cObject);
   stdin = obj_alloc(cIO);
@@ -678,9 +670,4 @@ function init() {
   Symbol table. All symbols are stored here.
 */
 var symbol_table = { };
-
-function class_s_new(sup) {
-  var klass = define_class_id("AnonClass", sup || cObject);
-  return klass;
-};
 

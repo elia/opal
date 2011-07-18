@@ -1,5 +1,9 @@
 class Class < Module
 
+  def self.new(sup = Object)
+    `return define_class_id('AnonClass', sup);`
+  end
+
   def allocate
     `return new self.o$a();`
   end
