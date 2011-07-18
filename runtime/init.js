@@ -538,7 +538,12 @@ Rt.G = function(beg, end, exc) {
   all the core objects and classes and required runtime features.
 */
 function init() {
-  init_debug();
+  // run debug mode only if directed to. Debug mode slows opal down (by atleast
+  // an extra function call, try/catch block and arg check per method send - it
+  // should be used in development but not production mode)
+  if (typeof OPAL_DEBUG != "undefined" && OPAL_DEBUG) {
+    init_debug();
+  }
 
   var metaclass;
 
