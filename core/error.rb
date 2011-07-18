@@ -33,20 +33,26 @@
 # platform to platform basis.
 class Exception
 
+  def self.allocate
+    `var err = new Error();
+    err.o$k = self;
+    return err;`
+  end
+
   def initialize(message = '')
     @message = message
   end
 
   def message
-    @message || `self.$rb_err.message`
+    @message || `self.message`
   end
 
   def inspect
-    `return "#<" + self.o$k.__classid__ + ": '" + #{@message} + "'>";`
+    `return "#<" + self.o$k.__classid__ + ": '" + #{message} + "'>";`
   end
 
   def to_s
-    @message
+    message
   end
 end
 

@@ -68,11 +68,13 @@ Op.run = function(body) {
     res = body(Rt, Rt.top, "(opal)");
   }
   catch (err) {
-    var exc, stack;
-    exc = err.$rb_exc;
+    var stack;
 
-    if (exc && exc.$message) {
-      console.log(exc.o$k.__classid__ + ': ' + exc.$message);
+    if (err.$message) {
+      console.log(err.o$k.__classid__ + ': ' + err.$message);
+    }
+    else if (err.message) {
+      console.log(err.o$k.__classid__ + ': ' + err.message);
     }
     else {
       console.log('NativeError: ' + err.message);

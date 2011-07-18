@@ -242,19 +242,7 @@ Rt.raise = raise;
   Raise an exception instance (DO NOT pass strings to this)
 */
 function raise_exc(exc) {
-  var err = new Error();
-  exc.$rb_err = err;
-  err.$rb_exc = exc;
-  throw err;
-};
-
-Rt.raise_exc = raise_exc;
-
-Rt.native_exc = function(err) {
-  var res = new eException.o$a();
-  res.$rb_err = err;
-  err.$rb_exc = res;
-  return res;
+  throw exc;
 };
 
 var cString, cSymbol;
@@ -606,7 +594,8 @@ function init() {
   cMatch = define_class('MatchData', cObject);
   define_hooked_variable('$~', regexp_match_getter, gvar_readonly_setter);
 
-  eException = define_class('Exception', cObject);
+  eException = bridge_class(Error.prototype,
+    T_OBJECT, 'Exception', cObject);
 
   eStandardError = define_class("StandardError", eException);
   eRuntimeError = define_class("RuntimeError", eException);
