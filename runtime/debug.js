@@ -24,7 +24,7 @@ function init_debug() {
       }
 
       // push call onto stack
-      Db.push(klass, this, name, Array.prototype.slice.call(arguments));
+      Db.stack.push({ klass: klass, object: this, method: name });
 
       // check for block and pass it on
       if (block.f == arguments.callee) {
@@ -33,7 +33,7 @@ function init_debug() {
 
       res = public_body.apply(this, [].slice.call(arguments));
 
-      Db.pop();
+      Db.stack.pop();
 
       return res;
     };
@@ -60,15 +60,8 @@ function init_debug() {
 };
 
 
+// holds stack trace
 Db.stack = [];
-
-Db.push = function(klass, object, method) {
-  this.stack.push({ klass: klass, object: object, method: method });
-};
-
-Db.pop = function() {
-  this.stack.pop();
-};
 
 // Returns string
 Db.backtrace = function() {

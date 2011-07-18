@@ -1340,6 +1340,7 @@ module Opal
         if args[3]
           param_variable args[3][:value]
           @block_arg_name = args[3][:value]
+          pre_code += "var #{args[3][:value]} = (($yy == $y.y) ? nil: $rb.proc($yy));"
         end
       end
 
@@ -1358,15 +1359,11 @@ module Opal
 
       # block arg
       if @block_arg_name
-          pre_code += "var $yield, #@block_arg_name; if ($B.f == arguments.callee && $B.p != nil) { #@block_arg_name = "
-          pre_code += "$yield = $B.p; } else { #@block_arg_name = nil; "
-          pre_code += "$yield = $B.y; } $B.p = $B.f = nil;"
-          pre_code += "var $yself = $yield.fn.$proc[0];"
-
-          stmt = "try{" + stmt
-
-          # catch break statements
-          stmt += "} catch (__err__) {if(__err__.$keyword == 2) {return __err__.$value;} throw __err__;}"
+        block_code = "var $y = $B, $yy, $ys, $yb = $y.b;"
+        block_code += "if ($y.f == arguments.callee) { $yy = $y.p; }"
+        block_code += "else { $yy = $y.y; }"
+        block_code += "$y.f = nil ;$ys = $yy.$proc[0];"
+        pre_code = block_code + pre_code
       end
 
       code += (pre_code + stmt + fix_line_number(opts, @end_line) + "}")

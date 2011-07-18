@@ -128,14 +128,9 @@ opal.browser_repl = function() {
       stdin.value = '';
       puts_content(">> " + ruby);
 
-      try {
+      opal.run(function() {
         puts_content("=> " + #{Opal.run_ruby_content(`ruby`, '(irb)').inspect}.toString());
-      }
-      catch (err) {
-        // if (err.stack) puts_content(err.stack);
-        //else puts_content("=> " + err.message);
-        puts_content("=> " + err.$klass.__classid__ + ": " + err['@message']);
-      }
+      });
 
       opal_repl.scrollTop = opal_repl.scrollHeight;
     }
