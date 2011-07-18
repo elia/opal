@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.homepage     = "http://opalscript.org"
   s.summary      = "Ruby runtime and core library for javascript"
 
-  s.files        = Dir["{bin,lib,opal_lib,runtime}/**/*"] + %w[README.md]
-  s.require_path = "opal_lib"
+  s.files        = Dir["{bin,lib,runtime,core,stdlib}/**/*"] + %w[README.md]
+  s.require_path = "lib"
   s.executables  = ['opal']
 end
 

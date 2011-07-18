@@ -24,7 +24,7 @@ module Opal
       @paths = []
 
       # core lib/std lib
-      @paths << File.expand_path(File.join('..', '..', '..', '..', 'lib'), __FILE__)
+      @paths << File.expand_path(File.join('..', '..', '..', '..', 'stdlib'), __FILE__)
 
       hardcode_gems
     end

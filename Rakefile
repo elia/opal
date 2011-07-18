@@ -1,4 +1,4 @@
-$:.unshift File.expand_path(File.join('..', 'opal_lib'), __FILE__)
+$:.unshift File.expand_path(File.join('..', 'lib'), __FILE__)
 require 'opal'
 
 VERSION = File.read('VERSION').strip

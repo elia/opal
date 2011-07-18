@@ -15,8 +15,6 @@ require 'opal/context/file_system'
 module Opal
   class Context < V8::Context
 
-    RUNTIME_PATH = File.expand_path File.join('..', '..', '..', 'runtime.js'), __FILE__
-
     def initialize(opts = {})
       super opts
       @builder = Opal::Builder.new

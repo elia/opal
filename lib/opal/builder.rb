@@ -11,7 +11,7 @@ module Opal
 
     OPAL_PATH = File.expand_path(File.join('..', '..', '..'), __FILE__)
 
-    STDLIB_PATH = File.join OPAL_PATH, 'lib'
+    STDLIB_PATH = File.join OPAL_PATH, 'stdlib'
 
     RUNTIME_PATH = File.join OPAL_PATH, 'runtime'
 
@@ -43,7 +43,7 @@ module Opal
       code = ''
 
       %w[opal/ruby/nodes opal/ruby/lexer opal/ruby/ruby_parser].each do |src|
-        full = File.join OPAL_PATH, 'opal_lib', src + '.rb'
+        full = File.join OPAL_PATH, 'lib', src + '.rb'
         compiled = compile_source full
         code += "opal.register('#{src}.rb', #{compiled});"
       end
