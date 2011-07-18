@@ -33,5 +33,10 @@ class Class < Module
 
     return sup;`
   end
+
+  def native_prototype(proto)
+    `native_prototype(self, proto);`
+    self
+  end
 end
 

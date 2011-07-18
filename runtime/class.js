@@ -242,6 +242,36 @@ function bridge_class(prototype, flags, id, super_class) {
   return klass;
 };
 
+// make native prototype from class
+function native_prototype(cls, proto) {
+  var sup = cls.$super;
+
+  if (sup != cObject) {
+    raise(eRuntimeError, "native_error must be used on subclass of Object only");
+  }
+
+  bridged_classes.push(proto);
+  cls.$bridge_prototype = proto;
+
+  for (var meth in cObject.o$m) {
+    proto[meth] = cObject.o$m[meth];
+  }
+
+  // add any methods already defined for class.. although, we should really
+  // say that you must call Class#native_prototoype ASAP...
+  for (var meth in cls.o$m) {
+    console.log("need to add existing method " + meth);
+  }
+
+  proto.o$k = cls;
+  proto.o$f = T_OBJECT;
+  proto.$r = true;
+
+  proto.$hash = function() { return this.$id || (this.$id = yield_hash()); };
+
+  return cls;
+}
+
 /**
   Define a new class (normal way), with the given id and superclass. Will be
   top level.
