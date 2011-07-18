@@ -199,9 +199,9 @@ function define_raw_method(klass, name, body) {
     klass.$bridge_prototype[name] = body;
   }
 
-  // if we are dealing with Object or BasicObject, we need to donate
+  // if we are dealing with Object , we need to donate
   // to bridged prototypes as well
-  if (klass == cObject || klass == cBasicObject) {
+  if (klass == cObject) {
     var bridged = bridged_classes;
 
     for (var i = 0, ii = bridged.length; i < ii; i++) {
@@ -548,29 +548,24 @@ function init() {
   var metaclass;
 
   // what will be the instances of these core classes...
-  boot_BasicObject = boot_defclass('BasicObject');
-  boot_Object = boot_defclass('Object', boot_BasicObject);
+  boot_Object = boot_defclass('Object');
   boot_Module = boot_defclass('Module', boot_Object);
   boot_Class = boot_defclass('Class', boot_Module);
 
   // the actual classes
-  Rt.BasicObject = cBasicObject = boot_makemeta('BasicObject', boot_BasicObject, boot_Class);
-  Rt.Object = cObject = boot_makemeta('Object', boot_Object, cBasicObject.constructor);
+  Rt.Object = cObject = boot_makemeta('Object', boot_Object, boot_Class);
   Rt.Module = cModule = boot_makemeta('Module', boot_Module, cObject.constructor);
   Rt.Class = cClass = boot_makemeta('Class', boot_Class, cModule.constructor);
 
-  boot_defmetameta(cBasicObject, cClass);
   boot_defmetameta(cObject, cClass);
   boot_defmetameta(cModule, cClass);
   boot_defmetameta(cClass, cClass);
 
   // fix superclasses
-  cBasicObject.$super = null;
-  cObject.$super = cBasicObject;
+  cObject.$super = null;
   cModule.$super = cObject;
   cClass.$super = cModule;
 
-  const_set(cObject, 'BasicObject', cBasicObject);
   const_set(cObject, 'Object', cObject);
   const_set(cObject, 'Module', cModule);
   const_set(cObject, 'Class', cClass);

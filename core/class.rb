@@ -23,7 +23,7 @@ class Class < Module
     `var sup = self.$super;
 
     if (!sup) {
-      if (self == $rb.BasicObject) return nil;
+      if (self == cObject) return nil;
       throw new Error('RuntimeError: uninitialized class');
     }
 

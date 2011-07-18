@@ -229,10 +229,6 @@ function bridge_class(prototype, flags, id, super_class) {
   bridged_classes.push(prototype);
   klass.$bridge_prototype = prototype;
 
-  for (var meth in cBasicObject.o$m) {
-    prototype[meth] = cBasicObject.o$m[meth];
-  }
-
   for (var meth in cObject.o$m) {
     prototype[meth] = cObject.o$m[meth];
   }

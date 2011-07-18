@@ -28,12 +28,12 @@ var ArrayProto     = Array.prototype,
 /**
   prototypes of actual instances of classes.
 */
-var boot_BasicObject, boot_Object, boot_Module, boot_Class;
+var boot_Object, boot_Module, boot_Class;
 
 /**
   Core runtime classes, objects and literals.
 */
-var cBasicObject,     cObject,          cModule,          cClass,
+var cObject,          cModule,          cClass,
     mKernel,          cNilClass,        cTrueClass,       cFalseClass,
     cArray,           cNumeric,
     cRegexp,          cMatch,           top_self,            Qnil,
