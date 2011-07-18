@@ -71,7 +71,7 @@ Op.run = function(body) {
     var stack;
 
     if (err.$message) {
-      console.log(err.o$k.__classid__ + ': ' + err.$message);
+      puts(err.o$k.__classid__ + ': ' + err.$message);
     }
     else if (err.message) {
       console.log(err.o$k.__classid__ + ': ' + err.message);
@@ -82,12 +82,15 @@ Op.run = function(body) {
     }
 
     // first try (if in debug mode...)
-    if (Db.backtrace()) {
-      console.log(Db.backtrace());
+    if (stack = Db.backtrace()) {
+      puts(stack);
       Db.stack = [];
     }
     else if (stack = err.stack) {
-      console.log(stack);
+      puts(stack);
+    }
+    else {
+      puts("\t from: (no stack trace available)");
     }
   }
   return res;

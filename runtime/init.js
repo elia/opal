@@ -510,6 +510,14 @@ Rt.G = function(beg, end, exc) {
 };
 
 /**
+  Print to console - this is overriden upon init so that it will print to
+  stdout
+*/
+var puts = function(str) {
+  console.log(str);
+};
+
+/**
   Main init method. This is called once this file has fully loaded. It setups
   all the core objects and classes and required runtime features.
 */
@@ -648,6 +656,10 @@ function init() {
   const_set(cObject, 'ARGV', PLATFORM_ARGV);
 
   opal.run(core_lib);
+
+  puts = function(str) {
+    stdout.m$puts(str);
+  };
 };
 
 /**

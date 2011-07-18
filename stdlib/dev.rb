@@ -114,8 +114,9 @@ opal.browser_repl = function() {
   setTimeout(function() { stdin.focus(); }, 0);
 
   var puts_content = function(str) {
-    var elem = document.createElement('div');
+    var elem = document.createElement('pre');
     elem.textContent == null ? elem.innerText = str : elem.textContent = str;
+    elem.style.margin = "0px";
     stdout.appendChild(elem);
   };
 
