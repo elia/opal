@@ -74,10 +74,10 @@ Op.run = function(body) {
       puts(err.o$k.__classid__ + ': ' + err.$message);
     }
     else if (err.message) {
-      console.log(err.o$k.__classid__ + ': ' + err.message);
+      puts(err.o$k.__classid__ + ': ' + err.message);
     }
     else {
-      console.log('NativeError: ' + err.message);
+      puts('NativeError: ' + err.message);
       //console.log(err);
     }
 
