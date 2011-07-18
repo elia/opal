@@ -502,10 +502,10 @@ var cRange;
   Returns a new ruby range. G for ranGe.
 */
 Rt.G = function(beg, end, exc) {
-  var range = new RObject(cRange, T_OBJECT);
-  range.$beg = beg;
-  range.$end = end;
-  range.$exc = exc;
+  var range = new cRange.o$a();
+  range.beg = beg;
+  range.end = end;
+  range.exc = exc;
   return range;
 };
 
@@ -621,8 +621,8 @@ function init() {
   eKeyError = define_class("KeyError", eIndexError);
   eRangeError = define_class("RangeError", eStandardError);
 
-  eBreakInstance = new eLocalJumpError.o$a();
-  eBreakInstance.$message = "unexpected break";
+  eBreakInstance = new Error('unexpected break');
+  eBreakInstance.o$k = eLocalJumpError;
   block.b = eBreakInstance;
 
   eReturnInstance = new Error('unexpected return');
