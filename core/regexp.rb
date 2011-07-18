@@ -24,19 +24,19 @@ class Regexp
   end
 
   def self.new(s)
-    `return Rt.re(new RegExp(s));`
+    `return new RegExp(s);`
   end
 
   def inspect
-    `return self.re.toString();`
+    `return self.toString();`
   end
 
   def to_s
-    `return self.re.source;`
+    `return self.source;`
   end
 
   def ==(other)
-    `return self.re.toString() === other.re.toString() ? Qtrue : Qfalse;`
+    `return self.toString() === other.toString() ? Qtrue : Qfalse;`
   end
 
   def eql?(other)
@@ -50,7 +50,7 @@ class Regexp
   # @param [String] str The string to match
   # @return [Numeric, nil]
   def =~(str)
-    `var result = self.re.exec(str);
+    `var result = self.exec(str);
     $rb.X = result;
 
     if (result) {

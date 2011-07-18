@@ -452,12 +452,6 @@ function stdio_setter(id, value) {
   }
 };
 
-Rt.re = function(re) {
-  var regexp = new cRegexp.o$a();
-  regexp.re = re;
-  return regexp;
-};
-
 var cProc;
 
 /**
@@ -606,7 +600,8 @@ function init() {
 
   cRange = define_class('Range', cObject);
 
-  cRegexp = define_class('Regexp', cObject);
+  cRegexp = bridge_class(RegExp.prototype,
+    T_OBJECT, 'Regexp', cObject);
 
   cMatch = define_class('MatchData', cObject);
   define_hooked_variable('$~', regexp_match_getter, gvar_readonly_setter);
