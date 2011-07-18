@@ -477,12 +477,6 @@ var block = Rt.P = {
 
 block.y.$proc = [block.y];
 
-Rt.proc = function(func) {
-  var proc = new cProc.o$a();
-  proc.fn = func;
-  return proc;
-};
-
 /**
   Turns the given proc/function into a lambda. This is useful for the
   Proc#lambda method, but also for blocks that are turned into
@@ -605,9 +599,11 @@ function init() {
   cString = bridge_class(String.prototype,
     T_OBJECT | T_STRING, 'String', cObject);
 
+  cProc = bridge_class(Function.prototype,
+    T_OBJECT | T_PROC, 'Proc', cObject);
+
   cSymbol = define_class('Symbol', cObject);
 
-  cProc = define_class('Proc', cObject);
 
   cRange = define_class('Range', cObject);
 
