@@ -44,19 +44,19 @@ var cObject,          cModule,          cClass,
 /**
   Core object type flags. Added as local variables, and onto runtime.
 */
-var T_CLASS       = Rt.T_CLASS       = 1,
-    T_MODULE      = Rt.T_MODULE      = 2,
-    T_OBJECT      = Rt.T_OBJECT      = 4,
-    T_BOOLEAN     = Rt.T_BOOLEAN     = 8,
-    T_STRING      = Rt.T_STRING      = 16,
-    T_ARRAY       = Rt.T_ARRAY       = 32,
-    T_NUMBER      = Rt.T_NUMBER      = 64,
-    T_PROC        = Rt.T_PROC        = 128,
-    T_SYMBOL      = Rt.T_SYMBOL      = 256,
-    T_HASH        = Rt.T_HASH        = 512,
-    T_RANGE       = Rt.T_RANGE       = 1024,
-    T_ICLASS      = Rt.T_ICLASS      = 2056,
-    FL_SINGLETON  = Rt.FL_SINGLETON  = 4112;
+var T_CLASS       = 1,
+    T_MODULE      = 2,
+    T_OBJECT      = 4,
+    T_BOOLEAN     = 8,
+    T_STRING      = 16,
+    T_ARRAY       = 32,
+    T_NUMBER      = 64,
+    T_PROC        = 128,
+    T_SYMBOL      = 256,
+    T_HASH        = 512,
+    T_RANGE       = 1024,
+    T_ICLASS      = 2056,
+    FL_SINGLETON  = 4112;
 
 /**
   Define classes. This is the public API for defining classes, shift classes
