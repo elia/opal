@@ -244,9 +244,10 @@ module Opal
 
       post += ';'
 
-      if @mm_ids.length > 0
-        post += "$rb.mm(['#{ @mm_ids.join "', '" }']);"
-      end
+      # FIXME: method missing off by default
+      # if @mm_ids.length > 0
+        # post += "$rb.mm(['#{ @mm_ids.join "', '" }']);"
+      # end
 
       # ivars
       @ivars.each do |ivar|
@@ -399,7 +400,8 @@ module Opal
       recv = nil
       mid = 'm$' + @mid
 
-      opts[:top].register_mm_id @mid
+      # FIXME: method_missing off by default
+      # opts[:top].register_mm_id @mid
 
       # receiver
       if @recv.is_a? NumericNode
