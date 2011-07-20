@@ -437,7 +437,7 @@ module Opal
         arg_res.unshift tmp_recv
 
         code = "(#{tmp_recv} = #{recv}, $B.f = #{tmp_recv}#{mid}, ($B.p ="
-        code += "#{block}).$proc =[self], $B.f).call(#{arg_res.join ', '})"
+        code += "#{block}).o$s=self, $B.f).call(#{arg_res.join ', '})"
 
         opts[:scope].queue_temp tmp_recv
         code
@@ -739,7 +739,7 @@ module Opal
         block_code = "var $y = $B, $yy, $ys, $yb = $y.b;"
         block_code += "if ($y.f == arguments.callee) { $yy = $y.p; }"
         block_code += "else { $yy = $y.y; }"
-        block_code += "$y.f = nil ;$ys = $yy.$proc[0];"
+        block_code += "$y.f = nil ;$ys = $yy.o$s;"
         pre_code = block_code + pre_code
       end
 
@@ -1300,7 +1300,7 @@ module Opal
             #
             # Also, this is optional, and can be turned on/off for
             # performance gains.
-            if true
+            if false
               pre_code += "if (#{arg[:value]} === undefined) { #{arg[:value]} = nil; }"
             end
           end
@@ -1354,7 +1354,7 @@ module Opal
         block_code = "var $y = $B, $yy, $ys, $yb = $y.b;"
         block_code += "if ($y.f == arguments.callee) { $yy = $y.p; }"
         block_code += "else { $yy = $y.y; }"
-        block_code += "$y.f = nil ;$ys = $yy.$proc[0];"
+        block_code += "$y.f = nil ;$ys = $yy.o$s;"
         pre_code = block_code + pre_code
       end
 

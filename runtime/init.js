@@ -457,7 +457,7 @@ var block = Rt.P = {
   }
 };
 
-block.y.$proc = [block.y];
+block.y.o$s = block.y;
 
 /**
   Turns the given proc/function into a lambda. This is useful for the
@@ -482,7 +482,6 @@ block.y.$proc = [block.y];
   @return {Function} Wrapped lambda function.
 */
 Rt.lambda = function(proc) {
-  proc = proc.$fn;
   if (proc.$lambda) return proc;
 
   var wrap = function() {
@@ -491,7 +490,7 @@ Rt.lambda = function(proc) {
   };
 
   wrap.$lambda = true;
-  wrap.$proc = proc.$proc;
+  wrap.o$s = proc.o$s;
 
   return Rt.proc(wrap);
 };

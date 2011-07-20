@@ -41,7 +41,7 @@ class Proc
   end
 
   def call(*args)
-    `return self.apply(self.$proc[0], args);`
+    `return self.apply(self.o$s,args);`
   end
 
   def to_s
