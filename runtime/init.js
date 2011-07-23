@@ -521,13 +521,6 @@ var puts = function(str) {
   all the core objects and classes and required runtime features.
 */
 function init() {
-  // run debug mode only if directed to. Debug mode slows opal down (by atleast
-  // an extra function call, try/catch block and arg check per method send - it
-  // should be used in development but not production mode)
-  if (typeof OPAL_DEBUG != "undefined" && OPAL_DEBUG) {
-    init_debug();
-  }
-
   var metaclass;
 
   // what will be the instances of these core classes...

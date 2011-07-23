@@ -23,7 +23,7 @@ module Opal
     def build_core
       code = ''
 
-      %w[pre runtime init class module fs loader debug].each do |f|
+      %w[pre runtime init class module fs loader].each do |f|
         code += File.read(File.join RUNTIME_PATH, f + '.js')
       end
 

@@ -80,18 +80,6 @@ Op.run = function(body) {
       puts('NativeError: ' + err.message);
       //console.log(err);
     }
-
-    // first try (if in debug mode...)
-    if (stack = Db.backtrace()) {
-      puts(stack);
-      Db.stack = [];
-    }
-    else if (stack = err.stack) {
-      puts(stack);
-    }
-    else {
-      puts("\t from: (no stack trace available)");
-    }
   }
   return res;
 };
