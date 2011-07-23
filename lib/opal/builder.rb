@@ -15,7 +15,7 @@ module Opal
 
     RUNTIME_PATH = File.join OPAL_PATH, 'runtime'
 
-    CORE_PATH = File.join OPAL_PATH, 'core'
+    CORE_PATH = File.join OPAL_PATH, 'corelib'
 
     # Builds core opal runtime + core libs, and returns as a string.
     # This can then just be used directly by any compiled code. The
