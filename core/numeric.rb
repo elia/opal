@@ -195,8 +195,8 @@ class Numeric < `Number`
     return enum_for :upto, finish unless block_given?
 
     %x{
-      for (var i = 0; i <= finish; i++) {
-        if (block.call(__context, i) === __breaker) {
+      for (var i = #{self}; i <= finish; i++) {
+        if (#{block.call(`i`)} === __breaker) {
           return __breaker.$v;
         }
       }
