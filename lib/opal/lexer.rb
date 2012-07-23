@@ -36,7 +36,7 @@ module Opal
   end
 
   def on_error(t, val, vstack)
-    raise OpalParseError, "parse error on value #{val.inspect} (line #{@line})"
+    raise OpalParseError, "parse error on value #{val.inspect} (#{@file}:#{@line})"
   end
 
   class LexerScope
