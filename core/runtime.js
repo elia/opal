@@ -121,8 +121,10 @@ Opal.klass = function(base, superklass, id, constructor) {
     klass = base._scope[id];
   }
   else {
+    var bridged;
+
     if (!superklass.$m_tbl) {
-      var bridged = superklass;
+      bridged = superklass;
       superklass  = Object;
       constructor = bridged;
     }
@@ -172,7 +174,7 @@ Opal.module = function(base, id, constructor) {
   }
 
   return klass;
-}
+};
 
 // Utility function to raise a "no block given" error
 var no_block_given = function() {
@@ -193,7 +195,7 @@ var boot_defclass = function(id, constructor, superklass) {
 
   if (superklass) {
     // not BasicObject
-    m_ctr.prototype = new superklass.$m_ctr;
+    m_ctr.prototype = new superklass.$m_ctr();
   }
   else {
     // BasicObject
@@ -240,7 +242,7 @@ var boot_defclass = function(id, constructor, superklass) {
 
 var boot_defmeta = function(constructor, parent_m_tbl) {
   var m_ctr = function(){};
-  m_ctr.prototype = new parent_m_tbl;
+  m_ctr.prototype = new parent_m_tbl();
 
   var m_tbl = m_ctr.prototype;
   m_tbl.constructor = m_ctr;
@@ -253,9 +255,9 @@ var boot_defmeta = function(constructor, parent_m_tbl) {
 // Create generic class with given superclass.
 var boot_class = function(superklass, constructor, bridged) {
   // method table constructor
-  function m_ctr(){};
-  m_ctr.prototype = new superklass.$m_tbl.constructor;
-  
+  function m_ctr(){}
+  m_ctr.prototype = new superklass.$m_tbl.constructor();
+
   // method table itself
   var m_tbl = m_ctr.prototype;
   m_tbl.constructor = m_ctr;
@@ -263,7 +265,7 @@ var boot_class = function(superklass, constructor, bridged) {
   var prototype = constructor.prototype;
 
   if (!bridged) {
-    constructor.prototype = new superklass;
+    constructor.prototype = new superklass();
     prototype = constructor.prototype;
     prototype.constructor = constructor;
   }
@@ -278,7 +280,7 @@ var boot_class = function(superklass, constructor, bridged) {
 
   // FIXME: need c_ctr
   var c_ctr = function(){};
-  c_ctr.prototype = new superklass.$m.constructor;
+  c_ctr.prototype = new superklass.$m.constructor();
 
   var c_tbl = c_ctr.prototype;
   c_tbl.constructor = c_ctr;
@@ -288,14 +290,14 @@ var boot_class = function(superklass, constructor, bridged) {
   constructor.$k      = Class;
   constructor.$s      = superklass;
 
-  constructor._donate       = __donate
+  constructor._donate       = __donate;
   // constructor._included_in  = [];
   // constructor._isClass      = true;
   // constructor._super        = superklass;
   // constructor._methods      = [];
   constructor._isObject     = false;
   // constructor._klass        = Class;
-  
+
   return constructor;
 };
 
@@ -305,22 +307,22 @@ var boot_module = function(constructor) {
 
   // FIXME: need c_ctr
   var c_ctr = function(){};
-  c_ctr.prototype = new Module.$m.constructor;
-  
+  c_ctr.prototype = new Module.$m.constructor();
+
   var c_tbl = c_ctr.prototype;
   constructor.$m = c_tbl;
 
 
   constructor.$k      = Class;
 
-  constructor._donate       = __donate
+  constructor._donate       = __donate;
   // constructor._included_in  = [];
   // constructor._isClass      = true;
   // constructor._super        = superklass;
   // constructor._methods      = [];
   constructor._isObject     = false;
   // constructor._klass        = Class;
-  
+
   return constructor;
 };
 
@@ -374,10 +376,10 @@ Object.prototype.toString = function() {
   return this.$m.to_s(this, 'to_s');
 };
 
-Opal.top = new Object;
+Opal.top = new Object();
 
-Opal.klass(Object, Object, 'NilClass', NilClass)
-Opal.nil = new NilClass;
+Opal.klass(Object, Object, 'NilClass', NilClass);
+Opal.nil = new NilClass();
 Opal.nil.call = Opal.nil.apply = no_block_given;
 
 Opal.breaker  = new Error('unexpected break');
