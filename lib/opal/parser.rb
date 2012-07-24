@@ -803,7 +803,7 @@ module Opal
           opt[1..-1].each do |o|
             next if o[2][2] == :undefined
             id = process s(:lvar, o[1]), :expr
-            code += ("if (%s == null) {\n%s%s\n%s}" %
+            code += ("if (%s == null) {\n%s%s;\n%s}" %
                       [id, @indent + INDENT, process(o, :expre), @indent])
           end if opt
 
@@ -1159,7 +1159,7 @@ module Opal
       val = process(sexp.shift || s(:nil), :expr)
 
       raise "Cannot return as an expression" unless level == :stmt
-      "return #{val}"
+      "return #{val};"
     end
 
     # s(:xstr, content)
@@ -1333,7 +1333,7 @@ module Opal
       call = handle_yield_call sexp, level
 
       if level == :stmt
-        "if (#{call} === __breaker) return __breaker.$v"
+        "if (#{call} === __breaker) return __breaker.$v;"
       else
         call
       end
@@ -1368,7 +1368,7 @@ module Opal
         @while_loop[:closure] ? "return #{ val };" : "break;"
       elsif @scope.iter?
         error "break must be used as a statement" unless level == :stmt
-        "return (__breaker.$v = #{ val }, __breaker)"
+        "return (__breaker.$v = #{ val }, __breaker);"
       else
         error "cannot use break outside of iter/while"
       end

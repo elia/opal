@@ -46,7 +46,7 @@ module Kernel
       #{ self.singleton_class };
 
       body._jsid = name;
-      body._sup  = #{self}.$m[name]
+      body._sup  = #{self}.$m[name];
 
       #{self}.$m[name] = body;
 

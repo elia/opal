@@ -2,7 +2,7 @@ class Class
   def self.new(sup = Object, &block)
     %x{
       function AnonClass(){};
-      var klass   = boot_class(sup, AnonClass)
+      var klass   = boot_class(sup, AnonClass);
       klass._name = nil;
 
       #{ sup.inherited `klass` };
