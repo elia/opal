@@ -661,7 +661,7 @@ module Opal
       end
 
       spacer  = "\n#{@indent}#{INDENT}"
-      cls     = "function #{name}() {};"
+      cls     = "function #{name}() {}"
       boot    = "#{name} = __klass(__base, __super, #{name.inspect}, #{name});"
       comment = "#{spacer}// line #{ sexp.line }, #{ @file }, class #{ name }#{spacer}"
 
@@ -715,7 +715,7 @@ module Opal
       end
 
       spacer  = "\n#{@indent}#{INDENT}"
-      cls     = "function #{name}() {};"
+      cls     = "function #{name}() {}"
       boot    = "#{name} = __module(__base, #{name.inspect}, #{name});"
       comment = "#{spacer}// line #{ sexp.line }, #{ @file }, module #{ name }#{spacer}"
 
