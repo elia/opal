@@ -569,7 +569,7 @@ module Opal
       elsif splat and recv != [:self] and recv[0] != :lvar
         tmprecv = @scope.new_temp
       end
-      
+
       args      = ""
 
       recv_code = process recv, :recv
