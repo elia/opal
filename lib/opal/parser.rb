@@ -677,9 +677,9 @@ module Opal
       spacer  = "\n#{@indent}#{INDENT}"
       cls     = "function #{name}() {};"
       boot    = "#{name} = __klass(__base, __super, #{name.inspect}, #{name});"
-      comment = "#{spacer}// line #{ sexp.line }, #{ @file }, class #{ name }#{spacer}"
+      comment = source_map_comment sexp.line, "class #{name}"
 
-      "(function(__base, __super){#{comment}#{cls}#{spacer}#{boot}\n#{code}\n#{@indent}})(#{base}, #{sup})"
+      "(function(__base, __super){#{spacer}#{comment}#{spacer}#{cls}#{spacer}#{boot}\n#{code}\n#{@indent}})(#{base}, #{sup})"
     end
 
     # s(:sclass, recv, body)
@@ -731,9 +731,9 @@ module Opal
       spacer  = "\n#{@indent}#{INDENT}"
       cls     = "function #{name}() {};"
       boot    = "#{name} = __module(__base, #{name.inspect}, #{name});"
-      comment = "#{spacer}// line #{ sexp.line }, #{ @file }, module #{ name }#{spacer}"
+      comment = source_map_comment sexp.line "module #{name}"
 
-      "(function(__base){#{comment}#{cls}#{spacer}#{boot}\n#{code}\n#{@indent}})(#{base})"
+      "(function(__base){#{spacer}#{comment}#{spacer}#{cls}#{spacer}#{boot}\n#{code}\n#{@indent}})(#{base})"
     end
 
     def process_undef(exp, level)
@@ -845,10 +845,10 @@ module Opal
 
       defcode = "#{"#{scope_name} = " if scope_name}function(#{params}) {\n#{code}\n#@indent}"
 
-      comment = "// line #{line}, #{@file}"
-
-      if @scope.class_scope? 
-        comment += ", #{ @scope.name }#{ recvr ? '.' : '#' }#{ mid }"
+      if @scope.class_scope?
+        comment = source_map_comment line, "#{@scope.name}#{ recvr ? '.' : '#' }#{mid}"
+      else
+        comment = source_map_comment line
       end
 
       comment += "\n#{@indent}"
@@ -1666,6 +1666,11 @@ module Opal
       else
         "REDO()"
       end
+    end
+
+    def source_map_comment line, message = nil
+      message = ", #{message}" if message
+      "// line #{line}, #{@file}#{message}"
     end
   end
 end
