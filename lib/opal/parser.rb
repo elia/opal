@@ -154,7 +154,9 @@ module Opal
 
       @line = sexp.line
 
-      __send__ meth, sexp, level
+      code = __send__ meth, sexp, level
+      code = source_map_comment(@line, "(#{type})") + code unless code.start_with? '/* line'
+      code
     end
 
     def returns(sexp)
@@ -270,7 +272,9 @@ module Opal
 
     # s(:js_return, sexp)
     def process_js_return(sexp, level)
-      "return #{process sexp.shift, :expr}"
+      no_source_map_comment do
+        "return #{process sexp.shift, :expr}"
+      end
     end
 
     # s(:js_tmp, str)
@@ -731,7 +735,7 @@ module Opal
       spacer  = "\n#{@indent}#{INDENT}"
       cls     = "function #{name}() {};"
       boot    = "#{name} = __module(__base, #{name.inspect}, #{name});"
-      comment = source_map_comment sexp.line "module #{name}"
+      comment = source_map_comment sexp.line, "module #{name}"
 
       "(function(__base){#{spacer}#{comment}#{spacer}#{cls}#{spacer}#{boot}\n#{code}\n#{@indent}})(#{base})"
     end
@@ -1253,7 +1257,8 @@ module Opal
         check = js_truthy test
       end
 
-      code = "if (#{check}) {\n"
+      code = source_map_comment sexp.line, "if (condition)"
+      code += "if (#{check}) {\n"
       indent { code += @indent + process(truthy, :stmt) } if truthy
       indent { code += "\n#@indent} else {\n#@indent#{process falsy, :stmt}" } if falsy
       code += "\n#@indent}"
@@ -1669,8 +1674,20 @@ module Opal
     end
 
     def source_map_comment line, message = nil
-      message = ", #{message}" if message
-      "// line #{line}, #{@file}#{message}"
+      if @source_map_comment == false
+        @source_map_comment = true
+        return ''
+      end
+      if message
+        raise "bad comment, a comment ender was found inside the message: #{message.inspect}" if message.include? '*/'
+        message = ", #{message}"
+      end
+      "/* line #{line}, #{@file}#{message} */"
+    end
+
+    def no_source_map_comment
+      @source_map_comment = false
+      yield
     end
   end
 end
