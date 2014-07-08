@@ -11,7 +11,17 @@ module Opal
     def parse(source, file = '(string)')
       @file = file
       @scopes = []
+
+      push_scope
       @lexer = Lexer.new(source, file)
+      @lexer.parser = self
+      token = @lexer.next_token
+      p token
+      p token while (token = @lexer.next_token)[0] != false
+      pop_scope
+
+      @lexer = Lexer.new(source, file)
+
       @lexer.parser = self
 
       self.parse_to_sexp
@@ -293,6 +303,15 @@ module Opal
       else
         s1(:paren, expr, source(open))
       end
+    end
+
+    def new_kwargs(label, value)
+      res = s(:kwargs)
+      scope.add_local label
+      res << s1(:identifier, value(label), source(label))
+      res << value if value
+      p res
+      res
     end
 
     def new_args(norm, opt, rest, block)

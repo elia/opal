@@ -1468,6 +1468,14 @@ xstring_contents: none
                     {
                       result = new_args(nil, nil, nil, val[0])
                     }
+                | tLABEL
+                    {
+                      result = new_kwargs(val[0], nil)
+                    }
+                | tLABEL arg_value
+                    {
+                      result = new_kwargs(val[0], val[1])
+                    }
                 | # none
                     {
                       result = new_args(nil, nil, nil, nil)

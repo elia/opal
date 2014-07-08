@@ -1,4 +1,5 @@
 require 'opal/nodes/base'
+require 'opal/nodes/kwargs'
 
 module Opal
   module Nodes
